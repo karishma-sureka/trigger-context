@@ -17,17 +17,20 @@ public class Network implements Runnable {
 	static private boolean WifiOn;
 	static private String IP;
 	static private String MAC;
-	static private String BIP;
+	static private InetAddress BIP;
 
 	public static boolean isWifiOn() {
 		return WifiOn;
 	}
 
-	public static synchronized String getBIP() {
-		return BIP;
+	public static synchronized InetAddress getBIP() {
+		if (isWifiOn())
+			return BIP;
+		else
+			return null;
 	}
 
-	private static synchronized void setBIP(String bIP) {
+	private static synchronized void setBIP(InetAddress bIP) {
 		BIP = bIP;
 	}
 
@@ -96,7 +99,7 @@ public class Network implements Runnable {
 		setBIP(getDeviceBIP());
 	}
 
-	private String getDeviceBIP() {
+	private InetAddress getDeviceBIP() {
 		Log.i("Trigger_Log", "Network-getDeviceBIP--Start");
 
 		WifiManager wifi = (WifiManager) Main_Service.main_service
@@ -108,7 +111,7 @@ public class Network implements Runnable {
 		for (int k = 0; k < 4; k++)
 			quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
 		try {
-			return InetAddress.getByAddress(quads).toString();
+			return InetAddress.getByAddress(quads);
 
 		} catch (UnknownHostException e) {
 			Log.i("Trigger_Log", "Network-getDeviceBIP--Start");

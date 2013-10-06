@@ -17,12 +17,6 @@ import android.util.Log;
 
 public class Main_Service extends Service {
 
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		Log.i("Trigger_Log", "Main_Service-onDestroy");
-	}
-
 	static public Main_Service main_service;
 	private int mid = 0;
 
@@ -33,6 +27,7 @@ public class Main_Service extends Service {
 		Thread network = new Thread(new Network());
 
 		network.start();
+		Network.setWifiOn(true);
 
 		try {
 			network.join();
@@ -47,8 +42,8 @@ public class Main_Service extends Service {
 																	// node
 
 		// Bug here .. get name from shared pre//////////
-		Thread keep_Alive = new Thread(new Keep_Alive("name", "hi", 6002,
-				"255.255.255.255"));// port for alive
+		Thread keep_Alive = new Thread(new Keep_Alive("name", Network.getMAC(), 6002,
+				Network.getBIP()));// port for alive
 		// comm_Listener.start();
 		// node_Listener.start();
 		keep_Alive.start();
@@ -69,5 +64,10 @@ public class Main_Service extends Service {
 		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		// mId allows you to update the notification later on.
 		mNotificationManager.notify(mid++, mBuilder.build());
+	}
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		Log.i("Trigger_Log", "Main_Service-onDestroy"); 
 	}
 }
