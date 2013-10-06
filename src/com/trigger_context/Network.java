@@ -6,6 +6,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
 
+import android.net.DhcpInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
@@ -16,9 +17,18 @@ public class Network implements Runnable {
 	static private boolean WifiOn;
 	static private String IP;
 	static private String MAC;
+	static private String BIP;
 
 	public static boolean isWifiOn() {
 		return WifiOn;
+	}
+
+	public static synchronized String getBIP() {
+		return BIP;
+	}
+
+	private static synchronized void setBIP(String bIP) {
+		BIP = bIP;
 	}
 
 	public static void setWifiOn(boolean wifiOn) {
@@ -83,5 +93,26 @@ public class Network implements Runnable {
 		Log.i("Trigger_Log", "Network--Start Thread");
 		setIP(getDeviceIP());
 		setMAC(getDeviceMAC());
+		setBIP(getDeviceBIP());
+	}
+
+	private String getDeviceBIP() {
+		Log.i("Trigger_Log", "Network-getDeviceBIP--Start");
+
+		WifiManager wifi = (WifiManager) Main_Service.main_service
+				.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+		DhcpInfo dhcp = wifi.getDhcpInfo();
+
+		int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
+		byte[] quads = new byte[4];
+		for (int k = 0; k < 4; k++)
+			quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
+		try {
+			return InetAddress.getByAddress(quads).toString();
+
+		} catch (UnknownHostException e) {
+			Log.i("Trigger_Log", "Network-getDeviceBIP--Start");
+			return null;
+		}
 	}
 }
