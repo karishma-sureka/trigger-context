@@ -45,16 +45,7 @@ public class Main_Service extends Service {
 		node_Listener.start();
 		keep_Alive.start();
 
-		
-		/*try {
-			comm_Listener.join();
-			node_Listener.join();
-			keep_Alive.join();
-		} catch (InterruptedException e) {
-			Log.i("Main_Service-onCreate", "Join");
-		}
-*/ 
-		Log.i("Main_Service", "Oncreate ");
+		Log.i("Trigger_Log", "Main_Service-Oncreate--End");
 	}
 
 	@Override
@@ -73,19 +64,19 @@ public class Main_Service extends Service {
 	}
 
 	public String getIP() {
-		Log.i("Main_Service-getIP", "Start");
+		Log.i("Trigger_Log","Main_Service-getIP--Start");
 		InetAddress ip;
 		try {
 			ip = InetAddress.getLocalHost();
 			return ip.getHostAddress();
 		} catch (UnknownHostException e) {
-			Log.i("Main_Service-getIP", "Error");
+			Log.i("Trigger_Log","Main_Service-getIP--Error");
 			return "";
 		}
 	}
 
 	public String getMAC() {
-		Log.i("Main_Service-getMAC", "Start");
+		Log.i("Trigger_Log","Main_Service-getMAC--Start");
 		InetAddress ip;
 		try {
 			ip = InetAddress.getLocalHost();
@@ -98,10 +89,10 @@ public class Main_Service extends Service {
 			}
 			return sb.toString();
 		} catch (SocketException e) {
-			Log.i("Main_Service-getMAC", "Error");
+			Log.i("Trigger_Log","Main_Service-getMAC--Error");
 			return "";
 		} catch (UnknownHostException e) {
-			Log.i("Main_Service-getMac", "Error");
+			Log.i("Trigger_Log","Main_Service-getMac--Error");
 			return "";
 		}
 	}
