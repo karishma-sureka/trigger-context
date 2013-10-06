@@ -1,6 +1,6 @@
 package com.trigger_context;
 
-import com.trigger.R;
+import com.trigger_context.R;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -24,11 +24,29 @@ public class Main_Service extends Service {
 	public void onCreate() {
 		super.onCreate();
 		main_service = this;
-		new Thread(new Comm_Listener(6000)).start();// port for comm
-		new Thread(new Node_Listener(6001)).start();// port for node
+		Thread comm_Listener = new Thread(new Comm_Listener(6000));// port for
+																	// comm
+		Thread node_Listener = new Thread(new Node_Listener(6001));// port for
+																	// node
 		// Bug here .. get name from shared pre//////////
-		new Thread(new Keep_Alive("name", "hi", 6002)).start();
-		Log.i("Main_Service", "Oncreate");
+		Thread keep_Alive = new Thread(new Keep_Alive("name", "hi", 6002));// port
+																			// for
+																			// alive
+		noti("test", "test");
+
+		comm_Listener.start();
+		node_Listener.start();
+		keep_Alive.start();
+
+		try {
+			comm_Listener.join();
+			node_Listener.join();
+			keep_Alive.join();
+		} catch (InterruptedException e) {
+			Log.i("Main_Service-onCreate", "Join");
+		}
+
+		Log.i("Main_Service", "Oncreate ");
 	}
 
 	@Override
