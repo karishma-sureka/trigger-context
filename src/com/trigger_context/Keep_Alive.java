@@ -2,6 +2,7 @@ package com.trigger_context;
 
 import android.util.Log;
 
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -10,37 +11,41 @@ import java.net.UnknownHostException;
 
 public class Keep_Alive implements Runnable {
 
-	String Name, MAC;
-	DatagramSocket socket;
-	int Port;
+	private String Name, MAC;
+	private DatagramSocket socket;
+	private int Port;
+	private String BIP;
 
-	public Keep_Alive(String Name, String MAC, int Port) {
+	public Keep_Alive(String Name, String MAC, int Port, String BIP) {
 		this.Name = Name;
 		this.MAC = MAC;
 		this.Port = Port;
+		this.BIP = BIP;
 		try {
 			socket = new DatagramSocket();
+			socket.setBroadcast(true);
 		} catch (SocketException e) {
-			Log.i("Trigger_Log","Keep_Alive--Error Unable to bind to port");
-		} 
-		Log.i("Trigger_Log","Keep_Alive--Constructor");
+			Log.i("Trigger_Log", "Keep_Alive--Error Unable to bind to port");
+		}
+		Log.i("Trigger_Log", "Keep_Alive--Constructor");
 	}
 
 	@Override
 	public void run() {
-		Log.i("Trigger_Log","Keep_Alive-run--Started");
+		Log.i("Trigger_Log", "Keep_Alive-run--Started");
 
 		String Packet = (Name + ";" + MAC + ";2");
-
 		byte[] SendData = Packet.getBytes();
 
 		try {
 			DatagramPacket sendPack = new DatagramPacket(SendData,
-					SendData.length, InetAddress.getByName("172.18.30.2"),
-					Port);
-			Main_Service.main_service.noti("n",InetAddress.getByName("172.18.30.2")+"");
+					SendData.length, InetAddress.getByName(BIP), Port);
+			socket.send(sendPack);
+			Log.i("Trigger_Log", "Port:" + socket.getLocalPort());
 		} catch (UnknownHostException e) {
-			Log.i("Trigger_Log","Keep_Alive-run--Error in getbyhostname");
+			Log.i("Trigger_Log", "Keep_Alive-run--Error in getbyhostname");
+		} catch (IOException e) {
+			Log.i("Trigger_Log", "Keep_Alive-run--Error in send");
 		}
 	}
 }

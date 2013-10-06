@@ -14,22 +14,24 @@ public class Comm_Listener implements Runnable {
 		try {
 			serverSocket = new ServerSocket(port);
 		} catch (IOException e) {
-			Log.i("Trigger_Log","Comm_Listener"+
-					String.format("--Error Unable to bind to port:%d", port));
+			Log.i("Trigger_Log",
+					"Comm_Listener"
+							+ String.format(
+									"--Error Unable to bind to port:%d", port));
 		}
-		Log.i("Trigger_Log","Comm_Listener--Constructor");
+		Log.i("Trigger_Log", "Comm_Listener--Constructor");
 	}
 
 	@Override
 	public void run() {
-		Log.i("Trigger_Log","Comm_Listener--Started Thread");
+		Log.i("Trigger_Log", "Comm_Listener--Started Thread");
 		Socket req;
 		while (true) {
 			try {
 				req = serverSocket.accept();
 				new Thread(new Cond_Action(req)).start();
 			} catch (IOException e) {
-				Log.i("Trigger_Log","Comm_Listener-Run--Error Accept");
+				Log.i("Trigger_Log", "Comm_Listener-Run--Error Accept");
 			}
 
 		}
