@@ -21,14 +21,14 @@ public class Keep_Alive implements Runnable {
 		try {
 			socket = new DatagramSocket();
 		} catch (SocketException e) {
-			Log.i("Keep_Alive", "Error Unable to bind to port");
-		}
-		Log.i("Keep_Alive", "Constructor");
+			Log.i("Trigger_Log","Keep_Alive--Error Unable to bind to port");
+		} 
+		Log.i("Trigger_Log","Keep_Alive--Constructor");
 	}
 
 	@Override
 	public void run() {
-		Log.i("Keep_Alive-run", "Started");
+		Log.i("Trigger_Log","Keep_Alive-run--Started");
 
 		String Packet = (Name + ";" + MAC + ";2");
 
@@ -36,10 +36,11 @@ public class Keep_Alive implements Runnable {
 
 		try {
 			DatagramPacket sendPack = new DatagramPacket(SendData,
-					SendData.length, InetAddress.getByName("255.255.255.255"),
+					SendData.length, InetAddress.getByName("172.18.30.2"),
 					Port);
+			Main_Service.main_service.noti("n",InetAddress.getByName("172.18.30.2")+"");
 		} catch (UnknownHostException e) {
-			Log.i("Keep_Alive-run", "Error in getbyhostname");
+			Log.i("Trigger_Log","Keep_Alive-run--Error in getbyhostname");
 		}
 	}
 }

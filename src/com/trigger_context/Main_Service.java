@@ -17,6 +17,12 @@ import android.util.Log;
 
 public class Main_Service extends Service {
 
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		noti("service","ondes");
+	}
+
 	static Main_Service main_service;
 	private int mid = 0;
 
@@ -34,24 +40,26 @@ public class Main_Service extends Service {
 																			// alive
 		noti("test", "test");
 
+		// can u read this
 		comm_Listener.start();
 		node_Listener.start();
 		keep_Alive.start();
 
-		try {
+		
+		/*try {
 			comm_Listener.join();
 			node_Listener.join();
 			keep_Alive.join();
 		} catch (InterruptedException e) {
 			Log.i("Main_Service-onCreate", "Join");
 		}
-
+*/ 
 		Log.i("Main_Service", "Oncreate ");
 	}
 
 	@Override
-	public IBinder onBind(Intent intent) {
-		return null;
+	public IBinder onBind(Intent intent) {  
+		return null; 
 	}
 
 	public void noti(String title, String txt) {
