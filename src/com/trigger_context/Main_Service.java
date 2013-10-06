@@ -38,14 +38,14 @@ public class Main_Service extends Service {
 		Thread comm_Listener = new Thread(new Comm_Listener(6000));// port for
 																	// comm
 
-		Thread node_Listener = new Thread(new Node_Listener(6001));// port for
-																	// node
+		Thread node_Listener = new Thread(new Node_Listener(6001));
 
 		// Bug here .. get name from shared pre//////////
-		Thread keep_Alive = new Thread(new Keep_Alive("name", Network.getMAC(), 6002,
-				Network.getBIP()));// port for alive
-		// comm_Listener.start();
-		// node_Listener.start();
+		Thread keep_Alive = new Thread(new Keep_Alive("name", Network.getMAC(),
+				6002, Network.getBIP(), 120));
+
+		comm_Listener.start();
+		node_Listener.start();
 		keep_Alive.start();
 
 		Log.i("Trigger_Log", "Main_Service-Oncreate--End");
@@ -65,9 +65,10 @@ public class Main_Service extends Service {
 		// mId allows you to update the notification later on.
 		mNotificationManager.notify(mid++, mBuilder.build());
 	}
+
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		Log.i("Trigger_Log", "Main_Service-onDestroy"); 
+		Log.i("Trigger_Log", "Main_Service-onDestroy");
 	}
 }
