@@ -20,7 +20,7 @@ public class Main_Service extends Service {
 	static String USERS = "users";
 	static String MY_DATA = "my_data";
 
-	@Override
+	@Override 
 	public void onCreate() {
 		super.onCreate();
 		main_service = this;
@@ -45,7 +45,7 @@ public class Main_Service extends Service {
 				"userName"), Network.getMAC())).start();
 
 		new Thread(new Keep_Alive(my_data.getString("name", "userName"),
-				Network.getMAC(), 6001, Network.getBIP(), 120)).start();
+				Network.getMAC(), 6001, Network.getBIP(), 10)).start();
 
 		Log.i("Trigger_Log", "Main_Service-Oncreate--End");
 	}

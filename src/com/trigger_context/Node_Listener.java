@@ -8,17 +8,20 @@ import java.net.SocketException;
 import java.util.ArrayList;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 
 public class Node_Listener implements Runnable {
-	ArrayList<String> macAddressListActive = new ArrayList<String>();
-	ArrayList<String> macAddressListSet;
-	SharedPreferences users;
-	DatagramSocket datagramSocket, typeSocket;
-	DatagramPacket myPacket;
+	private ArrayList<String> macAddressListActive = new ArrayList<String>();
+	private ArrayList<String> macAddressListSet;
+	private SharedPreferences users;
+	private DatagramSocket datagramSocket, typeSocket;
+	private DatagramPacket myPacket;
+	private int Port;
 
 	public Node_Listener(ArrayList<String> storedList, int port, String name,
 			String mac) {
 		macAddressListSet = storedList;
+		this.Port = port;
 		String myData = name + ";" + mac;
 		byte[] myBuf = null;
 		try {
@@ -27,14 +30,19 @@ public class Node_Listener implements Runnable {
 			e.printStackTrace();
 		}
 		myPacket = new DatagramPacket(myBuf, myBuf.length);
+		Log.i("Trigger_Log","Node_Listener--constructor end");
+
 	}
 
-	@Override
+	@Override 
 	public void run() {
-		try {
-			datagramSocket = new DatagramSocket(6660);
+		Log.i("Trigger_Log","Node_Listener-run--start");
+
+		try { 
+			datagramSocket = new DatagramSocket(Port);
 		} catch (SocketException e) {
-			e.printStackTrace();
+			Log.i("Trigger_Log","Node_Listener--Error in Create Socket");
+ 
 		}
 		byte[] buf = new byte[256];
 		String userData;
@@ -45,6 +53,7 @@ public class Node_Listener implements Runnable {
 			try {
 				datagramSocket.receive(packet);
 				userData = new String(packet.getData(), "UTF-8");
+				userData = userData.substring(0, packet.getLength());
 				userDataArray = userData.split(";");// name;MAC;type
 				String replyType = new String("1".getBytes(), "UTF-8");
 				if (!macAddressListActive.contains(userDataArray[1])) {
@@ -68,6 +77,8 @@ public class Node_Listener implements Runnable {
 					typeSocket = new DatagramSocket();
 					typeSocket.send(myPacket);
 				}
+				Log.i("Trigger_Log", userData);
+
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
