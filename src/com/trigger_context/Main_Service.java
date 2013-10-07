@@ -6,11 +6,14 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Map;
 
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -19,6 +22,9 @@ public class Main_Service extends Service {
 
 	static public Main_Service main_service;
 	private int mid = 0;
+	static String ANY_USER = "00:00:00:00:00:00";
+	static String USERS = "users";
+	static String MY_DATA = "my_data";
 
 	@Override
 	public void onCreate() {
@@ -28,6 +34,10 @@ public class Main_Service extends Service {
 
 		network.start();
 		Network.setWifiOn(true);
+		SharedPreferences users_sp = getSharedPreferences(USERS, MODE_PRIVATE);
+		SharedPreferences my_data = getSharedPreferences(MY_DATA, MODE_PRIVATE);
+		ArrayList<String> users = new ArrayList<String>(users_sp.getAll()
+				.keySet());
 
 		try {
 			network.join();
@@ -35,18 +45,13 @@ public class Main_Service extends Service {
 			Log.i("Trigger_Log", "Main_Service-onCreate--Error in Join");
 		}
 
-		Thread comm_Listener = new Thread(new Comm_Listener(6000));// port for
-																	// commm
+		new Thread(new Comm_Listener(6000)).start();
 
-		Thread node_Listener = new Thread(new Node_Listener(6001));
+		new Thread(new Node_Listener(users, 6001, my_data.getString("name",
+				"userName"), Network.getMAC())).start();
 
-		// Bug here .. get name from shared pre//////////
-		Thread keep_Alive = new Thread(new Keep_Alive("name", Network.getMAC(),
-				6002, Network.getBIP(), 120));
-
-		comm_Listener.start();
-		node_Listener.start();
-		keep_Alive.start();
+		new Thread(new Keep_Alive(my_data.getString("name", "userName"),
+				Network.getMAC(), 6001, Network.getBIP(), 120)).start();
 
 		Log.i("Trigger_Log", "Main_Service-Oncreate--End");
 	}
@@ -70,5 +75,11 @@ public class Main_Service extends Service {
 	public void onDestroy() {
 		super.onDestroy();
 		Log.i("Trigger_Log", "Main_Service-onDestroy");
+	}
+
+	public Map<String, ?> getSharedMap(String userMac) {
+		SharedPreferences conditions = getSharedPreferences(userMac,
+				MODE_PRIVATE);
+		return conditions.getAll();
 	}
 }
