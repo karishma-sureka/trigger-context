@@ -16,10 +16,6 @@ public class Network implements Runnable {
 	static private String MAC;
 	static private InetAddress BIP;
 
-	public static boolean isWifiOn() {
-		return WifiOn;
-	}
-
 	public static synchronized InetAddress getBIP() {
 		if (isWifiOn())
 			return BIP;
@@ -27,12 +23,12 @@ public class Network implements Runnable {
 			return null;
 	}
 
-	private static synchronized void setBIP(InetAddress bIP) {
-		BIP = bIP;
-	}
-
-	public static void setWifiOn(boolean wifiOn) {
-		WifiOn = wifiOn;
+	private static String getDeviceMAC() {
+		Log.i("Trigger_Log", "Network-getDeviceMAC--Start");
+		WifiManager wifiManager = (WifiManager) Network_Service.main_service
+				.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+		return wifiInfo.getMacAddress();
 	}
 
 	public static synchronized String getIP() {
@@ -42,10 +38,6 @@ public class Network implements Runnable {
 			return null;
 	}
 
-	private static synchronized void setIP(String iP) {
-		IP = iP;
-	}
-
 	public static synchronized String getMAC() {
 		if (isWifiOn())
 			return MAC;
@@ -53,8 +45,44 @@ public class Network implements Runnable {
 			return null;
 	}
 
+	public static boolean isWifiOn() {
+		return WifiOn;
+	}
+
+	private static synchronized void setBIP(InetAddress bIP) {
+		BIP = bIP;
+	}
+
+	private static synchronized void setIP(String iP) {
+		IP = iP;
+	}
+
 	private static synchronized void setMAC(String mAC) {
 		MAC = mAC;
+	}
+
+	public static void setWifiOn(boolean wifiOn) {
+		WifiOn = wifiOn;
+	}
+
+	private InetAddress getDeviceBIP() {
+		Log.i("Trigger_Log", "Network-getDeviceBIP--Start");
+
+		WifiManager wifi = (WifiManager) Network_Service.main_service
+				.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+		DhcpInfo dhcp = wifi.getDhcpInfo();
+
+		int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
+		byte[] quads = new byte[4];
+		for (int k = 0; k < 4; k++)
+			quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
+		try {
+			return InetAddress.getByAddress(quads);
+
+		} catch (UnknownHostException e) {
+			Log.i("Trigger_Log", "Network-getDeviceBIP--Start");
+			return null;
+		}
 	}
 
 	private String getDeviceIP() {
@@ -80,39 +108,11 @@ public class Network implements Runnable {
 		return actualIpAddress;
 	}
 
-	private static String getDeviceMAC() {
-		Log.i("Trigger_Log", "Network-getDeviceMAC--Start");
-		WifiManager wifiManager = (WifiManager) Network_Service.main_service
-				.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-		return wifiInfo.getMacAddress();
-	}
-
 	@Override
 	public void run() {
 		Log.i("Trigger_Log", "Network--Start Thread");
 		setIP(getDeviceIP());
 		setMAC(getDeviceMAC());
 		setBIP(getDeviceBIP());
-	}
-
-	private InetAddress getDeviceBIP() {
-		Log.i("Trigger_Log", "Network-getDeviceBIP--Start");
-
-		WifiManager wifi = (WifiManager) Network_Service.main_service
-				.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-		DhcpInfo dhcp = wifi.getDhcpInfo();
-
-		int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
-		byte[] quads = new byte[4];
-		for (int k = 0; k < 4; k++)
-			quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
-		try {
-			return InetAddress.getByAddress(quads);
-
-		} catch (UnknownHostException e) {
-			Log.i("Trigger_Log", "Network-getDeviceBIP--Start");
-			return null;
-		}
 	}
 }

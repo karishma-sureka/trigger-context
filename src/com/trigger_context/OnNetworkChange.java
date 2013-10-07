@@ -23,8 +23,8 @@ public class OnNetworkChange extends BroadcastReceiver {
 
 				// start service
 				context.startService(ServiceIntent);
-				Toast.makeText(context, "Starting Service", Toast.LENGTH_LONG)
-						.show();
+				Toast.makeText(context, "Starting Network_Service",
+						Toast.LENGTH_LONG).show();
 				Log.i("Trigger_Log", "OnNetworkChange--Start Service");
 
 				Network.setWifiOn(true);
@@ -33,8 +33,8 @@ public class OnNetworkChange extends BroadcastReceiver {
 			} else {
 				// stop service
 				context.stopService(ServiceIntent);
-				Toast.makeText(context, "Stoping Service", Toast.LENGTH_LONG)
-						.show();
+				Toast.makeText(context, "Stoping Network_Service",
+						Toast.LENGTH_LONG).show();
 				Log.i("Trigger_Log", "OnNetworkChange--Stop Service");
 
 				Network.setWifiOn(false);

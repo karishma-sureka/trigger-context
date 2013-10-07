@@ -14,19 +14,22 @@ public class Main_Activity extends Activity {
 	private int mid = 0;
 	public static Main_Activity main_activity;
 
+	public void noti(String title, String txt) {
+		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+				this).setSmallIcon(R.drawable.ic_launcher)
+				.setContentTitle(title).setContentText(txt);
+
+		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		// mId allows you to update the notification later on.
+		mNotificationManager.notify(mid++, mBuilder.build());
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		main_activity = this;
 		Start_Service();
-	}
-
-	private void Start_Service() {
-		Context x = getBaseContext();
-		Intent startServiceIntent = new Intent(x, Network_Service.class);
-		x.startService(startServiceIntent);
-		Toast.makeText(x, "Starting Network_Service", Toast.LENGTH_LONG).show();
 	}
 
 	@Override
@@ -36,14 +39,11 @@ public class Main_Activity extends Activity {
 		return true;
 	}
 
-	public void noti(String title, String txt) {
-		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-				this).setSmallIcon(R.drawable.ic_launcher)
-				.setContentTitle(title).setContentText(txt);
-
-		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		// mId allows you to update the notification later on.
-		mNotificationManager.notify(mid++, mBuilder.build());
+	private void Start_Service() {
+		Context x = getBaseContext();
+		Intent startServiceIntent = new Intent(x, Network_Service.class);
+		x.startService(startServiceIntent);
+		Toast.makeText(x, "Starting Network_Service", Toast.LENGTH_LONG).show();
 	}
 
 }

@@ -20,6 +20,27 @@ public class Network_Service extends Service {
 	static String USERS = "users";
 	static String MY_DATA = "my_data";
 
+	public Map<String, ?> getSharedMap(String userMac) {
+		SharedPreferences conditions = getSharedPreferences(userMac,
+				MODE_PRIVATE);
+		return conditions.getAll();
+	}
+
+	public void noti(String title, String txt) {
+		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+				this).setSmallIcon(R.drawable.ic_launcher)
+				.setContentTitle(title).setContentText(txt);
+
+		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		// mId allows you to update the notification later on.
+		mNotificationManager.notify(mid++, mBuilder.build());
+	}
+
+	@Override
+	public IBinder onBind(Intent intent) {
+		return null;
+	}
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -51,29 +72,8 @@ public class Network_Service extends Service {
 	}
 
 	@Override
-	public IBinder onBind(Intent intent) {
-		return null;
-	}
-
-	public void noti(String title, String txt) {
-		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-				this).setSmallIcon(R.drawable.ic_launcher)
-				.setContentTitle(title).setContentText(txt);
-
-		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		// mId allows you to update the notification later on.
-		mNotificationManager.notify(mid++, mBuilder.build());
-	}
-
-	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		Log.i("Trigger_Log", "Network_Service-onDestroy");
-	}
-
-	public Map<String, ?> getSharedMap(String userMac) {
-		SharedPreferences conditions = getSharedPreferences(userMac,
-				MODE_PRIVATE);
-		return conditions.getAll();
 	}
 }
