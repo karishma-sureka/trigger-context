@@ -30,19 +30,19 @@ public class Node_Listener implements Runnable {
 			e.printStackTrace();
 		}
 		myPacket = new DatagramPacket(myBuf, myBuf.length);
-		Log.i("Trigger_Log","Node_Listener--constructor end");
+		Log.i("Trigger_Log", "Node_Listener--constructor end");
 
 	}
 
-	@Override 
+	@Override
 	public void run() {
-		Log.i("Trigger_Log","Node_Listener-run--start");
+		Log.i("Trigger_Log", "Node_Listener-run--start");
 
-		try { 
+		try {
 			datagramSocket = new DatagramSocket(Port);
 		} catch (SocketException e) {
-			Log.i("Trigger_Log","Node_Listener--Error in Create Socket");
- 
+			Log.i("Trigger_Log", "Node_Listener--Error in Create Socket");
+
 		}
 		byte[] buf = new byte[256];
 		String userData;
@@ -55,34 +55,39 @@ public class Node_Listener implements Runnable {
 				userData = new String(packet.getData(), "UTF-8");
 				userData = userData.substring(0, packet.getLength());
 				userDataArray = userData.split(";");// name;MAC;type
-				String replyType = new String("1".getBytes(), "UTF-8");
-				if (!macAddressListActive.contains(userDataArray[1])) {
-					macAddressListActive.add(userDataArray[1]);
-					// processing - trigger on arrival - any user or saved user
-					if (macAddressListSet.contains(userDataArray[1])) {
-						new Thread(new ProcessUser(
-								Main_Service.main_service
-										.getSharedMap(userDataArray[1])))
-								.start();
-					}// ^vj was here
-					else if (macAddressListSet.contains(Main_Service.ANY_USER)) {
-						new Thread(new ProcessUser(
-								Main_Service.main_service
-										.getSharedMap(Main_Service.ANY_USER)))
-								.start();
+				if (userDataArray[2].equals(Network.getMAC())) {
+					String replyType = new String("1".getBytes(), "UTF-8");
+					if (!macAddressListActive.contains(userDataArray[1])) {
+						macAddressListActive.add(userDataArray[1]);
+						// processing - trigger on arrival - any user or saved
+						// user
+						if (macAddressListSet.contains(userDataArray[1])) {
+							new Thread(new ProcessUser(
+									Main_Service.main_service
+											.getSharedMap(userDataArray[1])))
+									.start();
+						}// ^vj was here
+						else if (macAddressListSet
+								.contains(Main_Service.ANY_USER)) {
+							new Thread(
+									new ProcessUser(
+											Main_Service.main_service
+													.getSharedMap(Main_Service.ANY_USER)))
+									.start();
+						}
+						// any user
 					}
-					// any user
+					if (userDataArray[2].equals(replyType)) {
+						typeSocket = new DatagramSocket();
+						typeSocket.send(myPacket);
+					}
+					Log.i("Trigger_Log", "Node_Listener--Packet-" + userData);
 				}
-				if (userDataArray[2].equals(replyType)) {
-					typeSocket = new DatagramSocket();
-					typeSocket.send(myPacket);
-				}
-				Log.i("Trigger_Log", userData);
-
 			} catch (IOException e) {
-				e.printStackTrace();
+				Log.i("Trigger_Log", "Node_Listener-run--Error in receive");
 			}
 		}
+
 	}
 
 }

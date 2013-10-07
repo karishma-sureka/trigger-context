@@ -20,7 +20,7 @@ public class Main_Service extends Service {
 	static String USERS = "users";
 	static String MY_DATA = "my_data";
 
-	@Override 
+	@Override
 	public void onCreate() {
 		super.onCreate();
 		main_service = this;
