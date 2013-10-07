@@ -28,6 +28,7 @@ public class OnNetworkChange extends BroadcastReceiver {
 				Log.i("Trigger_Log", "OnNetworkChange--Start Service");
 
 				Network.setWifiOn(true);
+				new  Thread(new Network()).start();
 
 			} else {
 				// stop service
