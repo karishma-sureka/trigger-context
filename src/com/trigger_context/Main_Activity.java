@@ -41,7 +41,7 @@ public class Main_Activity extends Activity {
 
 	private void Start_Service() {
 		Context x = getBaseContext();
-		Intent startServiceIntent = new Intent(x, Network_Service.class);
+		Intent startServiceIntent = new Intent(x, Main_Service.class);
 		x.startService(startServiceIntent);
 		Toast.makeText(x, "Starting Network_Service", Toast.LENGTH_LONG).show();
 	}
