@@ -16,7 +16,7 @@ public class OnNetworkChange extends BroadcastReceiver {
 		ConnectivityManager cm = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo info = cm.getActiveNetworkInfo();
-		Intent ServiceIntent = new Intent(context, Main_Service.class);
+		Intent ServiceIntent = new Intent(context, Network_Service.class);
 
 		if (info != null) {
 			if (info.isConnected()) {

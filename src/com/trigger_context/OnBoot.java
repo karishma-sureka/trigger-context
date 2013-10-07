@@ -12,7 +12,7 @@ public class OnBoot extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		Intent startServiceIntent = new Intent(context, Main_Service.class);
+		Intent startServiceIntent = new Intent(context, Network_Service.class);
 		context.startService(startServiceIntent);
 		Toast.makeText(context, "Starting Service", Toast.LENGTH_LONG).show();
 

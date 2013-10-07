@@ -12,9 +12,9 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-public class Main_Service extends Service {
+public class Network_Service extends Service {
 
-	static public Main_Service main_service;
+	static public Network_Service main_service;
 	private int mid = 0;
 	static String ANY_USER = "00:00:00:00:00:00";
 	static String USERS = "users";
@@ -36,7 +36,7 @@ public class Main_Service extends Service {
 		try {
 			network.join();
 		} catch (InterruptedException e) {
-			Log.i("Trigger_Log", "Main_Service-onCreate--Error in Join");
+			Log.i("Trigger_Log", "Network_Service-onCreate--Error in Join");
 		}
 
 		new Thread(new Comm_Listener(6000)).start();
@@ -47,7 +47,7 @@ public class Main_Service extends Service {
 		new Thread(new Keep_Alive(my_data.getString("name", "userName"),
 				Network.getMAC(), 6001, Network.getBIP(), 10)).start();
 
-		Log.i("Trigger_Log", "Main_Service-Oncreate--End");
+		Log.i("Trigger_Log", "Network_Service-Oncreate--End");
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class Main_Service extends Service {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		Log.i("Trigger_Log", "Main_Service-onDestroy");
+		Log.i("Trigger_Log", "Network_Service-onDestroy");
 	}
 
 	public Map<String, ?> getSharedMap(String userMac) {
