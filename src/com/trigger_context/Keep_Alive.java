@@ -15,12 +15,13 @@ import java.util.concurrent.TimeUnit;
 public class Keep_Alive implements Runnable {
 
 	private String Name, MAC;
-    static DatagramSocket socket;
+	static DatagramSocket socket;
 	private int Port;
 	private InetAddress BIP;
 	private long TimeOut;
 
-	public Keep_Alive(String Name, String MAC, int Port, InetAddress inetAddress, long TimeOut) {
+	public Keep_Alive(String Name, String MAC, int Port,
+			InetAddress inetAddress, long TimeOut) {
 		this.Name = Name;
 		this.MAC = MAC;
 		this.Port = Port;
@@ -41,26 +42,27 @@ public class Keep_Alive implements Runnable {
 
 		String Packet = (Name + ";" + MAC + ";2");
 		byte[] SendData = Packet.getBytes();
-		Sendbroadcast.sendPackcast=new DatagramPacket(SendData, SendData.length, BIP, Port);
-		ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-		exec.scheduleAtFixedRate(new Thread(new Sendbroadcast()), 5, TimeOut, TimeUnit.SECONDS);
+		Sendbroadcast.sendPackcast = new DatagramPacket(SendData,
+				SendData.length, BIP, Port);
+		ScheduledExecutorService exec = Executors
+				.newSingleThreadScheduledExecutor();
+		exec.scheduleAtFixedRate(new Thread(new Sendbroadcast()), 5, TimeOut,
+				TimeUnit.SECONDS);
 	}
 
 }
 
-class Sendbroadcast implements Runnable
-{
+class Sendbroadcast implements Runnable {
 	static DatagramPacket sendPackcast;
-	
+
 	@Override
 	public void run() {
 		try {
 			Keep_Alive.socket.send(sendPackcast);
-			Log.i("Trigger_Log", "Port:" + Keep_Alive.socket.getLocalPort());
 		} catch (UnknownHostException e) {
 			Log.i("Trigger_Log", "Keep_Alive-run--Error in getbyhostname");
 		} catch (IOException e) {
-			Log.i("Trigger_Log", "Keep_Alive-run--Error in send"); 
+			Log.i("Trigger_Log", "Keep_Alive-run--Error in send");
 		}
 	}
 }

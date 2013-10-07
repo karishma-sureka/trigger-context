@@ -36,7 +36,7 @@ public class Main_Service extends Service {
 		}
 
 		Thread comm_Listener = new Thread(new Comm_Listener(6000));// port for
-																	// comm
+																	// commm
 
 		Thread node_Listener = new Thread(new Node_Listener(6001));
 
