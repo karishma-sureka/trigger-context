@@ -1,8 +1,5 @@
 package com.trigger_context;
 
-import android.os.Environment;
-import android.util.Log;
-
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -19,6 +16,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.HashSet;
+
+import android.os.Environment;
+import android.util.Log;
 
 public class Cond_Action implements Runnable {
 

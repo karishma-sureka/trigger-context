@@ -24,8 +24,7 @@ public class OnBoot extends BroadcastReceiver {
 			if (info.isConnected()) {
 
 				Network.setWifiOn(true);
-				new  Thread(new Network()).start();
-
+				new Thread(new Network()).start();
 
 			}
 		} else {

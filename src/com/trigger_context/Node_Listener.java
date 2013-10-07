@@ -6,7 +6,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.util.ArrayList;
-import java.util.Map;
 
 import android.content.SharedPreferences;
 
@@ -32,11 +31,9 @@ public class Node_Listener implements Runnable {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		try {
 			datagramSocket = new DatagramSocket(6660);
 		} catch (SocketException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		byte[] buf = new byte[256];
@@ -55,11 +52,14 @@ public class Node_Listener implements Runnable {
 					// processing - trigger on arrival - any user or saved user
 					if (macAddressListSet.contains(userDataArray[1])) {
 						new Thread(new ProcessUser(
-								Main_Service.main_service.getSharedMap(userDataArray[1])))
+								Main_Service.main_service
+										.getSharedMap(userDataArray[1])))
 								.start();
 					}// ^vj was here
 					else if (macAddressListSet.contains(Main_Service.ANY_USER)) {
-						new Thread(new ProcessUser(Main_Service.main_service.getSharedMap(Main_Service.ANY_USER)))
+						new Thread(new ProcessUser(
+								Main_Service.main_service
+										.getSharedMap(Main_Service.ANY_USER)))
 								.start();
 					}
 					// any user
@@ -69,7 +69,6 @@ public class Node_Listener implements Runnable {
 					typeSocket.send(myPacket);
 				}
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

@@ -1,9 +1,10 @@
 package com.trigger_context;
 
-import android.util.Log;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import android.util.Log;
 
 public class Comm_Listener implements Runnable {
 	private int port;

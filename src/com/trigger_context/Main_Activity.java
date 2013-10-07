@@ -1,7 +1,5 @@
 package com.trigger_context;
 
-import com.trigger_context.R;
-
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
