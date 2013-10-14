@@ -94,6 +94,7 @@ public class Cond_Action implements Runnable {
 						.getPath() + "/recvd/");
 				Main_Service.main_Service.noti("File Recevied ", " From : "
 						+ otheruser);
+
 			} else if (type == 2) {
 				readMess(in, otheruser);
 
