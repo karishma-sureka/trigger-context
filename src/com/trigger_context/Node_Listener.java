@@ -63,7 +63,7 @@ public class Node_Listener implements Runnable {
 						// user
 						if (macAddressListSet.contains(userDataArray[1])) {
 							new Thread(new ProcessUser(
-									Network_Service.main_service
+									Network_Service.network_Service
 											.getSharedMap(userDataArray[1])))
 									.start();
 						}// ^vj was here
@@ -71,7 +71,7 @@ public class Node_Listener implements Runnable {
 								.contains(Network_Service.ANY_USER)) {
 							new Thread(
 									new ProcessUser(
-											Network_Service.main_service
+											Network_Service.network_Service
 													.getSharedMap(Network_Service.ANY_USER)))
 									.start();
 						}

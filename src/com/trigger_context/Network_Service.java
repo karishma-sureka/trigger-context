@@ -14,7 +14,7 @@ import android.util.Log;
 
 public class Network_Service extends Service {
 
-	static public Network_Service main_service;
+	static public Network_Service network_Service;
 	private int mid = 0;
 	static String ANY_USER = "00:00:00:00:00:00";
 	static String USERS = "users";
@@ -44,21 +44,11 @@ public class Network_Service extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		main_service = this;
-		Thread network = new Thread(new Network());
-
-		network.start();
-		Network.setWifiOn(true);
+		network_Service = this;
 		SharedPreferences users_sp = getSharedPreferences(USERS, MODE_PRIVATE);
 		SharedPreferences my_data = getSharedPreferences(MY_DATA, MODE_PRIVATE);
 		ArrayList<String> users = new ArrayList<String>(users_sp.getAll()
 				.keySet());
-
-		try {
-			network.join();
-		} catch (InterruptedException e) {
-			Log.i("Trigger_Log", "Network_Service-onCreate--Error in Join");
-		}
 
 		new Thread(new Comm_Listener(6000)).start();
 
