@@ -1,7 +1,6 @@
 package com.trigger_context;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import android.app.NotificationManager;
 import android.app.Service;
@@ -14,17 +13,10 @@ import android.util.Log;
 
 public class Network_Service extends Service {
 
-	static public Network_Service network_Service;
 	private int mid = 0;
 	static String ANY_USER = "00:00:00:00:00:00";
 	static String USERS = "users";
 	static String MY_DATA = "my_data";
-
-	public Map<String, ?> getSharedMap(String userMac) {
-		SharedPreferences conditions = getSharedPreferences(userMac,
-				MODE_PRIVATE);
-		return conditions.getAll();
-	}
 
 	public void noti(String title, String txt) {
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
@@ -44,7 +36,6 @@ public class Network_Service extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		network_Service = this;
 		SharedPreferences users_sp = getSharedPreferences(USERS, MODE_PRIVATE);
 		SharedPreferences my_data = getSharedPreferences(MY_DATA, MODE_PRIVATE);
 		ArrayList<String> users = new ArrayList<String>(users_sp.getAll()
