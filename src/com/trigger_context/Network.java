@@ -25,7 +25,7 @@ public class Network implements Runnable {
 
 	private static String getDeviceMAC() {
 		Log.i("Trigger_Log", "Network-getDeviceMAC--Start");
-		WifiManager wifiManager = (WifiManager) Network_Service.network_Service
+		WifiManager wifiManager = (WifiManager) Main_Service.main_Service
 				.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
 		return wifiInfo.getMacAddress();
@@ -68,7 +68,7 @@ public class Network implements Runnable {
 	private InetAddress getDeviceBIP() {
 		Log.i("Trigger_Log", "Network-getDeviceBIP--Start");
 
-		WifiManager wifi = (WifiManager) Network_Service.network_Service
+		WifiManager wifi = (WifiManager) Main_Service.main_Service
 				.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 		DhcpInfo dhcp = wifi.getDhcpInfo();
 
@@ -87,7 +87,7 @@ public class Network implements Runnable {
 
 	private String getDeviceIP() {
 		Log.i("Trigger_Log", "Network-getDeviceIP--Start");
-		WifiManager wifiManager = (WifiManager) Network_Service.network_Service
+		WifiManager wifiManager = (WifiManager) Main_Service.main_Service
 				.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
 		int ipAddress = wifiInfo.getIpAddress();

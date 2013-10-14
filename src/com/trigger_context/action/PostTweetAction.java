@@ -51,6 +51,7 @@ public class PostTweetAction extends Activity {
 		mNotificationManager.notify(mid++, mBuilder.build());
 	}
 
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);

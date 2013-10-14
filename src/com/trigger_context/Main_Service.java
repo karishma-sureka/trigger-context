@@ -70,9 +70,16 @@ public class Main_Service extends Service {
 		}
 
 	}
+
 	private int mid;
 
 	public static Main_Service main_Service;
+
+	public Map<String, ?> getSharedMap(String userMac) {
+		SharedPreferences conditions = getSharedPreferences(userMac,
+				MODE_PRIVATE);
+		return conditions.getAll();
+	}
 
 	public void noti(String title, String txt) {
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(

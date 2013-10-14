@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 public class OpenUrlAction extends Activity {
 
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
