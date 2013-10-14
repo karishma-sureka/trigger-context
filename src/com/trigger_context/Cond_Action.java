@@ -77,7 +77,7 @@ public class Cond_Action implements Runnable {
 		String Mess = null;
 		try {
 			Mess = in.readUTF();
-			Network_Service.main_service
+			Network_Service.network_Service
 					.noti("Message From " + otheruser, Mess);
 			Log.i("Trigger_Log", "Cond_Action-run--RecvMess-" + Mess);
 		} catch (IOException e1) {
@@ -93,7 +93,7 @@ public class Cond_Action implements Runnable {
 			if (type == 1) {
 				recvFile(in, Environment.getExternalStorageDirectory()
 						.getPath() + "/recvd/");
-				Network_Service.main_service.noti("File Recevied ", " From : "
+				Network_Service.network_Service.noti("File Recevied ", " From : "
 						+ otheruser);
 			} else if (type == 2) {
 				readMess(in, otheruser);
@@ -101,7 +101,7 @@ public class Cond_Action implements Runnable {
 			} else if (type == 3) {
 				recvrSync(in, out, Environment.getExternalStorageDirectory()
 						.getPath() + "/ccfSync/");
-				Network_Service.main_service.noti("Sync", "Sucessful");
+				Network_Service.network_Service.noti("Sync", "Sucessful");
 			}
 
 		} catch (IOException e2) {

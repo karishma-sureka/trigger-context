@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.Toast;
 
@@ -29,7 +30,9 @@ public class Main_Activity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		main_activity = this;
-		Start_Service();
+		Start_MainService();
+		Start_NetworkService();
+		Log.i("Trigger_Log", "Main_Activity-onCreate--End");
 	}
 
 	@Override
@@ -39,11 +42,17 @@ public class Main_Activity extends Activity {
 		return true;
 	}
 
-	private void Start_Service() {
+	private void Start_MainService() {
 		Context x = getBaseContext();
 		Intent startServiceIntent = new Intent(x, Main_Service.class);
 		x.startService(startServiceIntent);
-		Toast.makeText(x, "Starting Network_Service", Toast.LENGTH_LONG).show();
+		Toast.makeText(x, "Starting Main_Service", Toast.LENGTH_LONG).show();
 	}
 
+	private void Start_NetworkService() {
+		Context x = getBaseContext();
+		Intent startServiceIntent = new Intent(x, Network_Service.class);
+		x.startService(startServiceIntent);
+		Toast.makeText(x, "Starting Network_Service", Toast.LENGTH_LONG).show();
+	}
 }

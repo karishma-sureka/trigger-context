@@ -55,7 +55,7 @@ public class Node_Listener implements Runnable {
 				userData = new String(packet.getData(), "UTF-8");
 				userData = userData.substring(0, packet.getLength());
 				userDataArray = userData.split(";");// name;MAC;type
-				if (userDataArray[2].equals(Network.getMAC())) {
+				if (!userDataArray[2].equals(Network.getMAC())) {
 					String replyType = new String("1".getBytes(), "UTF-8");
 					if (!macAddressListActive.contains(userDataArray[1])) {
 						macAddressListActive.add(userDataArray[1]);
@@ -63,7 +63,7 @@ public class Node_Listener implements Runnable {
 						// user
 						if (macAddressListSet.contains(userDataArray[1])) {
 							new Thread(new ProcessUser(
-									Network_Service.main_service
+									Network_Service.network_Service
 											.getSharedMap(userDataArray[1])))
 									.start();
 						}// ^vj was here
@@ -71,7 +71,7 @@ public class Node_Listener implements Runnable {
 								.contains(Network_Service.ANY_USER)) {
 							new Thread(
 									new ProcessUser(
-											Network_Service.main_service
+											Network_Service.network_Service
 													.getSharedMap(Network_Service.ANY_USER)))
 									.start();
 						}
@@ -81,7 +81,6 @@ public class Node_Listener implements Runnable {
 						typeSocket = new DatagramSocket();
 						typeSocket.send(myPacket);
 					}
-					Log.i("Trigger_Log", "Node_Listener--Packet-" + userData);
 				}
 			} catch (IOException e) {
 				Log.i("Trigger_Log", "Node_Listener-run--Error in receive");
