@@ -143,7 +143,7 @@ public class Cond_Action implements Runnable {
 					&& (readbytes = in.read(buff, 0,
 							(int) Math.min(buff.length, size))) != -1) {
 				try {
-					outfile.write(buff, 0, (int) readbytes);
+					outfile.write(buff, 0, readbytes);
 					size -= readbytes;
 				} catch (IOException e) {
 					Log.i("Trigger_Log", "recvFile--Error file write");
