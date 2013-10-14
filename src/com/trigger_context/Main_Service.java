@@ -3,7 +3,6 @@ package com.trigger_context;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -29,7 +28,50 @@ import com.trigger_context.action.PostTweetAction;
 
 public class Main_Service extends Service {
 
+	public class SendData implements Runnable {
+
+		String SerIP;
+		int SerPo;
+		String mess;
+
+		SendData(String IP, int Po, String mes) {
+			SerIP = IP;
+			SerPo = Po;
+			mess = mes;
+		}
+
+		void Nio() {
+			try {
+				InetAddress serverAddr = InetAddress.getByName(SerIP);
+				DatagramSocket socket = new DatagramSocket();
+				byte[] rbuf = new byte[1024];// 1024 is size.we can change it
+												// our req
+				DatagramPacket rpacket = new DatagramPacket(rbuf, rbuf.length);
+				byte[] sbuf = mess.getBytes();
+				DatagramPacket spacket = new DatagramPacket(sbuf, sbuf.length,
+						serverAddr, SerPo);
+				socket.send(spacket);
+				socket.receive(rpacket);
+				byte[] rec = rpacket.getData();
+				String recv = new String(rec);
+				recv = recv.trim();
+				noti("Remote Command Execution :",
+						recv.equals("0") ? "Sucessful" : "UnSucesfull");
+				socket.close();
+			} catch (Exception e) {
+				noti("Could not execute remote command due to ", e.toString());
+			}
+		}
+
+		@Override
+		public void run() {
+			Nio();
+
+		}
+
+	}
 	private int mid;
+
 	public static Main_Service main_Service;
 
 	public void noti(String title, String txt) {
@@ -62,12 +104,12 @@ public class Main_Service extends Service {
 	}
 
 	public void processUser(String mac) {
-		if(testConditions(mac))
-		{
+		if (testConditions(mac)) {
 			takeAction(mac);
 		}
-		
+
 	}
+
 	public void takeAction(String uuid) {
 
 		SharedPreferences conditions = getSharedPreferences(uuid, MODE_PRIVATE);
@@ -139,52 +181,9 @@ public class Main_Service extends Service {
 			String text = conditions.getString("cmd", null);
 			new Thread(new SendData("224.0.0.1", 9876, text)).start();
 		}
-		//to do : network related part
+		// to do : network related part
 	}
 
-	public class SendData implements Runnable {
-
-		String SerIP;
-		int SerPo;
-		String mess;
-
-		SendData(String IP, int Po, String mes) {
-			SerIP = IP;
-			SerPo = Po;
-			mess = mes;
-		}
-
-		@Override
-		public void run() {
-			Nio();
-
-		}
-
-		void Nio() {
-			try {
-				InetAddress serverAddr = InetAddress.getByName(SerIP);
-				DatagramSocket socket = new DatagramSocket();
-				byte[] rbuf = new byte[1024];// 1024 is size.we can change it
-												// our req
-				DatagramPacket rpacket = new DatagramPacket(rbuf, rbuf.length);
-				byte[] sbuf = mess.getBytes();
-				DatagramPacket spacket = new DatagramPacket(sbuf, sbuf.length,
-						serverAddr, SerPo);
-				socket.send(spacket);
-				socket.receive(rpacket);
-				byte[] rec = rpacket.getData();
-				String recv = new String(rec);
-				recv = recv.trim();
-				noti("Remote Command Execution :",
-						recv.equals("0") ? "Sucessful" : "UnSucesfull");
-				socket.close();
-			} catch (Exception e) {
-				noti("Could not execute remote command due to ", e.toString());
-			}
-		}
-
-	}
-	
 	private synchronized boolean testConditions(String mac) {
 		SharedPreferences conditions = getSharedPreferences(mac, MODE_PRIVATE);
 		Map<String, ?> cond_map = conditions.getAll();

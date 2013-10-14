@@ -62,8 +62,7 @@ public class Node_Listener implements Runnable {
 						// processing - trigger on arrival - any user or saved
 						// user
 						if (macAddressListSet.contains(userDataArray[1])) {
-							new Thread(
-									new ProcessUser(userDataArray[1]))
+							new Thread(new ProcessUser(userDataArray[1]))
 									.start();
 						}// ^vj was here
 						else if (macAddressListSet

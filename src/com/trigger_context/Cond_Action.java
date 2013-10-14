@@ -77,8 +77,8 @@ public class Cond_Action implements Runnable {
 		String Mess = null;
 		try {
 			Mess = in.readUTF();
-			Network_Service.network_Service
-					.noti("Message From " + otheruser, Mess);
+			Network_Service.network_Service.noti("Message From " + otheruser,
+					Mess);
 			Log.i("Trigger_Log", "Cond_Action-run--RecvMess-" + Mess);
 		} catch (IOException e1) {
 			Log.i("Trigger_Log", "readMess--error in readins message");
@@ -93,8 +93,8 @@ public class Cond_Action implements Runnable {
 			if (type == 1) {
 				recvFile(in, Environment.getExternalStorageDirectory()
 						.getPath() + "/recvd/");
-				Network_Service.network_Service.noti("File Recevied ", " From : "
-						+ otheruser);
+				Network_Service.network_Service.noti("File Recevied ",
+						" From : " + otheruser);
 			} else if (type == 2) {
 				readMess(in, otheruser);
 

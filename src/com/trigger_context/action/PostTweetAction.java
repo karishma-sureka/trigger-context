@@ -15,23 +15,7 @@ import com.trigger_context.R;
 
 public class PostTweetAction extends Activity {
 
-	public void onCreate(Bundle savedInstanceState) {
-
-		super.onCreate(savedInstanceState);
-		Bundle bundle = getIntent().getExtras();
-		String tweet = bundle.getString("tweetTextAction");
-
-		Intent shareIntent = findTwitterClient();
-		if (shareIntent != null) {
-			shareIntent.putExtra(Intent.EXTRA_TEXT, tweet);
-			startActivity(Intent.createChooser(shareIntent, "Share"));
-			finish();
-		} else {
-
-			noti("Twitter action failed.", "No valid twitter app installed");
-			finish();
-		}
-	}
+	private int mid = 1500;
 
 	public Intent findTwitterClient() {
 		final String[] twitterApps = { "com.twitter.android", // official - 10
@@ -57,8 +41,6 @@ public class PostTweetAction extends Activity {
 		return null;
 	}
 
-	private int mid = 1500;
-
 	public void noti(String title, String txt) {
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
 				this).setSmallIcon(R.drawable.ic_launcher)
@@ -67,5 +49,23 @@ public class PostTweetAction extends Activity {
 		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		// mId allows you to update the notification later on.
 		mNotificationManager.notify(mid++, mBuilder.build());
+	}
+
+	public void onCreate(Bundle savedInstanceState) {
+
+		super.onCreate(savedInstanceState);
+		Bundle bundle = getIntent().getExtras();
+		String tweet = bundle.getString("tweetTextAction");
+
+		Intent shareIntent = findTwitterClient();
+		if (shareIntent != null) {
+			shareIntent.putExtra(Intent.EXTRA_TEXT, tweet);
+			startActivity(Intent.createChooser(shareIntent, "Share"));
+			finish();
+		} else {
+
+			noti("Twitter action failed.", "No valid twitter app installed");
+			finish();
+		}
 	}
 }
