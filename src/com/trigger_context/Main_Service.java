@@ -71,6 +71,8 @@ public class Main_Service extends Service {
 
 	}
 
+	static final String LOG_TAG = "Trigger_Log";
+
 	private int mid;
 
 	public static Main_Service main_Service;
@@ -100,14 +102,14 @@ public class Main_Service extends Service {
 	public void onCreate() {
 		super.onCreate();
 		main_Service = this;
-		Log.i("Trigger_Log", "Main_Service-onCreate");
+		Log.i(LOG_TAG, "Main_Service-onCreate");
 
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		Log.i("Trigger_Log", "Main_Service-onDestory");
+		Log.i(LOG_TAG, "Main_Service-onDestory");
 	}
 
 	public void processUser(String mac) {
@@ -129,9 +131,9 @@ public class Main_Service extends Service {
 			try {
 				SmsManager smsManager = SmsManager.getDefault();
 				smsManager.sendTextMessage(number, null, message, null, null);
-				noti("Sms sent", "to : " + number);
+				noti("Sms Sent To : ", "" + number);
 			} catch (Exception e) {
-				noti("Sms sending failed", "");
+				noti("Sms Sending To ", number + "Failed");
 			}
 		}
 		if (key_set.contains("OpenWebsiteAction")) {

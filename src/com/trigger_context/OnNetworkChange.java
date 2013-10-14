@@ -12,7 +12,7 @@ public class OnNetworkChange extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		Log.i("Trigger_Log", "OnNetworkChange-OnReceive");
+		Log.i(Main_Service.LOG_TAG, "OnNetworkChange-OnReceive");
 		ConnectivityManager cm = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo info = cm.getActiveNetworkInfo();
@@ -25,7 +25,7 @@ public class OnNetworkChange extends BroadcastReceiver {
 				context.startService(ServiceIntent);
 				Toast.makeText(context, "Starting Network_Service",
 						Toast.LENGTH_LONG).show();
-				Log.i("Trigger_Log", "OnNetworkChange--Start Service");
+				Log.i(Main_Service.LOG_TAG, "OnNetworkChange--Start Service");
 
 				Network.setWifiOn(true);
 				new Thread(new Network()).start();
@@ -35,7 +35,7 @@ public class OnNetworkChange extends BroadcastReceiver {
 				context.stopService(ServiceIntent);
 				Toast.makeText(context, "Stoping Network_Service",
 						Toast.LENGTH_LONG).show();
-				Log.i("Trigger_Log", "OnNetworkChange--Stop Service");
+				Log.i(Main_Service.LOG_TAG, "OnNetworkChange--Stop Service");
 
 				Network.setWifiOn(false);
 

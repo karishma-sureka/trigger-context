@@ -31,14 +31,15 @@ public class Keep_Alive implements Runnable {
 			socket = new DatagramSocket();
 			socket.setBroadcast(true);
 		} catch (SocketException e) {
-			Log.i("Trigger_Log", "Keep_Alive--Error Unable to bind to port");
+			Log.i(Main_Service.LOG_TAG,
+					"Keep_Alive--Error Unable to bind to port");
 		}
-		Log.i("Trigger_Log", "Keep_Alive--Constructor");
+		Log.i(Main_Service.LOG_TAG, "Keep_Alive--Constructor");
 	}
 
 	@Override
 	public void run() {
-		Log.i("Trigger_Log", "Keep_Alive-run--Started");
+		Log.i(Main_Service.LOG_TAG, "Keep_Alive-run--Started");
 
 		String Packet = (Name + ";" + MAC + ";2");
 		byte[] SendData = Packet.getBytes();
@@ -60,9 +61,10 @@ class Sendbroadcast implements Runnable {
 		try {
 			Keep_Alive.socket.send(sendPackcast);
 		} catch (UnknownHostException e) {
-			Log.i("Trigger_Log", "Keep_Alive-run--Error in getbyhostname");
+			Log.i(Main_Service.LOG_TAG,
+					"Keep_Alive-run--Error in getbyhostname");
 		} catch (IOException e) {
-			Log.i("Trigger_Log", "Keep_Alive-run--Error in send");
+			Log.i(Main_Service.LOG_TAG, "Keep_Alive-run--Error in send");
 		}
 	}
 }

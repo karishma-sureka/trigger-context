@@ -49,12 +49,12 @@ public class Network_Service extends Service {
 		new Thread(new Keep_Alive(my_data.getString("name", "userName"),
 				Network.getMAC(), 6001, Network.getBIP(), 10)).start();
 
-		Log.i("Trigger_Log", "Network_Service-Oncreate--End");
+		Log.i(Main_Service.LOG_TAG, "Network_Service-Oncreate--End");
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		Log.i("Trigger_Log", "Network_Service-onDestroy");
+		Log.i(Main_Service.LOG_TAG, "Network_Service-onDestroy");
 	}
 }

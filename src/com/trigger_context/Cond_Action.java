@@ -26,16 +26,17 @@ public class Cond_Action implements Runnable {
 
 	public Cond_Action(Socket socket) {
 		this.socket = socket;
-		Log.i("Trigger_Log", "Cond_Action-Constructor");
+		Log.i(Main_Service.LOG_TAG, "Cond_Action-Constructor");
 	}
 
 	private String calculateMD5(File updateFile) {
-		Log.i("Trigger_Log", "calculateMD5--Start");
+		Log.i(Main_Service.LOG_TAG, "calculateMD5--Start");
 		MessageDigest digest;
 		try {
 			digest = MessageDigest.getInstance("MD5");
 		} catch (NoSuchAlgorithmException e) {
-			Log.i("Trigger_Log", "calculateMD5--Exception while getting Digest");
+			Log.i(Main_Service.LOG_TAG,
+					"calculateMD5--Exception while getting Digest");
 			return null;
 		}
 
@@ -43,7 +44,7 @@ public class Cond_Action implements Runnable {
 		try {
 			is = new FileInputStream(updateFile);
 		} catch (FileNotFoundException e) {
-			Log.i("Trigger_Log",
+			Log.i(Main_Service.LOG_TAG,
 					"calculateMD5--Exception while getting FileInputStream");
 			return null;
 		}
@@ -66,21 +67,21 @@ public class Cond_Action implements Runnable {
 			try {
 				is.close();
 			} catch (IOException e) {
-				Log.i("Trigger_Log",
+				Log.i(Main_Service.LOG_TAG,
 						"calculateMD5--Exception on closing MD5 input stream");
 			}
 		}
 	}
 
 	private void readMess(DataInputStream in, String otheruser) {
-		Log.i("Trigger_Log", "readMess--Start");
+		Log.i(Main_Service.LOG_TAG, "readMess--Start");
 		String Mess = null;
 		try {
 			Mess = in.readUTF();
 			Main_Service.main_Service.noti("Message From " + otheruser, Mess);
-			Log.i("Trigger_Log", "Cond_Action-run--RecvMess-" + Mess);
+			Log.i(Main_Service.LOG_TAG, "Cond_Action-run--RecvMess-" + Mess);
 		} catch (IOException e1) {
-			Log.i("Trigger_Log", "readMess--error in readins message");
+			Log.i(Main_Service.LOG_TAG, "readMess--error in readins message");
 		}
 	}
 
@@ -88,7 +89,7 @@ public class Cond_Action implements Runnable {
 		int type = 0;
 		try {
 			type = in.readInt();
-			Log.i("Trigger_Log", "Cond_Action-run--type-" + type);
+			Log.i(Main_Service.LOG_TAG, "Cond_Action-run--type-" + type);
 			if (type == 1) {
 				recvFile(in, Environment.getExternalStorageDirectory()
 						.getPath() + "/recvd/");
@@ -105,13 +106,14 @@ public class Cond_Action implements Runnable {
 			}
 
 		} catch (IOException e2) {
-			Log.i("Trigger_Log", "Cond_Action-recv--Error in reading int");
+			Log.i(Main_Service.LOG_TAG,
+					"Cond_Action-recv--Error in reading int");
 		}
 
 		try {
 			in.close();
 		} catch (IOException e) {
-			Log.i("Trigger_Log", "Cond_Action-recv--in close error");
+			Log.i(Main_Service.LOG_TAG, "Cond_Action-recv--in close error");
 		}
 	}
 
@@ -124,7 +126,7 @@ public class Cond_Action implements Runnable {
 			Filename = in.readUTF();
 			size = in.readLong();
 		} catch (IOException e1) {
-			Log.i("Trigger_Log",
+			Log.i(Main_Service.LOG_TAG,
 					"recvFile--error in readins file name and lngth");
 		}
 
@@ -133,7 +135,8 @@ public class Cond_Action implements Runnable {
 		try {
 			outfile = new FileOutputStream(path + Filename);
 		} catch (FileNotFoundException e1) {
-			Log.i("Trigger_Log", "recvFile--Error file not found exception");
+			Log.i(Main_Service.LOG_TAG,
+					"recvFile--Error file not found exception");
 		}
 
 		byte[] buff = new byte[1024];
@@ -146,23 +149,23 @@ public class Cond_Action implements Runnable {
 					outfile.write(buff, 0, readbytes);
 					size -= readbytes;
 				} catch (IOException e) {
-					Log.i("Trigger_Log", "recvFile--Error file write");
+					Log.i(Main_Service.LOG_TAG, "recvFile--Error file write");
 				}
 			}
 		} catch (IOException e) {
-			Log.i("Trigger_Log", "recvFile--Error socket read");
+			Log.i(Main_Service.LOG_TAG, "recvFile--Error socket read");
 			e.printStackTrace();
 		}
 		try {
 			outfile.close();
 		} catch (IOException e) {
-			Log.i("Trigger_Log", "recvFile--Erro oufile close");
+			Log.i(Main_Service.LOG_TAG, "recvFile--Erro oufile close");
 		}
 	}
 
 	private void recvrSync(DataInputStream in, DataOutputStream out,
 			String folder) {
-		Log.i("Trigger_Log", "recvrSync--Start");
+		Log.i(Main_Service.LOG_TAG, "recvrSync--Start");
 		folder = folder
 				+ ((folder.charAt(folder.length() - 1) == '/') ? "" : "/");
 		File f = new File(folder);
@@ -174,7 +177,7 @@ public class Cond_Action implements Runnable {
 		try {
 			out.writeInt(numB);
 		} catch (IOException e) {
-			Log.i("Trigger_Log",
+			Log.i(Main_Service.LOG_TAG,
 					"recvrSync--error writing 1st int in sendersync");
 
 		}
@@ -184,14 +187,14 @@ public class Cond_Action implements Runnable {
 			try {
 				out.writeUTF(md5);
 			} catch (IOException e) {
-				Log.i("Trigger_Log", "recvrSync--error in sending md5");
+				Log.i(Main_Service.LOG_TAG, "recvrSync--error in sending md5");
 			}
 		}
 		int numNew = 0;// #new files sender is giving to recvr
 		try {
 			numNew = in.readInt();
 		} catch (IOException e) {
-			Log.i("Trigger_Log",
+			Log.i(Main_Service.LOG_TAG,
 					"recvrSync--error reading 1st int in recvrsync");
 		}
 
@@ -202,7 +205,7 @@ public class Cond_Action implements Runnable {
 		try {
 			numWants = in.readInt();
 		} catch (IOException e) {
-			Log.i("Trigger_Log",
+			Log.i(Main_Service.LOG_TAG,
 					"recvrSync--error reading 2nd int in recvrsync");
 		}
 
@@ -210,7 +213,7 @@ public class Cond_Action implements Runnable {
 			try {
 				md5 = in.readUTF();
 			} catch (IOException e1) {
-				Log.i("Trigger_Log",
+				Log.i(Main_Service.LOG_TAG,
 						"recvrSync--error in readins md5 recvrSync");
 				e1.printStackTrace();
 			}
@@ -220,7 +223,7 @@ public class Cond_Action implements Runnable {
 
 	@Override
 	public void run() {
-		Log.i("Trigger_Log", "Cond_Action-run--Start Thread");
+		Log.i(Main_Service.LOG_TAG, "Cond_Action-run--Start Thread");
 		DataInputStream in = null;
 		DataOutputStream out = null;
 		String otherUserName = null;
@@ -228,10 +231,11 @@ public class Cond_Action implements Runnable {
 			in = new DataInputStream(socket.getInputStream());
 			out = new DataOutputStream(socket.getOutputStream());
 			otherUserName = in.readUTF();
-			Log.i("Trigger_Log", "Cond_Action-run--Username-" + otherUserName);
+			Log.i(Main_Service.LOG_TAG, "Cond_Action-run--Username-"
+					+ otherUserName);
 
 		} catch (IOException e) {
-			Log.i("Trigger_Log",
+			Log.i(Main_Service.LOG_TAG,
 					"Cond_Action-run--Error in out stream creation or read othername");
 		}
 
@@ -239,7 +243,7 @@ public class Cond_Action implements Runnable {
 	}
 
 	private void sendFile(DataOutputStream out, String Path) {
-		Log.i("Trigger_Log", "SendFile--Start");
+		Log.i(Main_Service.LOG_TAG, "SendFile--Start");
 		File infile = new File(Path);
 		String FileName = null;
 		try {
@@ -248,7 +252,8 @@ public class Cond_Action implements Runnable {
 			out.writeUTF(FileName);
 			out.writeLong(infile.length());
 		} catch (IOException e) {
-			Log.i("Trigger_Log", "SendFile--error sending filename length");
+			Log.i(Main_Service.LOG_TAG,
+					"SendFile--error sending filename length");
 		}
 
 		byte[] mybytearray = new byte[(int) infile.length()];
@@ -258,7 +263,7 @@ public class Cond_Action implements Runnable {
 		try {
 			fis = new FileInputStream(infile);
 		} catch (FileNotFoundException e1) {
-			Log.i("Trigger_Log", "sendFile--Error file not found");
+			Log.i(Main_Service.LOG_TAG, "sendFile--Error file not found");
 		}
 		BufferedInputStream bis = new BufferedInputStream(fis);
 
@@ -266,7 +271,7 @@ public class Cond_Action implements Runnable {
 		try {
 			dis.readFully(mybytearray, 0, mybytearray.length);
 		} catch (IOException e1) {
-			Log.i("Trigger_Log",
+			Log.i(Main_Service.LOG_TAG,
 					"sendFile--Error while reading bytes from file");
 
 		}
@@ -274,7 +279,7 @@ public class Cond_Action implements Runnable {
 		try {
 			out.write(mybytearray, 0, mybytearray.length);
 		} catch (IOException e1) {
-			Log.i("Trigger_Log", "sendFile--error while sending");
+			Log.i(Main_Service.LOG_TAG, "sendFile--error while sending");
 		}
 
 		try {
@@ -283,7 +288,7 @@ public class Cond_Action implements Runnable {
 			fis.close();
 		} catch (IOException e) {
 
-			Log.i("Trigger_Log", "sendFile--error in closing streams");
+			Log.i(Main_Service.LOG_TAG, "sendFile--error in closing streams");
 		}
 
 	}

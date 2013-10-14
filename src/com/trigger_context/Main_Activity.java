@@ -32,7 +32,7 @@ public class Main_Activity extends Activity {
 		main_activity = this;
 		Start_MainService();
 		Start_NetworkService();
-		Log.i("Trigger_Log", "Main_Activity-onCreate--End");
+		Log.i(Main_Service.LOG_TAG, "Main_Activity-onCreate--End");
 	}
 
 	@Override
