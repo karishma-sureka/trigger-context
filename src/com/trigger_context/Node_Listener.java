@@ -29,7 +29,8 @@ public class Node_Listener implements Runnable {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		myPacket = new DatagramPacket(myBuf, myBuf.length, 6002);
+		myPacket = new DatagramPacket(myBuf, myBuf.length);
+		myPacket.setPort(6002);
 		Log.i("Trigger_Log", "Node_Listener--constructor end");
 
 	}
