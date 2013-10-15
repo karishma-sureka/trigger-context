@@ -29,7 +29,7 @@ public class Node_Listener implements Runnable {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		myPacket = new DatagramPacket(myBuf, myBuf.length);
+		myPacket = new DatagramPacket(myBuf, myBuf.length, 6002);
 		Log.i("Trigger_Log", "Node_Listener--constructor end");
 
 	}
@@ -62,19 +62,20 @@ public class Node_Listener implements Runnable {
 						// processing - trigger on arrival - any user or saved
 						// user
 						if (macAddressListSet.contains(userDataArray[1])) {
-							new Thread(new ProcessUser(userDataArray[1]))
+							new Thread(new Process_User(userDataArray[1]))
 									.start();
 						}// ^vj was here
 						else if (macAddressListSet
 								.contains(Network_Service.ANY_USER)) {
 							new Thread(
-									new ProcessUser(Network_Service.ANY_USER))
+									new Process_User(Network_Service.ANY_USER))
 									.start();
 						}
 						// any user
 					}
 					if (userDataArray[2].equals(replyType)) {
 						typeSocket = new DatagramSocket();
+						myPacket.setAddress(packet.getAddress());
 						typeSocket.send(myPacket);
 					}
 				}
