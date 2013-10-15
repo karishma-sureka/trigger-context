@@ -24,7 +24,7 @@ public class Network implements Runnable {
 	}
 
 	private static String getDeviceMAC() {
-		Log.i("Trigger_Log", "Network-getDeviceMAC--Start");
+		Log.i(Main_Service.LOG_TAG, "Network-getDeviceMAC--Start");
 		WifiManager wifiManager = (WifiManager) Main_Service.main_Service
 				.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
@@ -66,7 +66,7 @@ public class Network implements Runnable {
 	}
 
 	private InetAddress getDeviceBIP() {
-		Log.i("Trigger_Log", "Network-getDeviceBIP--Start");
+		Log.i(Main_Service.LOG_TAG, "Network-getDeviceBIP--Start");
 
 		WifiManager wifi = (WifiManager) Main_Service.main_Service
 				.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
@@ -80,13 +80,13 @@ public class Network implements Runnable {
 			return InetAddress.getByAddress(quads);
 
 		} catch (UnknownHostException e) {
-			Log.i("Trigger_Log", "Network-getDeviceBIP--Start");
+			Log.i(Main_Service.LOG_TAG, "Network-getDeviceBIP--Start");
 			return null;
 		}
 	}
 
 	private String getDeviceIP() {
-		Log.i("Trigger_Log", "Network-getDeviceIP--Start");
+		Log.i(Main_Service.LOG_TAG, "Network-getDeviceIP--Start");
 		WifiManager wifiManager = (WifiManager) Main_Service.main_Service
 				.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
@@ -110,7 +110,7 @@ public class Network implements Runnable {
 
 	@Override
 	public void run() {
-		Log.i("Trigger_Log", "Network--Start Thread");
+		Log.i(Main_Service.LOG_TAG, "Network--Start Thread");
 		setIP(getDeviceIP());
 		setMAC(getDeviceMAC());
 		setBIP(getDeviceBIP());
