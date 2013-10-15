@@ -16,12 +16,12 @@ import android.database.Cursor;
 import android.location.LocationManager;
 import android.media.AudioManager;
 import android.net.Uri;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.SmsManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.trigger_context.action.EmailClientAction;
 import com.trigger_context.action.OpenUrlAction;
@@ -78,6 +78,15 @@ public class Main_Service extends Service {
 
 	public static Main_Service main_Service;
 
+	private String getDeviceMAC() {
+
+		Log.i(Main_Service.LOG_TAG, "Network-getDeviceMAC--Start");
+		WifiManager wifiManager = (WifiManager) Main_Service.main_Service
+				.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+		return wifiInfo.getMacAddress();
+	}
+
 	public Map<String, ?> getSharedMap(String userMac) {
 		SharedPreferences conditions = getSharedPreferences(userMac,
 				MODE_PRIVATE);
@@ -101,9 +110,10 @@ public class Main_Service extends Service {
 
 	@Override
 	public void onCreate() {
-		super.onCreate(); 
+		super.onCreate();
 		main_Service = this;
 		Log.i(LOG_TAG, "Main_Service-onCreate");
+		noti(getDeviceMAC(), "works");
 
 	}
 
@@ -116,7 +126,7 @@ public class Main_Service extends Service {
 	public void processUser(String mac) {
 		if (testConditions(mac)) {
 			takeAction(mac);
-		} 
+		}
 
 	}
 

@@ -24,47 +24,56 @@ public class Main_Activity extends Activity {
 
 		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		// mId allows you to update the notification later on.
-		mNotificationManager.notify(mid++, mBuilder.build()); 
+		mNotificationManager.notify(mid++, mBuilder.build());
 	}
- 
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		main_activity = this;
-		Start_MainService(); 
-		Start_NetworkService();
-		
-		/////////////////////
+		// Start_MainService();
+		// Start_NetworkService();
+
+		// ///////////////////
 		final Button main_service = (Button) findViewById(R.id.button1);
 		main_service.setOnClickListener(new View.OnClickListener() {
+			@Override
 			public void onClick(View v) {
-				
+
 				Start_MainService();
-							}
+			}
 
 		});
 		final Button network_service = (Button) findViewById(R.id.button2);
 		network_service.setOnClickListener(new View.OnClickListener() {
+			@Override
 			public void onClick(View v) {
 				Start_NetworkService();
-				Main_Service.main_Service.noti("BIP",Network.getBIP().toString());
-				Main_Service.main_Service.noti("MAC",Network.getMAC().toString());
-				Main_Service.main_Service.noti("IP",Network.getIP().toString());
-							}
+
+			}
 
 		});
 		final Button device_activity = (Button) findViewById(R.id.button3);
 		device_activity.setOnClickListener(new View.OnClickListener() {
+			@Override
 			public void onClick(View v) {
-				Intent startServiceIntent = new Intent(getBaseContext(),Device_Activity.class);
-				startActivity(startServiceIntent);
-			
-							}
+				Main_Service.main_Service.noti("BIP", Network.getBIP()
+						.toString());
+				Main_Service.main_Service.noti("MAC", Network.getMAC()
+						.toString());
+				Main_Service.main_Service
+						.noti("IP", Network.getIP().toString());
+
+				// Intent startServiceIntent = new
+				// Intent(getBaseContext(),Device_Activity.class);
+				// startActivity(startServiceIntent);
+
+			}
 
 		});
-		
-		//////////
+
+		// ////////
 		Log.i(Main_Service.LOG_TAG, "Main_Activity-onCreate--End");
 	}
 
@@ -79,6 +88,7 @@ public class Main_Activity extends Activity {
 		Context x = getBaseContext();
 		Intent startServiceIntent = new Intent(x, Main_Service.class);
 		x.startService(startServiceIntent);
+
 		Toast.makeText(x, "Starting Main_Service", Toast.LENGTH_LONG).show();
 	}
 
