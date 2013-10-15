@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 public class Main_Activity extends Activity {
@@ -22,20 +24,47 @@ public class Main_Activity extends Activity {
 
 		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		// mId allows you to update the notification later on.
-		mNotificationManager.notify(mid++, mBuilder.build());
+		mNotificationManager.notify(mid++, mBuilder.build()); 
 	}
-
+ 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		main_activity = this;
-		Start_MainService();
+		Start_MainService(); 
 		Start_NetworkService();
-		//
-		Intent startServiceIntent = new Intent(this, Device_Activity.class);
-		startActivity(startServiceIntent);
-		//
+		
+		/////////////////////
+		final Button main_service = (Button) findViewById(R.id.button1);
+		main_service.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				
+				Start_MainService();
+							}
+
+		});
+		final Button network_service = (Button) findViewById(R.id.button2);
+		network_service.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				Start_NetworkService();
+				Main_Service.main_Service.noti("BIP",Network.getBIP().toString());
+				Main_Service.main_Service.noti("MAC",Network.getMAC().toString());
+				Main_Service.main_Service.noti("IP",Network.getIP().toString());
+							}
+
+		});
+		final Button device_activity = (Button) findViewById(R.id.button3);
+		device_activity.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				Intent startServiceIntent = new Intent(getBaseContext(),Device_Activity.class);
+				startActivity(startServiceIntent);
+			
+							}
+
+		});
+		
+		//////////
 		Log.i(Main_Service.LOG_TAG, "Main_Activity-onCreate--End");
 	}
 

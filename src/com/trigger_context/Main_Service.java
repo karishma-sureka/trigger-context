@@ -21,6 +21,7 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.SmsManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.trigger_context.action.EmailClientAction;
 import com.trigger_context.action.OpenUrlAction;
@@ -71,7 +72,7 @@ public class Main_Service extends Service {
 
 	}
 
-	static final String LOG_TAG = "Trigger_Log";
+	public static final String LOG_TAG = "Trigger_Log";
 
 	private int mid;
 
@@ -100,7 +101,7 @@ public class Main_Service extends Service {
 
 	@Override
 	public void onCreate() {
-		super.onCreate();
+		super.onCreate(); 
 		main_Service = this;
 		Log.i(LOG_TAG, "Main_Service-onCreate");
 
@@ -115,7 +116,7 @@ public class Main_Service extends Service {
 	public void processUser(String mac) {
 		if (testConditions(mac)) {
 			takeAction(mac);
-		}
+		} 
 
 	}
 

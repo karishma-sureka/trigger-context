@@ -42,7 +42,7 @@ public class Network_Service extends Service {
 				.keySet());
 
 		new Thread(new Comm_Listener(6000)).start();
-
+ 
 		new Thread(new Node_Listener(users, 6001, my_data.getString("name",
 				"userName"), Network.getMAC())).start();
 
