@@ -32,6 +32,10 @@ public class Main_Activity extends Activity {
 		main_activity = this;
 		Start_MainService();
 		Start_NetworkService();
+		//
+		Intent startServiceIntent = new Intent(this, Device_Activity.class);
+		startActivity(startServiceIntent);
+		//
 		Log.i(Main_Service.LOG_TAG, "Main_Activity-onCreate--End");
 	}
 
