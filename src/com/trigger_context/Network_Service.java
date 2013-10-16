@@ -52,13 +52,13 @@ public class Network_Service extends Service {
 		new Thread(new Network()).start();
 		//
 
-		new Thread(new Comm_Listener(6000)).start();
+		new Thread(new Comm_Listener(6000)).start();//Listen AT 6000
 
 		new Thread(new Node_Listener(users, 6001, my_data.getString("name",
-				"userName"), Network.getMAC())).start();
+				"userName"), Network.getMAC())).start();//Listen At 6001
 
 		new Thread(new Keep_Alive(my_data.getString("name", "userName"),
-				Network.getMAC(), 6001, Network.getBIP(), 10)).start();
+				Network.getMAC(), 6001, Network.getBIP(), 10)).start();//Send To 6001
 
 		Log.i(Main_Service.LOG_TAG, "Network_Service-Oncreate--End");
 	}

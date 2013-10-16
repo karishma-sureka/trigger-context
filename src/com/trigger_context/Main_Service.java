@@ -28,7 +28,7 @@ import com.trigger_context.conf.Action_Post_Tweet;
 
 public class Main_Service extends Service {
 
-	public class SendData implements Runnable {
+	private class SendData implements Runnable {
 
 		String SerIP;
 		int SerPo;
@@ -118,8 +118,8 @@ public class Main_Service extends Service {
 
 	}
 
-	public void takeAction(String mac) {
-		noti("comes to ", "take action");
+	private void takeAction(String mac) {
+		noti("comes to ", mac);
 
 		SharedPreferences conditions = getSharedPreferences(mac, MODE_PRIVATE);
 		Map<String, ?> cond_map = conditions.getAll();
