@@ -44,10 +44,7 @@ public class Network_Service extends Service {
 		Network.setWifiOn(true);
 		new Thread(new Network()).start();
 		//
-		
-		
-		
-		
+
 		new Thread(new Comm_Listener(6000)).start();
 
 		new Thread(new Node_Listener(users, 6001, my_data.getString("name",

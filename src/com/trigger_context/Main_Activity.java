@@ -51,7 +51,7 @@ public class Main_Activity extends Activity {
 		network_service.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				//Start_NetworkService();
+				// Start_NetworkService();
 
 			}
 
