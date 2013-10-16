@@ -61,6 +61,95 @@ public class Action_Config extends Activity {
 		}
 	}
 
+	private void commitSettings() {
+		if (resetFlag) {
+			// reset was performed. Clear all Actions from db for the given usr.
+			for (String i : actionToggles) {
+				if (conditions.contains(i)) {
+					editor.remove(i);
+				}
+			}
+			for (String i : actionStrings) {
+				if (conditions.contains(i)) {
+					editor.remove(i);
+				}
+			}
+			resetFlag = false;
+		} else {
+			Set<String> keys = setConditions.keySet();
+			for (String i : keys) {
+				if (boolBuffer.contains(i)) {
+					editor.putBoolean(i, (Boolean) setConditions.get(i));
+				} else if (stringBuffer.contains(i)) {
+					editor.putString(i, (String) setConditions.get(i));
+				}
+			}
+
+			SharedPreferences users;
+			Editor edit;
+			users = getSharedPreferences("users", MODE_PRIVATE);
+			edit = users.edit();
+			edit.putString(mac, name);
+			edit.commit();
+		}
+		editor.commit();
+
+	}
+
+	public void leaveToDbt() {
+		Intent myIntent = new Intent(Action_Config.this, Main_Activity.class);
+		myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+				| Intent.FLAG_ACTIVITY_NEW_TASK);
+		Action_Config.this.startActivity(myIntent);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == RESULT_OK) {
+			Bundle bundle = data.getExtras();
+			Set<String> keys = bundle.keySet();
+			for (String i : keys) {
+				setConditions.put(i, bundle.get(i));
+			}
+		}
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (flag == false) {
+			AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+			alert.setTitle("Save");
+			alert.setMessage("Do you wish you save the changes made?");
+
+			alert.setPositiveButton("Save",
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog,
+								int whichButton) {
+							commitSettings();
+
+							flag = true;
+							leaveToDbt();
+						}
+					});
+
+			alert.setNegativeButton("Don't Save",
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog,
+								int whichButton) {
+							leaveToDbt();
+						}
+					});
+
+			alert.show();
+			return;
+		} else {
+			leaveToDbt();
+		}
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -82,8 +171,7 @@ public class Action_Config extends Activity {
 		editor = conditions.edit();
 
 		RadioGroup SmsAction = (RadioGroup) findViewById(R.id.radioGroup1);
-		if (cond_map.containsKey("SmsAction"))
-		{
+		if (cond_map.containsKey("SmsAction")) {
 			if (conditions.getBoolean("SmsAction", false)) {
 				RadioButton rb = (RadioButton) SmsAction.getChildAt(0);
 				rb.setChecked(true);
@@ -94,14 +182,14 @@ public class Action_Config extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Intent myIntent = new Intent(Action_Config.this, Set_Send_Sms.class);
+				Intent myIntent = new Intent(Action_Config.this,
+						Set_Send_Sms.class);
 				Action_Config.this.startActivityForResult(myIntent, 11);
 
 			}
 		});
 		RadioGroup EmailAction = (RadioGroup) findViewById(R.id.radioGroup2);
-		if (cond_map.containsKey("EmailAction"))
-		{
+		if (cond_map.containsKey("EmailAction")) {
 			if (conditions.getBoolean("EmailAction", false)) {
 				RadioButton rb = (RadioButton) EmailAction.getChildAt(0);
 				rb.setChecked(true);
@@ -111,14 +199,14 @@ public class Action_Config extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Intent myIntent = new Intent(Action_Config.this, Set_Send_Email.class);
+				Intent myIntent = new Intent(Action_Config.this,
+						Set_Send_Email.class);
 				Action_Config.this.startActivityForResult(myIntent, 12);
 
 			}
 		});
 		RadioGroup TweetAction = (RadioGroup) findViewById(R.id.radioGroup3);
-		if (cond_map.containsKey("TweetAction"))
-		{
+		if (cond_map.containsKey("TweetAction")) {
 			if (conditions.getBoolean("TweetAction", false)) {
 				RadioButton rb = (RadioButton) TweetAction.getChildAt(0);
 				rb.setChecked(true);
@@ -128,7 +216,8 @@ public class Action_Config extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Intent myIntent = new Intent(Action_Config.this, Set_Post_Tweet.class);
+				Intent myIntent = new Intent(Action_Config.this,
+						Set_Post_Tweet.class);
 				Action_Config.this.startActivityForResult(myIntent, 12);
 
 			}
@@ -179,7 +268,8 @@ public class Action_Config extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Intent myIntent = new Intent(Action_Config.this, Set_Server_Cmd.class);
+				Intent myIntent = new Intent(Action_Config.this,
+						Set_Server_Cmd.class);
 				Action_Config.this.startActivityForResult(myIntent, 12);
 
 			}
@@ -204,8 +294,7 @@ public class Action_Config extends Activity {
 				});
 
 		RadioGroup sendMsgAction = (RadioGroup) findViewById(R.id.radioGroup8);
-		if (cond_map.containsKey("ccfMsgAction"))
-		{
+		if (cond_map.containsKey("ccfMsgAction")) {
 			if (conditions.getBoolean("ccfMsgAction", false)) {
 				RadioButton rb = (RadioButton) sendMsgAction.getChildAt(0);
 				rb.setChecked(true);
@@ -216,14 +305,14 @@ public class Action_Config extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Intent myIntent = new Intent(Action_Config.this, Set_Send_Msg.class);
+				Intent myIntent = new Intent(Action_Config.this,
+						Set_Send_Msg.class);
 				Action_Config.this.startActivityForResult(myIntent, 11);
 
 			}
 		});
 		RadioGroup Sync = (RadioGroup) findViewById(R.id.radioGroup9);
-		if (cond_map.containsKey("sync"))
-		{
+		if (cond_map.containsKey("sync")) {
 			if (conditions.getBoolean("sync", false)) {
 				RadioButton rb = (RadioButton) Sync.getChildAt(0);
 				rb.setChecked(true);
@@ -241,6 +330,7 @@ public class Action_Config extends Activity {
 
 		final Button save = (Button) findViewById(R.id.button1);
 		save.setOnClickListener(new View.OnClickListener() {
+			@Override
 			public void onClick(View v) {
 				flag = true;
 				commitSettings();
@@ -259,6 +349,7 @@ public class Action_Config extends Activity {
 
 		final Button reset = (Button) findViewById(R.id.button2);
 		reset.setOnClickListener(new View.OnClickListener() {
+			@Override
 			public void onClick(View v) {
 				resetFlag = true;
 
@@ -286,90 +377,5 @@ public class Action_Config extends Activity {
 			}
 
 		});
-	}
-
-	private void commitSettings() {
-		if (resetFlag) {
-			// reset was performed. Clear all Actions from db for the given usr.
-			for (String i : actionToggles) {
-				if (conditions.contains(i)) {
-					editor.remove(i);
-				}
-			}
-			for (String i : actionStrings) {
-				if (conditions.contains(i)) {
-					editor.remove(i);
-				}
-			}
-			resetFlag = false;
-		} else {
-			Set<String> keys = setConditions.keySet();
-			for (String i : keys) {
-				if (boolBuffer.contains(i)) {
-					editor.putBoolean(i, (Boolean) setConditions.get(i));
-				} else if (stringBuffer.contains(i)) {
-					editor.putString(i, (String) setConditions.get(i));
-				}
-			}
-
-			SharedPreferences users;
-			Editor edit;
-			users = getSharedPreferences("users", MODE_PRIVATE);
-			edit = users.edit();
-			edit.putString(mac, name);
-			edit.commit();
-		}
-		editor.commit();
-
-	}
-
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == RESULT_OK) {
-			Bundle bundle = data.getExtras();
-			Set<String> keys = bundle.keySet();
-			for (String i : keys) {
-				setConditions.put(i, bundle.get(i));
-			}
-		}
-	}
-
-	public void leaveToDbt() {
-		Intent myIntent = new Intent(Action_Config.this, Main_Activity.class);
-		myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-				| Intent.FLAG_ACTIVITY_NEW_TASK);
-		Action_Config.this.startActivity(myIntent);
-	}
-
-	public void onBackPressed() {
-		if (flag == false) {
-			AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-			alert.setTitle("Save");
-			alert.setMessage("Do you wish you save the changes made?");
-
-			alert.setPositiveButton("Save",
-					new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog,
-								int whichButton) {
-							commitSettings();
-
-							flag = true;
-							leaveToDbt();
-						}
-					});
-
-			alert.setNegativeButton("Don't Save",
-					new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog,
-								int whichButton) {
-							leaveToDbt();
-						}
-					});
-
-			alert.show();
-			return;
-		} else {
-			leaveToDbt();
-		}
 	}
 }

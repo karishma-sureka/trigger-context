@@ -13,11 +13,13 @@ import com.trigger_context.R;
 
 public class Set_Toggles extends Activity {
 
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.set_toggles);
 		final Button button = (Button) findViewById(R.id.button1);
 		button.setOnClickListener(new View.OnClickListener() {
+			@Override
 			public void onClick(View v) {
 
 				Bundle bundle = new Bundle();

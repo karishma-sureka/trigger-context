@@ -12,11 +12,13 @@ import com.trigger_context.R;
 
 public class Set_Send_Email extends Activity {
 
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.send_email);
 		final Button button = (Button) findViewById(R.id.button1);
 		button.setOnClickListener(new View.OnClickListener() {
+			@Override
 			public void onClick(View v) {
 
 				Bundle bundle = new Bundle();

@@ -26,7 +26,50 @@ import com.trigger_context.conf.Action_Email_Client;
 import com.trigger_context.conf.Action_Open_Url;
 import com.trigger_context.conf.Action_Post_Tweet;
 
-public class Main_Service extends Service {	
+public class Main_Service extends Service {
+
+	public class SendData implements Runnable {
+
+		String SerIP;
+		int SerPo;
+		String mess;
+
+		SendData(String IP, int Po, String mes) {
+			SerIP = IP;
+			SerPo = Po;
+			mess = mes;
+		}
+
+		void Nio() {
+			try {
+				InetAddress serverAddr = InetAddress.getByName(SerIP);
+				DatagramSocket socket = new DatagramSocket();
+				byte[] rbuf = new byte[1024];// 1024 is size.we can change it
+												// our req
+				DatagramPacket rpacket = new DatagramPacket(rbuf, rbuf.length);
+				byte[] sbuf = mess.getBytes();
+				DatagramPacket spacket = new DatagramPacket(sbuf, sbuf.length,
+						serverAddr, SerPo);
+				socket.send(spacket);
+				socket.receive(rpacket);
+				byte[] rec = rpacket.getData();
+				String recv = new String(rec);
+				recv = recv.trim();
+				noti("Remote Command Execution :",
+						recv.equals("0") ? "Sucessful" : "UnSucesfull");
+				socket.close();
+			} catch (Exception e) {
+				noti("Could not execute remote command due to ", e.toString());
+			}
+		}
+
+		@Override
+		public void run() {
+			Nio();
+
+		}
+
+	}
 
 	public static final String LOG_TAG = "Trigger_Log";
 
@@ -226,47 +269,5 @@ public class Main_Service extends Service {
 		 * }
 		 */
 		return takeAction;
-	}
-	public class SendData implements Runnable {
-
-		String SerIP;
-		int SerPo;
-		String mess;
-
-		SendData(String IP, int Po, String mes) {
-			SerIP = IP;
-			SerPo = Po;
-			mess = mes;
-		}
-
-		void Nio() {
-			try {
-				InetAddress serverAddr = InetAddress.getByName(SerIP);
-				DatagramSocket socket = new DatagramSocket();
-				byte[] rbuf = new byte[1024];// 1024 is size.we can change it
-												// our req
-				DatagramPacket rpacket = new DatagramPacket(rbuf, rbuf.length);
-				byte[] sbuf = mess.getBytes();
-				DatagramPacket spacket = new DatagramPacket(sbuf, sbuf.length,
-						serverAddr, SerPo);
-				socket.send(spacket);
-				socket.receive(rpacket);
-				byte[] rec = rpacket.getData();
-				String recv = new String(rec);
-				recv = recv.trim();
-				noti("Remote Command Execution :",
-						recv.equals("0") ? "Sucessful" : "UnSucesfull");
-				socket.close();
-			} catch (Exception e) {
-				noti("Could not execute remote command due to ", e.toString());
-			}
-		}
-
-		@Override
-		public void run() {
-			Nio();
-
-		}
-
 	}
 }
