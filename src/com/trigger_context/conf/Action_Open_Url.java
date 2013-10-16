@@ -1,11 +1,11 @@
-package com.trigger_context.action;
+package com.trigger_context.conf;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-public class OpenUrlAction extends Activity {
+public class Action_Open_Url extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

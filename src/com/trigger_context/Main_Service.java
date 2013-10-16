@@ -16,20 +16,19 @@ import android.database.Cursor;
 import android.location.LocationManager;
 import android.media.AudioManager;
 import android.net.Uri;
-import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.SmsManager;
 import android.util.Log;
 
-import com.trigger_context.action.EmailClientAction;
-import com.trigger_context.action.OpenUrlAction;
-import com.trigger_context.action.PostTweetAction;
+import com.trigger_context.conf.Action_Email_Client;
+import com.trigger_context.conf.Action_Open_Url;
+import com.trigger_context.conf.Action_Post_Tweet;
 
 public class Main_Service extends Service {
 
-	public class SendData implements Runnable {
+	private class SendData implements Runnable {
 
 		String SerIP;
 		int SerPo;
@@ -78,15 +77,6 @@ public class Main_Service extends Service {
 
 	public static Main_Service main_Service;
 
-	private String getDeviceMAC() {
-
-		Log.i(Main_Service.LOG_TAG, "Network-getDeviceMAC--Start");
-		WifiManager wifiManager = (WifiManager) Main_Service.main_Service
-				.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-		return wifiInfo.getMacAddress();
-	}
-
 	public Map<String, ?> getSharedMap(String userMac) {
 		SharedPreferences conditions = getSharedPreferences(userMac,
 				MODE_PRIVATE);
@@ -113,8 +103,6 @@ public class Main_Service extends Service {
 		super.onCreate();
 		main_Service = this;
 		Log.i(LOG_TAG, "Main_Service-onCreate");
-		noti(getDeviceMAC(), "works");
-
 	}
 
 	@Override
@@ -123,16 +111,17 @@ public class Main_Service extends Service {
 		Log.i(LOG_TAG, "Main_Service-onDestory");
 	}
 
-	public void processUser(String mac) {
+	public synchronized void processUser(String mac) {
 		if (testConditions(mac)) {
 			takeAction(mac);
 		}
 
 	}
 
-	public void takeAction(String uuid) {
+	private void takeAction(String mac) {
+		noti("comes to ", mac);
 
-		SharedPreferences conditions = getSharedPreferences(uuid, MODE_PRIVATE);
+		SharedPreferences conditions = getSharedPreferences(mac, MODE_PRIVATE);
 		Map<String, ?> cond_map = conditions.getAll();
 		Set<String> key_set = cond_map.keySet();
 		if (key_set.contains("SmsAction")) {
@@ -149,7 +138,7 @@ public class Main_Service extends Service {
 		}
 		if (key_set.contains("OpenWebsiteAction")) {
 			Intent dialogIntent = new Intent(getBaseContext(),
-					OpenUrlAction.class);
+					Action_Open_Url.class);
 			dialogIntent.putExtra("urlAction",
 					(String) cond_map.get("urlAction"));
 			dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -178,7 +167,7 @@ public class Main_Service extends Service {
 		}
 		if (key_set.contains("TweetAction")) {
 			Intent dialogIntent = new Intent(getBaseContext(),
-					PostTweetAction.class);
+					Action_Post_Tweet.class);
 			dialogIntent.putExtra("tweetTextAction",
 					(String) cond_map.get("tweetTextAction"));
 			dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -187,7 +176,7 @@ public class Main_Service extends Service {
 
 		if (key_set.contains("EmailAction")) {
 			Intent dialogIntent = new Intent(getBaseContext(),
-					EmailClientAction.class);
+					Action_Email_Client.class);
 			dialogIntent
 					.putExtra("toAction", (String) cond_map.get("toAction"));
 			dialogIntent.putExtra("subjectAction",
@@ -204,7 +193,7 @@ public class Main_Service extends Service {
 		// to do : network related part
 	}
 
-	private synchronized boolean testConditions(String mac) {
+	private boolean testConditions(String mac) {
 		SharedPreferences conditions = getSharedPreferences(mac, MODE_PRIVATE);
 		Map<String, ?> cond_map = conditions.getAll();
 		Set<String> key_set = cond_map.keySet();

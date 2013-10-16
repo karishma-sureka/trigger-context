@@ -18,6 +18,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
         <service android:name="com.trigger_context.Network_Service" />
+        <service android:name="com.trigger_context.Main_Service" />
 
         <activity
             android:name="com.trigger_context.Main_Activity"
@@ -28,17 +29,55 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <receiver android:name="com.trigger_context.OnNetworkChange" >
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-        </receiver>
-
         <activity
             android:name="com.trigger_context.Device_Activity"
             android:label="@string/title_activity_device_" >
         </activity>
+        <activity
+            android:name="com.trigger_context.Conditions_Config"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.trigger_context.Action_Config"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.trigger_context.conf.Set_Send_Sms"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.trigger_context.conf.Set_Send_Email"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.trigger_context.conf.Set_Toggles"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.trigger_context.conf.Set_Post_Tweet"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.trigger_context.conf.Set_Open_Url"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.trigger_context.conf.Set_Server_Cmd"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.trigger_context.conf.Set_File_Select"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.trigger_context.conf.Set_Send_Msg"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.trigger_context.conf.Action_Email_Client"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.trigger_context.conf.Action_Open_Url"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.trigger_context.conf.Action_Post_Tweet"
+            android:label="@string/app_name" />
+
+        <receiver android:name="com.trigger_context.On_Network_Change" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -49,15 +50,18 @@ public class Device_Activity extends Activity {
 					userData = new String(packet.getData(), "UTF-8");
 					userData = userData.substring(0, packet.getLength());
 					userDataArray = userData.split(";");
-					DeviceList
-							.add(userDataArray[0] + " -> " + userDataArray[1]);
-					Device_Activity.this.runOnUiThread(new Runnable() {
+					Log.i(Main_Service.LOG_TAG,"sss"+userData); 
+					if (!userDataArray[1].equals(Network.getMAC())) {
+						DeviceList.add(userDataArray[0] + " -> "
+								+ userDataArray[1]);
+						Device_Activity.this.runOnUiThread(new Runnable() {
 
-						@Override
-						public void run() {
-							arrayAdapter.notifyDataSetChanged();
-						}
-					});
+							@Override
+							public void run() {
+								arrayAdapter.notifyDataSetChanged();
+							}
+						});
+					}
 				} catch (UnsupportedEncodingException e) {
 					Log.i(Main_Service.LOG_TAG,
 							"Device-Activity-DeviceDisc-Run--Error in getData()");
@@ -84,7 +88,6 @@ public class Device_Activity extends Activity {
 			this.MAC = MAC;
 			this.Port = Port;
 			this.BIP = inetAddress;
-			Log.i(Main_Service.LOG_TAG, "aaswd" + Name + MAC + Port + BIP);
 			try {
 				socket = new DatagramSocket();
 				socket.setBroadcast(true);
@@ -127,6 +130,7 @@ public class Device_Activity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		setContentView(R.layout.activity_device);
 		Flag = true;
 		if (Network.isWifiOn()) {
@@ -137,8 +141,6 @@ public class Device_Activity extends Activity {
 					MODE_PRIVATE);
 			ArrayList<String> users = new ArrayList<String>(users_sp.getAll()
 					.keySet());
-
-			Thread devicedis = new Thread(new DeviceDiscovery(6002));
 
 			Thread sendbroad = new Thread(new NewSendBroadcast(
 					my_data.getString("name", "userName"), Network.getMAC(),
@@ -156,7 +158,7 @@ public class Device_Activity extends Activity {
 			Toast.makeText(getBaseContext(), "Starting Device Discovery",
 					Toast.LENGTH_LONG).show();
 
-			devicedis.start();
+			new Thread(new DeviceDiscovery(6002)).start();
 
 		}
 

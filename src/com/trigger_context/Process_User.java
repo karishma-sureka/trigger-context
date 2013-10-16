@@ -1,10 +1,10 @@
 package com.trigger_context;
 
-public class ProcessUser implements Runnable {
+public class Process_User implements Runnable {
 
 	String processMac = null;
 
-	public ProcessUser(String newMac) {
+	public Process_User(String newMac) {
 		processMac = newMac;
 	}
 

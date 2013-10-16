@@ -1,4 +1,4 @@
-package com.trigger_context.action;
+package com.trigger_context.conf;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.trigger_context.R;
 
-public class PostTweetAction extends Activity {
+public class Action_Post_Tweet extends Activity {
 
 	private int mid = 1500;
 
