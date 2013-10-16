@@ -84,7 +84,6 @@ public class Device_Activity extends Activity {
 			this.MAC = MAC;
 			this.Port = Port;
 			this.BIP = inetAddress;
-			Log.i(Main_Service.LOG_TAG, "aaswd" + Name + MAC + Port + BIP);
 			try {
 				socket = new DatagramSocket();
 				socket.setBroadcast(true);

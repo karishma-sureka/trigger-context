@@ -18,6 +18,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
         <service android:name="com.trigger_context.Network_Service" />
+        <service android:name="com.trigger_context.Main_Service" />
 
         <activity
             android:name="com.trigger_context.Main_Activity"

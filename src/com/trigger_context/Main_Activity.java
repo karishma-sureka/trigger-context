@@ -32,8 +32,9 @@ public class Main_Activity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		main_activity = this;
-		// Start_MainService();
-		// Start_NetworkService();
+
+		Start_MainService();
+		Start_NetworkService();
 
 		// ///////////////////
 		final Button main_service = (Button) findViewById(R.id.button1);
@@ -41,7 +42,8 @@ public class Main_Activity extends Activity {
 			@Override
 			public void onClick(View v) {
 
-				Start_MainService();
+				Network.setWifiOn(true);
+				new Thread(new Network()).start();
 			}
 
 		});
@@ -49,7 +51,7 @@ public class Main_Activity extends Activity {
 		network_service.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Start_NetworkService();
+				//Start_NetworkService();
 
 			}
 
@@ -65,9 +67,9 @@ public class Main_Activity extends Activity {
 				Main_Service.main_Service
 						.noti("IP", Network.getIP().toString());
 
-				// Intent startServiceIntent = new
-				// Intent(getBaseContext(),Device_Activity.class);
-				// startActivity(startServiceIntent);
+				Intent startServiceIntent = new Intent(getBaseContext(),
+						Device_Activity.class);
+				startActivity(startServiceIntent);
 
 			}
 
@@ -88,7 +90,6 @@ public class Main_Activity extends Activity {
 		Context x = getBaseContext();
 		Intent startServiceIntent = new Intent(x, Main_Service.class);
 		x.startService(startServiceIntent);
-
 		Toast.makeText(x, "Starting Main_Service", Toast.LENGTH_LONG).show();
 	}
 

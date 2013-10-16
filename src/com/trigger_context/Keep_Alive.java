@@ -60,7 +60,6 @@ class Sendbroadcast implements Runnable {
 	public void run() {
 		try {
 			Keep_Alive.socket.send(sendPackcast);
-			Log.i(Main_Service.LOG_TAG, "Pack::" + sendPackcast.toString());
 		} catch (UnknownHostException e) {
 			Log.i(Main_Service.LOG_TAG,
 					"Keep_Alive-run--Error in getbyhostname");

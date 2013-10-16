@@ -78,15 +78,6 @@ public class Main_Service extends Service {
 
 	public static Main_Service main_Service;
 
-	private String getDeviceMAC() {
-
-		Log.i(Main_Service.LOG_TAG, "Network-getDeviceMAC--Start");
-		WifiManager wifiManager = (WifiManager) Main_Service.main_Service
-				.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-		return wifiInfo.getMacAddress();
-	}
-
 	public Map<String, ?> getSharedMap(String userMac) {
 		SharedPreferences conditions = getSharedPreferences(userMac,
 				MODE_PRIVATE);
@@ -113,8 +104,6 @@ public class Main_Service extends Service {
 		super.onCreate();
 		main_Service = this;
 		Log.i(LOG_TAG, "Main_Service-onCreate");
-		noti(getDeviceMAC(), "works");
-
 	}
 
 	@Override
