@@ -8,7 +8,7 @@ import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.Toast;
 
-public class OnNetworkChange extends BroadcastReceiver {
+public class On_Network_Change extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {

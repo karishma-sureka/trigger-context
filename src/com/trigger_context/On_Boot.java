@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
-public class OnBoot extends BroadcastReceiver {
+public class On_Boot extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {

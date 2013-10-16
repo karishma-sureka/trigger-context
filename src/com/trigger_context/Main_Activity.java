@@ -29,10 +29,16 @@ public class Main_Activity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		main_activity = this;
 		Start_MainService();
 		Start_NetworkService();
-		Log.i(Main_Service.LOG_TAG, "Main_Activity-onCreate--End");
+		Intent newIntent = new Intent(this, Conditions_Config.class);
+		newIntent.putExtra("mac", Network_Service.ANY_USER);
+		newIntent.putExtra("name", "All Users");
+		startActivity(newIntent);
+		
+		/*main_activity = this;
+		
+		Log.i(Main_Service.LOG_TAG, "Main_Activity-onCreate--End");*/
 	}
 
 	@Override

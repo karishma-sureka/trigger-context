@@ -7,6 +7,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -36,11 +37,17 @@ public class Network_Service extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		SharedPreferences users_sp = getSharedPreferences(USERS, MODE_PRIVATE);
+		SharedPreferences users_sp = getSharedPreferences(MY_DATA, MODE_PRIVATE);
 		SharedPreferences my_data = getSharedPreferences(MY_DATA, MODE_PRIVATE);
+		
+		Editor edit = users_sp.edit();
+		edit.putString(Network_Service.ANY_USER, "default");
+		edit.commit();
+		
 		ArrayList<String> users = new ArrayList<String>(users_sp.getAll()
 				.keySet());
-
+		Network.setWifiOn(true);
+		new Thread(new Network()).start();
 		new Thread(new Comm_Listener(6000)).start();
 
 		new Thread(new Node_Listener(users, 6001, my_data.getString("name",

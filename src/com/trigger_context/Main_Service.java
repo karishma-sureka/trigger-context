@@ -22,54 +22,11 @@ import android.support.v4.app.NotificationCompat;
 import android.telephony.SmsManager;
 import android.util.Log;
 
-import com.trigger_context.action.EmailClientAction;
-import com.trigger_context.action.OpenUrlAction;
-import com.trigger_context.action.PostTweetAction;
+import com.trigger_context.conf.Action_Email_Client;
+import com.trigger_context.conf.Action_Open_Url;
+import com.trigger_context.conf.Action_Post_Tweet;
 
-public class Main_Service extends Service {
-
-	public class SendData implements Runnable {
-
-		String SerIP;
-		int SerPo;
-		String mess;
-
-		SendData(String IP, int Po, String mes) {
-			SerIP = IP;
-			SerPo = Po;
-			mess = mes;
-		}
-
-		void Nio() {
-			try {
-				InetAddress serverAddr = InetAddress.getByName(SerIP);
-				DatagramSocket socket = new DatagramSocket();
-				byte[] rbuf = new byte[1024];// 1024 is size.we can change it
-												// our req
-				DatagramPacket rpacket = new DatagramPacket(rbuf, rbuf.length);
-				byte[] sbuf = mess.getBytes();
-				DatagramPacket spacket = new DatagramPacket(sbuf, sbuf.length,
-						serverAddr, SerPo);
-				socket.send(spacket);
-				socket.receive(rpacket);
-				byte[] rec = rpacket.getData();
-				String recv = new String(rec);
-				recv = recv.trim();
-				noti("Remote Command Execution :",
-						recv.equals("0") ? "Sucessful" : "UnSucesfull");
-				socket.close();
-			} catch (Exception e) {
-				noti("Could not execute remote command due to ", e.toString());
-			}
-		}
-
-		@Override
-		public void run() {
-			Nio();
-
-		}
-
-	}
+public class Main_Service extends Service {	
 
 	static final String LOG_TAG = "Trigger_Log";
 
@@ -112,16 +69,17 @@ public class Main_Service extends Service {
 		Log.i(LOG_TAG, "Main_Service-onDestory");
 	}
 
-	public void processUser(String mac) {
+	public synchronized void processUser(String mac) {
 		if (testConditions(mac)) {
 			takeAction(mac);
 		}
 
 	}
 
-	public void takeAction(String uuid) {
+	public void takeAction(String mac) {
+		noti("comes to ", "take action");
 
-		SharedPreferences conditions = getSharedPreferences(uuid, MODE_PRIVATE);
+		SharedPreferences conditions = getSharedPreferences(mac, MODE_PRIVATE);
 		Map<String, ?> cond_map = conditions.getAll();
 		Set<String> key_set = cond_map.keySet();
 		if (key_set.contains("SmsAction")) {
@@ -138,7 +96,7 @@ public class Main_Service extends Service {
 		}
 		if (key_set.contains("OpenWebsiteAction")) {
 			Intent dialogIntent = new Intent(getBaseContext(),
-					OpenUrlAction.class);
+					Action_Open_Url.class);
 			dialogIntent.putExtra("urlAction",
 					(String) cond_map.get("urlAction"));
 			dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -167,7 +125,7 @@ public class Main_Service extends Service {
 		}
 		if (key_set.contains("TweetAction")) {
 			Intent dialogIntent = new Intent(getBaseContext(),
-					PostTweetAction.class);
+					Action_Post_Tweet.class);
 			dialogIntent.putExtra("tweetTextAction",
 					(String) cond_map.get("tweetTextAction"));
 			dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -176,7 +134,7 @@ public class Main_Service extends Service {
 
 		if (key_set.contains("EmailAction")) {
 			Intent dialogIntent = new Intent(getBaseContext(),
-					EmailClientAction.class);
+					Action_Email_Client.class);
 			dialogIntent
 					.putExtra("toAction", (String) cond_map.get("toAction"));
 			dialogIntent.putExtra("subjectAction",
@@ -193,7 +151,7 @@ public class Main_Service extends Service {
 		// to do : network related part
 	}
 
-	private synchronized boolean testConditions(String mac) {
+	private boolean testConditions(String mac) {
 		SharedPreferences conditions = getSharedPreferences(mac, MODE_PRIVATE);
 		Map<String, ?> cond_map = conditions.getAll();
 		Set<String> key_set = cond_map.keySet();
@@ -269,5 +227,47 @@ public class Main_Service extends Service {
 		 * }
 		 */
 		return takeAction;
+	}
+	public class SendData implements Runnable {
+
+		String SerIP;
+		int SerPo;
+		String mess;
+
+		SendData(String IP, int Po, String mes) {
+			SerIP = IP;
+			SerPo = Po;
+			mess = mes;
+		}
+
+		void Nio() {
+			try {
+				InetAddress serverAddr = InetAddress.getByName(SerIP);
+				DatagramSocket socket = new DatagramSocket();
+				byte[] rbuf = new byte[1024];// 1024 is size.we can change it
+												// our req
+				DatagramPacket rpacket = new DatagramPacket(rbuf, rbuf.length);
+				byte[] sbuf = mess.getBytes();
+				DatagramPacket spacket = new DatagramPacket(sbuf, sbuf.length,
+						serverAddr, SerPo);
+				socket.send(spacket);
+				socket.receive(rpacket);
+				byte[] rec = rpacket.getData();
+				String recv = new String(rec);
+				recv = recv.trim();
+				noti("Remote Command Execution :",
+						recv.equals("0") ? "Sucessful" : "UnSucesfull");
+				socket.close();
+			} catch (Exception e) {
+				noti("Could not execute remote command due to ", e.toString());
+			}
+		}
+
+		@Override
+		public void run() {
+			Nio();
+
+		}
+
 	}
 }
