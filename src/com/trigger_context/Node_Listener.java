@@ -32,7 +32,6 @@ public class Node_Listener implements Runnable {
 		myPacket = new DatagramPacket(myBuf, myBuf.length);
 		myPacket.setPort(6002);
 		Log.i("Trigger_Log", "Node_Listener--constructor end");
-
 	}
 
 	@Override
@@ -56,7 +55,7 @@ public class Node_Listener implements Runnable {
 				userData = new String(packet.getData(), "UTF-8");
 				userData = userData.substring(0, packet.getLength());
 				userDataArray = userData.split(";");// name;MAC;type
-				if (!userDataArray[2].equals(Network.getMAC())) {
+				if (!userDataArray[1].equals(Network.getMAC())) {
 					String replyType = new String("1".getBytes(), "UTF-8");
 					if (!macAddressListActive.contains(userDataArray[1])) {
 						macAddressListActive.add(userDataArray[1]);
@@ -71,7 +70,7 @@ public class Node_Listener implements Runnable {
 							new Thread(new Process_User(
 									Network_Service.ANY_USER)).start();
 						}
-						// any user
+						// any user 
 					}
 					if (userDataArray[2].equals(replyType)) {
 						typeSocket = new DatagramSocket();
@@ -85,5 +84,4 @@ public class Node_Listener implements Runnable {
 		}
 
 	}
-
 }
