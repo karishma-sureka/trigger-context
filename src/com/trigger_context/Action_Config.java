@@ -97,7 +97,7 @@ public class Action_Config extends Activity {
 	}
 
 	public void leaveToDbt() {
-		Intent myIntent = new Intent(Action_Config.this, Main_Activity.class);
+		Intent myIntent = new Intent(Action_Config.this, Device_Activity.class);
 		myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
 				| Intent.FLAG_ACTIVITY_NEW_TASK);
 		Action_Config.this.startActivity(myIntent);
@@ -155,8 +155,8 @@ public class Action_Config extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.action_configuration);
 		Bundle bundle = getIntent().getExtras();
-		mac = bundle.getString("uuid");
-		name = bundle.getString("usrname");
+		mac = bundle.getString("mac");
+		name = bundle.getString("name");
 
 		for (String i : conditionToggles) {
 			if (bundle.containsKey(i)) {
@@ -341,7 +341,7 @@ public class Action_Config extends Activity {
 				Toast.makeText(getApplicationContext(), cond_map.toString(),
 						Toast.LENGTH_SHORT).show();
 
-				// DBTACtivity
+				// DBACtivity
 				leaveToDbt();
 			}
 

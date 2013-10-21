@@ -183,7 +183,7 @@ public class Device_Activity extends Activity {
 				Intent x = new Intent(getBaseContext(), Conditions_Config.class);
 				// check this
 				x.putExtra("mac", clicked[1]);
-				x.putExtra("username", clicked[0]);
+				x.putExtra("name", clicked[0]);
 				startActivity(x);
 			}
 		});

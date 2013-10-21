@@ -46,6 +46,12 @@ public class Main_Activity extends Activity {
 		getMenuInflater().inflate(R.menu.main_, menu);
 		return true;
 	}
+	
+	public void goToDeviceActivity(View a)
+	{
+		Intent x = new Intent(getBaseContext(),Device_Activity.class);
+		startActivity(x);
+	}
 
 	private void Start_MainService() {
 		Context x = getBaseContext();

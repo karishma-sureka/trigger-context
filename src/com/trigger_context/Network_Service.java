@@ -37,17 +37,13 @@ public class Network_Service extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		SharedPreferences users_sp = getSharedPreferences(MY_DATA, MODE_PRIVATE);
+		SharedPreferences users_sp = getSharedPreferences(USERS, MODE_PRIVATE);// Mac->user
 		SharedPreferences my_data = getSharedPreferences(MY_DATA, MODE_PRIVATE);
-
-		Editor edit = users_sp.edit();
-		edit.putString(Network_Service.ANY_USER, "default");
-		edit.commit();
 
 		ArrayList<String> users = new ArrayList<String>(users_sp.getAll()
 				.keySet());
 
-		// to be removed
+		// //////////////////////// to be removed
 		Network.setWifiOn(true);
 		Thread z = new Thread(new Network());
 
@@ -60,7 +56,10 @@ public class Network_Service extends Service {
 			e.printStackTrace();
 		}
 
-		//
+		Editor edit = users_sp.edit();
+		edit.putString(Network_Service.ANY_USER, "default");
+		edit.commit();
+		// ////////////////////////////////////
 
 		new Thread(new Comm_Listener(6000)).start();// Listen AT 6000
 
