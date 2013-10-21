@@ -9,11 +9,15 @@ import java.net.SocketException;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -50,7 +54,7 @@ public class Device_Activity extends Activity {
 					userData = new String(packet.getData(), "UTF-8");
 					userData = userData.substring(0, packet.getLength());
 					userDataArray = userData.split(";");
-					Log.i(Main_Service.LOG_TAG,"sss"+userData); 
+					Log.i(Main_Service.LOG_TAG, "sss" + userData);
 					if (!userDataArray[1].equals(Network.getMAC())) {
 						DeviceList.add(userDataArray[0] + " -> "
 								+ userDataArray[1]);
@@ -162,10 +166,27 @@ public class Device_Activity extends Activity {
 
 		}
 
-		ListView lv = (ListView) findViewById(R.id.DeviceList);
+		final ListView lv = (ListView) findViewById(R.id.DeviceList);
 		arrayAdapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1, DeviceList);
 		lv.setAdapter(arrayAdapter);
+		lv.setClickable(true);
+
+		lv.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+
+				Object o = lv.getItemAtPosition(position);
+				String clicked[] = ((String) o).split(";");
+
+				Intent x = new Intent(getBaseContext(), Conditions_Config.class);
+				// check this
+				x.putExtra("mac", clicked[1]);
+				x.putExtra("username", clicked[0]);
+				startActivity(x);
+			}
+		});
 
 		Log.i(Main_Service.LOG_TAG, "Device-Activity-onCreate--End");
 

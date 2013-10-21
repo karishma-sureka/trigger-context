@@ -70,7 +70,7 @@ public class Node_Listener implements Runnable {
 							new Thread(new Process_User(
 									Network_Service.ANY_USER)).start();
 						}
-						// any user 
+						// any user
 					}
 					if (userDataArray[2].equals(replyType)) {
 						typeSocket = new DatagramSocket();

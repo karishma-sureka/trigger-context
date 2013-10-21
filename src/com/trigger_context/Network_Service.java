@@ -47,18 +47,30 @@ public class Network_Service extends Service {
 		ArrayList<String> users = new ArrayList<String>(users_sp.getAll()
 				.keySet());
 
-		//
+		// to be removed
 		Network.setWifiOn(true);
-		new Thread(new Network()).start();
+		Thread z = new Thread(new Network());
+
+		z.start();
+
+		try {
+			z.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		//
 
-		new Thread(new Comm_Listener(6000)).start();//Listen AT 6000
+		new Thread(new Comm_Listener(6000)).start();// Listen AT 6000
 
 		new Thread(new Node_Listener(users, 6001, my_data.getString("name",
-				"userName"), Network.getMAC())).start();//Listen At 6001
+				"userName"), Network.getMAC())).start();// Listen At 6001
 
 		new Thread(new Keep_Alive(my_data.getString("name", "userName"),
-				Network.getMAC(), 6001, Network.getBIP(), 10)).start();//Send To 6001
+				Network.getMAC(), 6001, Network.getBIP(), 10)).start();// Send
+																		// To
+																		// 6001
 
 		Log.i(Main_Service.LOG_TAG, "Network_Service-Oncreate--End");
 	}
