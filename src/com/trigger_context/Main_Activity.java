@@ -34,47 +34,8 @@ public class Main_Activity extends Activity {
 
 		main_activity = this;
 		Start_MainService();
+		///////////
 		Start_NetworkService();
-
-		// ///////////////////
-		final Button main_service = (Button) findViewById(R.id.button1);
-		main_service.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-
-				Network.setWifiOn(true);
-				new Thread(new Network()).start();
-			}
-
-		});
-		final Button network_service = (Button) findViewById(R.id.button2);
-		network_service.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// Start_NetworkService();
-
-			}
-
-		});
-		final Button device_activity = (Button) findViewById(R.id.button3);
-		device_activity.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Main_Service.main_Service.noti("BIP", Network.getBIP()
-						.toString());
-				Main_Service.main_Service.noti("MAC", Network.getMAC()
-						.toString());
-				Main_Service.main_Service
-						.noti("IP", Network.getIP().toString());
-
-				Intent startServiceIntent = new Intent(getBaseContext(),
-						Device_Activity.class);
-				startActivity(startServiceIntent);
-
-			}
-
-		});
-
 		// ////////
 		Log.i(Main_Service.LOG_TAG, "Main_Activity-onCreate--End");
 	}
@@ -84,6 +45,12 @@ public class Main_Activity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main_, menu);
 		return true;
+	}
+	
+	public void goToDeviceActivity(View a)
+	{
+		Intent x = new Intent(getBaseContext(),Device_Activity.class);
+		startActivity(x);
 	}
 
 	private void Start_MainService() {

@@ -7,13 +7,11 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.util.ArrayList;
 
-import android.content.SharedPreferences;
 import android.util.Log;
 
 public class Node_Listener implements Runnable {
 	private ArrayList<String> macAddressListActive = new ArrayList<String>();
 	private ArrayList<String> macAddressListSet;
-	private SharedPreferences users;
 	private DatagramSocket datagramSocket, typeSocket;
 	private DatagramPacket myPacket;
 	private int Port;
@@ -70,7 +68,7 @@ public class Node_Listener implements Runnable {
 							new Thread(new Process_User(
 									Network_Service.ANY_USER)).start();
 						}
-						// any user 
+						// any user
 					}
 					if (userDataArray[2].equals(replyType)) {
 						typeSocket = new DatagramSocket();

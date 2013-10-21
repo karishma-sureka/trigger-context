@@ -23,7 +23,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="74dp"
-        android:text="SendMessage: " />
+        android:text="@string/sendmessage_" />
 
     <Button
         android:id="@+id/button1"
@@ -32,6 +32,6 @@
         android:layout_below="@+id/editText1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="129dp"
-        android:text="Save" />
+        android:text="@string/save" />
 
 </RelativeLayout>
