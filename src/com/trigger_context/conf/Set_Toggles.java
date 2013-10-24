@@ -27,17 +27,19 @@ public class Set_Toggles extends Activity {
 				RadioGroup bluetooth = (RadioGroup) findViewById(R.id.radioGroup1);
 				RadioButton rb = (RadioButton) bluetooth.getChildAt(0);
 				RadioButton rb1 = (RadioButton) bluetooth.getChildAt(1);
-				if (rb.isChecked())
+				if (rb.isChecked()) {
 					bundle.putBoolean("bluetoothAction", true);
-				else if (rb1.isChecked())
+				} else if (rb1.isChecked()) {
 					bundle.putBoolean("bluetoothAction", false);
+				}
 				RadioGroup wifi = (RadioGroup) findViewById(R.id.radioGroup2);
 				RadioButton rb2 = (RadioButton) wifi.getChildAt(0);
 				RadioButton rb3 = (RadioButton) wifi.getChildAt(1);
-				if (rb2.isChecked())
+				if (rb2.isChecked()) {
 					bundle.putBoolean("wifiAction", true);
-				else if (rb3.isChecked())
+				} else if (rb3.isChecked()) {
 					bundle.putBoolean("wifiAction", false);
+				}
 				Intent mIntent = new Intent();
 				mIntent.putExtras(bundle);
 				setResult(RESULT_OK, mIntent);

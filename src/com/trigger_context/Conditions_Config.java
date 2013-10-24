@@ -65,11 +65,12 @@ public class Conditions_Config extends Activity {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				RadioButton radioButton = (RadioButton) findViewById(checkedId);
-				if (radioButton == null)
+				if (radioButton == null) {
 					return;
-				if ((radioButton.getText()).equals("Arrival")) {
+				}
+				if (radioButton.getText().equals("Arrival")) {
 					setConditions.put("trigger", true);
-				} else if ((radioButton.getText()).equals("Departure")) {
+				} else if (radioButton.getText().equals("Departure")) {
 					setConditions.put("trigger", false);
 				}
 			}
@@ -90,11 +91,12 @@ public class Conditions_Config extends Activity {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				RadioButton radioButton = (RadioButton) findViewById(checkedId);
-				if (radioButton == null)
+				if (radioButton == null) {
 					return;
-				if ((radioButton.getText()).equals("On")) {
+				}
+				if (radioButton.getText().equals("On")) {
 					setConditions.put("bluetooth", true);
-				} else if ((radioButton.getText()).equals("Off")) {
+				} else if (radioButton.getText().equals("Off")) {
 					setConditions.put("bluetooth", false);
 				}
 			}
@@ -114,11 +116,12 @@ public class Conditions_Config extends Activity {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				RadioButton radioButton = (RadioButton) findViewById(checkedId);
-				if (radioButton == null)
+				if (radioButton == null) {
 					return;
-				if ((radioButton.getText()).equals("On")) {
+				}
+				if (radioButton.getText().equals("On")) {
 					setConditions.put("wifi", true);
-				} else if ((radioButton.getText()).equals("Off")) {
+				} else if (radioButton.getText().equals("Off")) {
 					setConditions.put("wifi", false);
 				}
 			}
@@ -139,11 +142,12 @@ public class Conditions_Config extends Activity {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				RadioButton radioButton = (RadioButton) findViewById(checkedId);
-				if (radioButton == null)
+				if (radioButton == null) {
 					return;
-				if ((radioButton.getText()).equals("On")) {
+				}
+				if (radioButton.getText().equals("On")) {
 					setConditions.put("gps", true);
-				} else if ((radioButton.getText()).equals("Off")) {
+				} else if (radioButton.getText().equals("Off")) {
 					setConditions.put("gps", false);
 				}
 			}
@@ -163,11 +167,12 @@ public class Conditions_Config extends Activity {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				RadioButton radioButton = (RadioButton) findViewById(checkedId);
-				if (radioButton == null)
+				if (radioButton == null) {
 					return;
-				if ((radioButton.getText()).equals("On")) {
+				}
+				if (radioButton.getText().equals("On")) {
 					setConditions.put("headset", true);
-				} else if ((radioButton.getText()).equals("Off")) {
+				} else if (radioButton.getText().equals("Off")) {
 					setConditions.put("headset", false);
 				}
 			}
@@ -187,11 +192,12 @@ public class Conditions_Config extends Activity {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				RadioButton radioButton = (RadioButton) findViewById(checkedId);
-				if (radioButton == null)
+				if (radioButton == null) {
 					return;
-				if ((radioButton.getText()).equals("On")) {
+				}
+				if (radioButton.getText().equals("On")) {
 					setConditions.put("sms", true);
-				} else if ((radioButton.getText()).equals("Off")) {
+				} else if (radioButton.getText().equals("Off")) {
 					setConditions.put("sms", false);
 				}
 			}

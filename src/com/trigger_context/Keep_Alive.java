@@ -41,7 +41,7 @@ public class Keep_Alive implements Runnable {
 	public void run() {
 		Log.i(Main_Service.LOG_TAG, "Keep_Alive-run--Started");
 
-		String Packet = (Name + ";" + MAC + ";2");
+		String Packet = Name + ";" + MAC + ";2";
 		byte[] SendData = Packet.getBytes();
 		Sendbroadcast.sendPackcast = new DatagramPacket(SendData,
 				SendData.length, BIP, Port);

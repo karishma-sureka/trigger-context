@@ -106,7 +106,7 @@ public class Device_Activity extends Activity {
 		public void run() {
 			Log.i(Main_Service.LOG_TAG, "SendBordcast-run--Started");
 
-			String Packet = (Name + ";" + MAC + ";1");
+			String Packet = Name + ";" + MAC + ";1";
 			byte[] SendData = Packet.getBytes();
 			sendPackcast = new DatagramPacket(SendData, SendData.length, BIP,
 					Port);
