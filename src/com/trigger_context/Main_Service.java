@@ -73,6 +73,8 @@ public class Main_Service extends Service {
 
 	public static final String LOG_TAG = "Trigger_Log";
 
+	public static boolean Flag;
+
 	private int mid;
 
 	public static Main_Service main_Service;
