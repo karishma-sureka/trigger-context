@@ -48,13 +48,12 @@ public class Device_Activity extends Activity {
 		public void run() {
 			Log.i(Main_Service.LOG_TAG,
 					"Device-Activity-DeviceDisc-Run Thread Start");
-			while (Flag) {
+			while (true) {
 				try {
 					datagramSocket.receive(packet);
 					userData = new String(packet.getData(), "UTF-8");
 					userData = userData.substring(0, packet.getLength());
 					userDataArray = userData.split(";");
-					Log.i(Main_Service.LOG_TAG, "sss" + userData);
 					if (!userDataArray[1].equals(Network.getMAC())) {
 						DeviceList.add(userDataArray[0] + " -> "
 								+ userDataArray[1]);
@@ -123,9 +122,6 @@ public class Device_Activity extends Activity {
 	}
 
 	ArrayAdapter<String> arrayAdapter;
-
-	boolean Flag;
-
 	ArrayList<String> DeviceList = new ArrayList<String>();
 	static String ANY_USER = "00:00:00:00:00:00";
 	static String USERS = "users";
@@ -136,7 +132,7 @@ public class Device_Activity extends Activity {
 		super.onCreate(savedInstanceState);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		setContentView(R.layout.activity_device);
-		Flag = true;
+		Main_Service.Flag = true;
 		if (Network.isWifiOn()) {
 
 			SharedPreferences users_sp = getSharedPreferences(USERS,
@@ -177,8 +173,9 @@ public class Device_Activity extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 
-				Object o = lv.getItemAtPosition(position);
-				String clicked[] = ((String) o).split(";");
+				String o = (String) lv.getItemAtPosition(position);
+				String clicked[] = o.split(">");
+				clicked[0] = clicked[0].substring(0, clicked[0].length() - 2);
 
 				Intent x = new Intent(getBaseContext(), Conditions_Config.class);
 				// check this
@@ -202,7 +199,7 @@ public class Device_Activity extends Activity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		Flag = false;
+		Main_Service.Flag = false;
 		Log.i(Main_Service.LOG_TAG, "Device_Activity-onDestroy");
 	}
 }
