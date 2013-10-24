@@ -29,10 +29,10 @@ public class Action_Post_Tweet extends Activity {
 		List<ResolveInfo> list = packageManager.queryIntentActivities(
 				tweetIntent, PackageManager.MATCH_DEFAULT_ONLY);
 
-		for (int i = 0; i < twitterApps.length; i++) {
+		for (String twitterApp : twitterApps) {
 			for (ResolveInfo resolveInfo : list) {
 				String p = resolveInfo.activityInfo.packageName;
-				if (p != null && p.startsWith(twitterApps[i])) {
+				if (p != null && p.startsWith(twitterApp)) {
 					tweetIntent.setPackage(p);
 					return tweetIntent;
 				}

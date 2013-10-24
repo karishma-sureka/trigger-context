@@ -9,13 +9,17 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 public class Main_Activity extends Activity {
 
 	private int mid = 0;
 	public static Main_Activity main_activity;
+
+	public void goToDeviceActivity(View a) {
+		Intent x = new Intent(getBaseContext(), Device_Activity.class);
+		startActivity(x);
+	}
 
 	public void noti(String title, String txt) {
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
@@ -34,7 +38,7 @@ public class Main_Activity extends Activity {
 
 		main_activity = this;
 		Start_MainService();
-		///////////
+		// /////////
 		Start_NetworkService();
 		// ////////
 		Log.i(Main_Service.LOG_TAG, "Main_Activity-onCreate--End");
@@ -45,12 +49,6 @@ public class Main_Activity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main_, menu);
 		return true;
-	}
-	
-	public void goToDeviceActivity(View a)
-	{
-		Intent x = new Intent(getBaseContext(),Device_Activity.class);
-		startActivity(x);
 	}
 
 	private void Start_MainService() {

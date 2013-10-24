@@ -207,8 +207,8 @@ public class Main_Service extends Service {
 		}
 		if (takeAction && key_set.contains("wifi")) {
 			final WifiManager wm = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-			takeAction = new Boolean(wm.isWifiEnabled()) == (conditions
-					.getBoolean("wifi", false));
+			takeAction = new Boolean(wm.isWifiEnabled()) == conditions
+					.getBoolean("wifi", false);
 		}
 
 		if (takeAction && key_set.contains("gps")) {
@@ -225,7 +225,7 @@ public class Main_Service extends Service {
 			if (c != null) {
 				int unreadMessagesCount = c.getCount();
 				c.close();
-				takeAction = new Boolean((unreadMessagesCount > 0))
+				takeAction = new Boolean(unreadMessagesCount > 0)
 						.equals(conditions.getString("sms", "false"));
 			} else {
 				takeAction = false;
