@@ -78,6 +78,11 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name="com.trigger_context.About"
+            android:label="@string/title_activity_about" >
+        </activity>
     </application>
 
 </manifest>

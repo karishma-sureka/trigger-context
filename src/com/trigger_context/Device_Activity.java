@@ -15,6 +15,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -192,7 +193,7 @@ public class Device_Activity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.device_, menu);
+		getMenuInflater().inflate(R.menu.about, menu);
 		return true;
 	}
 
@@ -201,5 +202,18 @@ public class Device_Activity extends Activity {
 		super.onDestroy();
 		Main_Service.Flag = false;
 		Log.i(Main_Service.LOG_TAG, "Device_Activity-onDestroy");
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle item selection
+		switch (item.getItemId()) {
+		case R.id.action_settings:
+			Intent AboutPage = new Intent(getBaseContext(), About.class);
+			startActivity(AboutPage);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 }
