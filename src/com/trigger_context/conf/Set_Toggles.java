@@ -59,5 +59,4 @@ public class Set_Toggles extends Activity {
 	protected void onStop() {
 		super.onStop();
 	}
-
 }
