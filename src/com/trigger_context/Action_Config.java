@@ -96,7 +96,7 @@ public class Action_Config extends Activity {
 
 	}
 
-	public void leaveToDbt() {
+	public void leaveToDat() {
 		Intent myIntent = new Intent(Action_Config.this, Device_Activity.class);
 		myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
 				| Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -130,7 +130,7 @@ public class Action_Config extends Activity {
 							commitSettings();
 
 							flag = true;
-							leaveToDbt();
+							leaveToDat();
 						}
 					});
 
@@ -139,14 +139,14 @@ public class Action_Config extends Activity {
 						@Override
 						public void onClick(DialogInterface dialog,
 								int whichButton) {
-							leaveToDbt();
+							leaveToDat();
 						}
 					});
 
 			alert.show();
 			return;
 		} else {
-			leaveToDbt();
+			leaveToDat();
 		}
 	}
 
@@ -342,7 +342,7 @@ public class Action_Config extends Activity {
 						Toast.LENGTH_SHORT).show();
 
 				// DBACtivity
-				leaveToDbt();
+				leaveToDat();
 			}
 
 		});
