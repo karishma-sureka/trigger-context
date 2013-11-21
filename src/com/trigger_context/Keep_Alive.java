@@ -5,27 +5,24 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import android.util.Log;
 
 public class Keep_Alive implements Runnable {
 
-	private String Name, MAC;
-	static DatagramSocket socket;
+	private String MAC, name;
+	static DatagramSocket socket = null;
 	private int Port;
 	private InetAddress BIP;
 	private long TimeOut;
+	private String data = null;
+	private byte[] byteData = null;
+	private DatagramPacket pkt = null;
 
-	public Keep_Alive(String Name, String MAC, int Port,
-			InetAddress inetAddress, long TimeOut) {
-		this.Name = Name;
+	public Keep_Alive(String MAC, int Port, InetAddress bcastIp, long TimeOut) {
 		this.MAC = MAC;
 		this.Port = Port;
-		this.BIP = inetAddress;
+		this.BIP = bcastIp;
 		this.TimeOut = TimeOut;
 		try {
 			socket = new DatagramSocket();
@@ -41,30 +38,33 @@ public class Keep_Alive implements Runnable {
 	public void run() {
 		Log.i(Main_Service.LOG_TAG, "Keep_Alive-run--Started");
 
-		String Packet = Name + ";" + MAC + ";2";
-		byte[] SendData = Packet.getBytes();
-		Sendbroadcast.sendPackcast = new DatagramPacket(SendData,
-				SendData.length, BIP, Port);
-		ScheduledExecutorService exec = Executors
-				.newSingleThreadScheduledExecutor();
-		exec.scheduleAtFixedRate(new Thread(new Sendbroadcast()), 5, TimeOut,
-				TimeUnit.SECONDS);
-	}
+		while (Main_Service.wifi) {
+			name = (String) Network_Service.ns.getSharedMap(
+					Main_Service.MY_DATA).get("name");
+			if (name == null) {
+				name = Main_Service.DEFAULT_USER_NAME;
+			}
+			data = name + ";" + MAC + ";2";
+			byteData = data.getBytes();
+			pkt = new DatagramPacket(byteData, byteData.length, BIP, Port);
+			try {
+				socket.send(pkt);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				Thread.sleep(TimeOut * 1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
-}
-
-class Sendbroadcast implements Runnable {
-	static DatagramPacket sendPackcast;
-
-	@Override
-	public void run() {
-		try {
-			Keep_Alive.socket.send(sendPackcast);
-		} catch (UnknownHostException e) {
-			Log.i(Main_Service.LOG_TAG,
-					"Keep_Alive-run--Error in getbyhostname");
-		} catch (IOException e) {
-			Log.i(Main_Service.LOG_TAG, "Keep_Alive-run--Error in send");
 		}
+
+		socket.close();
+
+		Log.i(Main_Service.LOG_TAG, "Keep_Alive-ending");
 	}
+
 }

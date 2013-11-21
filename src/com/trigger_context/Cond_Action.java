@@ -101,7 +101,7 @@ public class Cond_Action implements Runnable {
 
 			} else if (type == 3) {
 				recvrSync(in, out, Environment.getExternalStorageDirectory()
-						.getPath() + "/ccfSync/");
+						.getPath() + "/TriggerSync/");
 				Main_Service.main_Service.noti("Sync", "Sucessful");
 			}
 

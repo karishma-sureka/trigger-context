@@ -1,8 +1,26 @@
 package com.trigger_context;
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.math.BigInteger;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.Socket;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -17,6 +35,7 @@ import android.location.LocationManager;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
+import android.os.Environment;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.SmsManager;
@@ -73,16 +92,59 @@ public class Main_Service extends Service {
 
 	public static final String LOG_TAG = "Trigger_Log";
 
-	public static boolean Flag;
+	private int mid = 1500;
 
-	private int mid;
+	public static int COMM_PORT = 6000;
 
-	public static Main_Service main_Service;
+	public static int NET_PORT = 6001;
+	static String USERS = "users";
+	static String MY_DATA = "my_data";
+	static String ANY_USER = "00:00:00:00:00:00";
+	static String DEFAULT_USER_NAME = "userName";
+	static long DEFAULT_TIME_OUT = 60;// timeout in sec
+	static Main_Service main_Service = null;
+	static ArrayList<String> conf_macs = null;
 
-	public Map<String, ?> getSharedMap(String userMac) {
-		SharedPreferences conditions = getSharedPreferences(userMac,
-				MODE_PRIVATE);
-		return conditions.getAll();
+	static volatile boolean wifi = false;
+
+	public String calculateMD5(File updateFile) {
+		MessageDigest digest;
+		try {
+			digest = MessageDigest.getInstance("MD5");
+		} catch (NoSuchAlgorithmException e) {
+			noti("Exception while getting Digest", e.toString());
+			return null;
+		}
+
+		InputStream is;
+		try {
+			is = new FileInputStream(updateFile);
+		} catch (FileNotFoundException e) {
+			noti("Exception while getting FileInputStream", e.toString());
+			return null;
+		}
+
+		byte[] buffer = new byte[8192];
+		int read;
+		try {
+			while ((read = is.read(buffer)) > 0) {
+				digest.update(buffer, 0, read);
+			}
+			byte[] md5sum = digest.digest();
+			BigInteger bigInt = new BigInteger(1, md5sum);
+			String output = bigInt.toString(16);
+			// Fill to 32 chars
+			output = String.format("%32s", output).replace(' ', '0');
+			return output.toUpperCase();
+		} catch (IOException e) {
+			throw new RuntimeException("Unable to process file for MD5", e);
+		} finally {
+			try {
+				is.close();
+			} catch (IOException e) {
+				noti("Exception on closing MD5 input stream", e.toString());
+			}
+		}
 	}
 
 	public void noti(String title, String txt) {
@@ -104,23 +166,198 @@ public class Main_Service extends Service {
 	public void onCreate() {
 		super.onCreate();
 		main_Service = this;
+		SharedPreferences users_sp = getSharedPreferences(Main_Service.USERS,
+				MODE_PRIVATE);
+
+		conf_macs = new ArrayList<String>(users_sp.getAll().keySet());
 		Log.i(LOG_TAG, "Main_Service-onCreate");
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		main_Service = null;
 		Log.i(LOG_TAG, "Main_Service-onDestory");
 	}
 
-	public synchronized void processUser(String mac) {
+	public synchronized void processUser(String mac, InetAddress ip) {
 		if (testConditions(mac)) {
-			takeAction(mac);
+			takeAction(mac, ip);
 		}
 
 	}
 
-	private void takeAction(String mac) {
+	private void recvFile(DataInputStream in, String path) {
+		Log.i("recvFile", "Start");
+		// path should end with "/"
+		String Filename = null;
+		long size = 0;
+		try {
+			Filename = in.readUTF();
+			size = in.readLong();
+		} catch (IOException e1) {
+			Log.i(Main_Service.LOG_TAG,
+					"recvFile--error in readins file name and lngth");
+		}
+
+		OutputStream outfile = null;
+		// noti("path of recv folder:",path);
+		try {
+			outfile = new FileOutputStream(path + Filename);
+		} catch (FileNotFoundException e1) {
+			Log.i(Main_Service.LOG_TAG,
+					"recvFile--Error file not found exception");
+		}
+
+		byte[] buff = new byte[1024];
+		int readbytes;
+		try {
+			while (size > 0
+					&& (readbytes = in.read(buff, 0,
+							(int) Math.min(buff.length, size))) != -1) {
+				try {
+					outfile.write(buff, 0, readbytes);
+					size -= readbytes;
+				} catch (IOException e) {
+					Log.i(Main_Service.LOG_TAG, "recvFile--Error file write");
+				}
+			}
+		} catch (IOException e) {
+			Log.i(Main_Service.LOG_TAG, "recvFile--Error socket read");
+			e.printStackTrace();
+		}
+		try {
+			outfile.close();
+		} catch (IOException e) {
+			Log.i(Main_Service.LOG_TAG, "recvFile--Erro oufile close");
+		}
+	}
+
+	public void senderSync(DataInputStream in, DataOutputStream out,
+			String folder) {
+		String tfolder = folder
+				+ (folder.charAt(folder.length() - 1) == '/' ? "" : "/");
+		File f = new File(folder);
+		File file[] = f.listFiles();
+		// noti(file.toString(),"");
+		String fname = null;
+		String md5 = null;
+		HashMap<String, File> hm = new HashMap<String, File>();
+
+		HashSet<String> A = new HashSet<String>();
+		for (File element : file) {
+			hm.put(md5 = calculateMD5(element), element);
+			A.add(md5);
+		}
+		// noti(hm.toString(),"");
+		int numB = 0;
+		try {
+			numB = in.readInt();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			noti("error reading 1st int in sendersync", "");
+			e.printStackTrace();
+		}
+		HashSet<String> B = new HashSet<String>();
+		for (int i = 0; i < numB; i++) {
+			try {
+				B.add(in.readUTF());
+			} catch (IOException e1) {
+				noti("error in readins md5", "");
+				e1.printStackTrace();
+			}
+		}
+		HashSet<String> aMb = new HashSet<String>(A);
+		aMb.removeAll(B);
+		int l1 = aMb.size();
+		try {
+			out.writeInt(l1);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			noti("error in writing 1st int", "");
+			e.printStackTrace();
+		}
+		Iterator<String> itr = aMb.iterator();
+		while (itr.hasNext()) {
+			f = hm.get(itr.next());
+			sendFile(out, f.getPath());
+		}
+		HashSet<String> bMa = new HashSet<String>(B);
+		bMa.removeAll(A);
+		int l2 = bMa.size();
+		try {
+			out.writeInt(l2);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			noti("error in writing 2nd int", "");
+			e.printStackTrace();
+		}
+		itr = bMa.iterator();
+		while (itr.hasNext()) {
+			md5 = itr.next();
+			try {
+				out.writeUTF(md5);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				noti("error in sending md5", "");
+				e.printStackTrace();
+			}
+			recvFile(in, folder);
+		}
+	}
+
+	private void sendFile(DataOutputStream out, String Path) {
+		Log.i(Main_Service.LOG_TAG, "SendFile--Start");
+		File infile = new File(Path);
+		String FileName = null;
+		try {
+
+			FileName = Path.substring(Path.lastIndexOf("/") + 1);
+			out.writeUTF(FileName);
+			out.writeLong(infile.length());
+		} catch (IOException e) {
+			Log.i(Main_Service.LOG_TAG,
+					"SendFile--error sending filename length");
+		}
+
+		byte[] mybytearray = new byte[(int) infile.length()];
+
+		FileInputStream fis = null;
+		;
+		try {
+			fis = new FileInputStream(infile);
+		} catch (FileNotFoundException e1) {
+			Log.i(Main_Service.LOG_TAG, "sendFile--Error file not found");
+		}
+		BufferedInputStream bis = new BufferedInputStream(fis);
+
+		DataInputStream dis = new DataInputStream(bis);
+		try {
+			dis.readFully(mybytearray, 0, mybytearray.length);
+		} catch (IOException e1) {
+			Log.i(Main_Service.LOG_TAG,
+					"sendFile--Error while reading bytes from file");
+
+		}
+
+		try {
+			out.write(mybytearray, 0, mybytearray.length);
+		} catch (IOException e1) {
+			Log.i(Main_Service.LOG_TAG, "sendFile--error while sending");
+		}
+
+		try {
+			dis.close();
+			bis.close();
+			fis.close();
+		} catch (IOException e) {
+
+			Log.i(Main_Service.LOG_TAG, "sendFile--error in closing streams");
+		}
+
+	}
+
+	private void takeAction(String mac, InetAddress ip) {
 		noti("comes to ", mac);
 
 		SharedPreferences conditions = getSharedPreferences(mac, MODE_PRIVATE);
@@ -192,7 +429,87 @@ public class Main_Service extends Service {
 			String text = conditions.getString("cmd", null);
 			new Thread(new SendData("224.0.0.1", 9876, text)).start();
 		}
-		// to do : network related part
+		// network activities from here.
+		// in all network actions send username first
+		if (key_set.contains("FileTransferAction"))
+
+		{
+			String path = conditions.getString("filePath", null);
+			SharedPreferences my_data = getSharedPreferences(
+					Main_Service.MY_DATA, MODE_PRIVATE);
+			String usrName = my_data.getString("name", "userName");
+			// type 1
+			try {
+				Socket socket = new Socket(ip, COMM_PORT);
+				DataOutputStream out = null;
+				out = new DataOutputStream(socket.getOutputStream());
+				out.writeUTF(usrName);
+				out.writeInt(1);
+				sendFile(out, path);
+
+				noti("Sent " + path + " file to :",
+						getSharedPreferences(Main_Service.USERS, MODE_PRIVATE)
+								.getString("name", "userName"));
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+		if (key_set.contains("ccfMsgAction"))
+
+		{
+			String msg = conditions.getString("ccfMsg", null);
+			SharedPreferences my_data = getSharedPreferences(
+					Main_Service.MY_DATA, MODE_PRIVATE);
+			String usrName = my_data.getString("name", "userName");
+			// type 2 is msg
+			try {
+				Socket socket = new Socket(ip, COMM_PORT);
+				DataOutputStream out = null;
+				out = new DataOutputStream(socket.getOutputStream());
+				out.writeUTF(usrName);
+				out.writeInt(2);
+				out.writeUTF(msg);
+
+				noti("Sent msg : '" + msg + "'",
+						"to : "
+								+ getSharedPreferences(Main_Service.USERS,
+										MODE_PRIVATE).getString("name",
+										"userName"));
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		if (key_set.contains("sync")) {
+			SharedPreferences my_data = getSharedPreferences(
+					Main_Service.MY_DATA, MODE_PRIVATE);
+			String usrName = my_data.getString("name", "userName");
+			// type 3 is sync
+			try {
+				Socket socket = new Socket(ip, COMM_PORT);
+				DataInputStream in = new DataInputStream(
+						socket.getInputStream());
+				DataOutputStream out = new DataOutputStream(
+						socket.getOutputStream());
+				out.writeUTF(usrName);
+				out.writeInt(3);
+				senderSync(in, out, Environment.getExternalStorageDirectory()
+						.getPath() + "/TriggerSync/");
+
+				noti("Synced with:",
+						getSharedPreferences(Main_Service.USERS, MODE_PRIVATE)
+								.getString("name", "userName"));
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private boolean testConditions(String mac) {
@@ -272,4 +589,5 @@ public class Main_Service extends Service {
 		 */
 		return takeAction;
 	}
+
 }

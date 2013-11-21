@@ -39,6 +39,7 @@ public class Device_Activity extends Activity {
 			packet = new DatagramPacket(buf, buf.length);
 			try {
 				datagramSocket = new DatagramSocket(Port);
+				dd_socket = datagramSocket;
 			} catch (SocketException e) {
 				Log.i(Main_Service.LOG_TAG,
 						"Device-Activity-DeviceDisc-Constructor--Error in Bind");
@@ -70,8 +71,10 @@ public class Device_Activity extends Activity {
 					Log.i(Main_Service.LOG_TAG,
 							"Device-Activity-DeviceDisc-Run--Error in getData()");
 				} catch (IOException e) {
-					Log.i(Main_Service.LOG_TAG,
-							"Device-Activity-DeviceDisc-Run--Error in receive()");
+					if (!datagramSocket.isClosed()) {
+						Log.i(Main_Service.LOG_TAG,
+								"Device-Activity-DeviceDisc-Run--Error in receive()");
+					}
 				}
 
 			}
@@ -117,6 +120,7 @@ public class Device_Activity extends Activity {
 				Log.i(Main_Service.LOG_TAG,
 						"Device_Activity-NewSendBoradcast-run-- Error in send");
 			}
+			socket.close();
 
 		}
 
@@ -127,14 +131,15 @@ public class Device_Activity extends Activity {
 	static String ANY_USER = "00:00:00:00:00:00";
 	static String USERS = "users";
 	static String MY_DATA = "my_data";
+	public static int PORT = 6002;
+	DatagramSocket dd_socket = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		setContentView(R.layout.activity_device);
-		Main_Service.Flag = true;
-		if (Network.isWifiOn()) {
+		if (Main_Service.wifi) {
 
 			SharedPreferences users_sp = getSharedPreferences(USERS,
 					MODE_PRIVATE);
@@ -144,8 +149,8 @@ public class Device_Activity extends Activity {
 					.keySet());
 
 			Thread sendbroad = new Thread(new NewSendBroadcast(
-					my_data.getString("name", "userName"), Network.getMAC(),
-					6001, Network.getBIP()));
+					my_data.getString("name", Main_Service.DEFAULT_USER_NAME),
+					Network.getMAC(), Main_Service.NET_PORT, Network.getBIP()));
 
 			sendbroad.start();
 
@@ -159,9 +164,10 @@ public class Device_Activity extends Activity {
 			Toast.makeText(getBaseContext(), "Starting Device Discovery",
 					Toast.LENGTH_LONG).show();
 
-			new Thread(new DeviceDiscovery(6002)).start();
+			new Thread(new DeviceDiscovery(PORT)).start();
 
 		}
+		// else - no net. go to some other pg
 
 		final ListView lv = (ListView) findViewById(R.id.DeviceList);
 		arrayAdapter = new ArrayAdapter<String>(this,
@@ -200,7 +206,10 @@ public class Device_Activity extends Activity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		Main_Service.Flag = false;
+		if (dd_socket != null) {
+			dd_socket.close();// close the socket to stop device discovery
+								// thread
+		}
 		Log.i(Main_Service.LOG_TAG, "Device_Activity-onDestroy");
 	}
 

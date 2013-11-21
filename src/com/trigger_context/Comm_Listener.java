@@ -8,7 +8,7 @@ import android.util.Log;
 
 public class Comm_Listener implements Runnable {
 	private int port;
-	private ServerSocket serverSocket;
+	public static ServerSocket serverSocket = null;
 
 	public Comm_Listener(int port) {
 		this.port = port;
@@ -26,8 +26,8 @@ public class Comm_Listener implements Runnable {
 	@Override
 	public void run() {
 		Log.i(Main_Service.LOG_TAG, "Comm_Listener--Started Thread");
-		Socket req;
-		while (true) {
+		Socket req = null;
+		while (Main_Service.wifi) {
 			try {
 				req = serverSocket.accept();
 				new Thread(new Cond_Action(req)).start();
@@ -39,6 +39,15 @@ public class Comm_Listener implements Runnable {
 				Log.i(Main_Service.LOG_TAG, "Comm_Listener-Run--Error Accept");
 			}
 
+		}
+		try {
+			if (!serverSocket.isClosed()) {
+				serverSocket.close();
+			}
+			serverSocket = null;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }
