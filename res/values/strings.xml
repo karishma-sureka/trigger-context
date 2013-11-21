@@ -17,11 +17,22 @@
     <string name="action_settings3">ADD USER</string>
     <string name="title_activity_configured_users">ConfiguredUsers</string>
     <string name="add_user">Add User</string>
-    <string name="set_actions">Set Actions</string>
+    <string name="set_actions">Set Actions   </string>
     <string name="reset">Reset</string>
     <string name="title_activity_add_user">AddUser</string>
     <string name="user_name_">"User name: "</string>
     <string name="mac_address">Mac Address</string>
     <string name="save_amp_configure">Save &amp; Configure</string>
+    <string name="welcome_to_trigger_based_de_vices_automating_tasks_associating_them_with_your_surrounding_devices_">Welcome to Trigger Based Devices! Automating tasks associating them with your surrounding devices! :)</string>
+    <string name="save_actions">Save Actions</string>
+    <string name="send_a_sms_">Send a SMS :</string>
+    <string name="send_an_email_">Send an Email :</string>
+    <string name="tweet_">Tweet :</string>
+    <string name="set_toggles_">Set Toggles :</string>
+    <string name="open_a_link_">Open a Link :</string>
+    <string name="remote_server_cmd_">Remote Server Cmd :</string>
+    <string name="file_transfer_">File Transfer :</string>
+    <string name="send_ccf_msg_">Send CCF msg :</string>
+    <string name="sync_ccfsync_">Sync (\\\\ccfSync\\\\) :</string>
 
 </resources>

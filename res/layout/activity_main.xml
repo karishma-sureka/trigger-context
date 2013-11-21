@@ -8,12 +8,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".Main_Activity" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
-
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
@@ -23,5 +17,15 @@
         android:layout_marginBottom="66dp"
         android:text="@string/list_devices" 
         android:onClick="goToDeviceActivity"/>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="28dp"
+        android:text="@string/welcome_to_trigger_based_de_vices_automating_tasks_associating_them_with_your_surrounding_devices_"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>

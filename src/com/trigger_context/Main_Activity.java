@@ -48,7 +48,7 @@ public class Main_Activity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.about, menu);
+		getMenuInflater().inflate(R.menu.config, menu);
 		return true;
 	}
 
@@ -56,10 +56,6 @@ public class Main_Activity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		switch (item.getItemId()) {
-		case R.id.action_settings:
-			Intent AboutPage = new Intent(getBaseContext(), About.class);
-			startActivity(AboutPage);
-			return true;
 		case R.id.action_settings2:
 			Intent ConfiguredUsers = new Intent(getBaseContext(), ConfiguredUsers.class);
 			startActivity(ConfiguredUsers);

@@ -226,21 +226,26 @@
             android:id="@+id/tableRow6"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:padding="20dip"  >
+            android:padding="20dip"             
+            style="?android:attr/buttonBarStyle">
 
              <Button
                  android:id="@+id/button1"
-                 android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                  android:text="@string/set_actions" 
-                 android:background="@drawable/button_custom1"/>
+                 android:layout_width="0dp"
+                 android:layout_weight="1"
+                 style="?android:attr/buttonBarButtonStyle"
+                 android:background="#20B2AA"/>
 
              <Button
                  android:id="@+id/button2"
-                 android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                  android:text="@string/reset" 
-                 android:background="@drawable/button_custom1"/>
+                 android:layout_width="0dp"
+                 android:layout_weight="1"
+                 style="?android:attr/buttonBarButtonStyle"
+                 android:background="#20B2AA"/>
             
          </TableRow>
          
