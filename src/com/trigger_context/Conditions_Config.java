@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -18,8 +20,8 @@ import android.widget.Toast;
 
 public class Conditions_Config extends Activity {
 
-	String mac;
-	String name;
+	String mac = null;
+	String name = null;
 	final HashMap<String, Boolean> setConditions = new HashMap<String, Boolean>();
 	SharedPreferences conditions;
 	Editor editor;
@@ -38,10 +40,11 @@ public class Conditions_Config extends Activity {
 		setContentView(R.layout.condition_configuration);
 
 		Bundle bundle = getIntent().getExtras();// check if it snull. means no
-												// bundle sent
+				// bundle sent
+		
 		mac = bundle.getString("mac");
 		name = bundle.getString("name");
-
+		
 		conditions = getSharedPreferences(mac, MODE_PRIVATE);
 		setConditions.put("trigger", true);
 		// Read the previous data and have the toggle button state accordingly
@@ -271,4 +274,5 @@ public class Conditions_Config extends Activity {
 		});
 
 	}
+	
 }

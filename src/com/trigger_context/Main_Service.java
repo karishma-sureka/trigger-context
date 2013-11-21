@@ -175,6 +175,7 @@ public class Main_Service extends Service implements
 		users_sp.registerOnSharedPreferenceChangeListener(this);
 
 		Log.i(LOG_TAG, "Main_Service-onCreate");
+		noti("main serv","started");
 	}
 
 	@Override
