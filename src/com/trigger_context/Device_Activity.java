@@ -140,13 +140,8 @@ public class Device_Activity extends Activity {
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		setContentView(R.layout.activity_device);
 		if (Main_Service.wifi) {
-
-			SharedPreferences users_sp = getSharedPreferences(USERS,
-					MODE_PRIVATE);
 			SharedPreferences my_data = getSharedPreferences(MY_DATA,
 					MODE_PRIVATE);
-			ArrayList<String> users = new ArrayList<String>(users_sp.getAll()
-					.keySet());
 
 			Thread sendbroad = new Thread(new NewSendBroadcast(
 					my_data.getString("name", Main_Service.DEFAULT_USER_NAME),

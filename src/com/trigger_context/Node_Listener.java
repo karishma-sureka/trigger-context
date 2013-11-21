@@ -11,7 +11,6 @@ import android.util.Log;
 public class Node_Listener implements Runnable {
 	private ArrayList<String> macAddressListActive = new ArrayList<String>();
 	public static DatagramSocket datagramSocket = null, replySocket = null;
-	private DatagramPacket myPacket;
 	private int Port;
 	private String mac, name;
 	private String data;
@@ -21,7 +20,6 @@ public class Node_Listener implements Runnable {
 	public Node_Listener(int port, String mac) {
 		this.Port = port;
 		this.mac = mac;
-		String myData = name + ";" + mac;
 		try {
 			replySocket = new DatagramSocket();
 			datagramSocket = new DatagramSocket(Port);
