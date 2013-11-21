@@ -17,13 +17,15 @@ public class Network implements Runnable {
 	static private InetAddress BIP;
 
 	public static synchronized InetAddress getBIP() {
-		if (isWifiOn())
+		if (isWifiOn()) {
 			return BIP;
-		else
+		} else {
 			return null;
+		}
 	}
 
 	private static String getDeviceMAC() {
+
 		Log.i(Main_Service.LOG_TAG, "Network-getDeviceMAC--Start");
 		WifiManager wifiManager = (WifiManager) Main_Service.main_Service
 				.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
@@ -32,17 +34,19 @@ public class Network implements Runnable {
 	}
 
 	public static synchronized String getIP() {
-		if (isWifiOn())
+		if (isWifiOn()) {
 			return IP;
-		else
+		} else {
 			return null;
+		}
 	}
 
 	public static synchronized String getMAC() {
-		if (isWifiOn())
+		if (isWifiOn()) {
 			return MAC;
-		else
+		} else {
 			return null;
+		}
 	}
 
 	public static boolean isWifiOn() {
@@ -72,10 +76,11 @@ public class Network implements Runnable {
 				.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 		DhcpInfo dhcp = wifi.getDhcpInfo();
 
-		int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
+		int broadcast = dhcp.ipAddress & dhcp.netmask | ~dhcp.netmask;
 		byte[] quads = new byte[4];
-		for (int k = 0; k < 4; k++)
-			quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
+		for (int k = 0; k < 4; k++) {
+			quads[k] = (byte) (broadcast >> k * 8 & 0xFF);
+		}
 		try {
 			return InetAddress.getByAddress(quads);
 
@@ -87,6 +92,7 @@ public class Network implements Runnable {
 
 	private String getDeviceIP() {
 		Log.i(Main_Service.LOG_TAG, "Network-getDeviceIP--Start");
+
 		WifiManager wifiManager = (WifiManager) Main_Service.main_Service
 				.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 		WifiInfo wifiInfo = wifiManager.getConnectionInfo();

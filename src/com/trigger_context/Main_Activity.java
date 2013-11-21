@@ -8,12 +8,19 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 public class Main_Activity extends Activity {
 
 	private int mid = 0;
 	public static Main_Activity main_activity;
+
+	public void goToDeviceActivity(View a) {
+		Intent x = new Intent(getBaseContext(), Device_Activity.class);
+		startActivity(x);
+	}
 
 	public void noti(String title, String txt) {
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
@@ -29,23 +36,33 @@ public class Main_Activity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		main_activity = this;
 		Start_MainService();
+		// /////////
 		Start_NetworkService();
-		Intent newIntent = new Intent(this, Conditions_Config.class);
-		newIntent.putExtra("mac", Network_Service.ANY_USER);
-		newIntent.putExtra("name", "All Users");
-		startActivity(newIntent);
-		
-		/*main_activity = this;
-		
-		Log.i(Main_Service.LOG_TAG, "Main_Activity-onCreate--End");*/
+		// ////////
+		Log.i(Main_Service.LOG_TAG, "Main_Activity-onCreate--End");
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main_, menu);
+		getMenuInflater().inflate(R.menu.about, menu);
 		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle item selection
+		switch (item.getItemId()) {
+		case R.id.action_settings:
+			Intent AboutPage = new Intent(getBaseContext(), About.class);
+			startActivity(AboutPage);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	private void Start_MainService() {

@@ -25,17 +25,23 @@ public class Conditions_Config extends Activity {
 	Editor editor;
 
 	@Override
+	public void onBackPressed() {
+		finish();
+	}
+
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
+
 		super.onCreate(savedInstanceState);
-		//Main_Service.main_Service.noti("asd","asdasd");
+		// Main_Service.main_Service.noti("asd","asdasd");
 
 		setContentView(R.layout.condition_configuration);
-		
-		Bundle bundle = getIntent().getExtras();//check if it snull. means no bundle sent
+
+		Bundle bundle = getIntent().getExtras();// check if it snull. means no
+												// bundle sent
 		mac = bundle.getString("mac");
 		name = bundle.getString("name");
-		
+
 		conditions = getSharedPreferences(mac, MODE_PRIVATE);
 		setConditions.put("trigger", true);
 		// Read the previous data and have the toggle button state accordingly
@@ -59,11 +65,12 @@ public class Conditions_Config extends Activity {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				RadioButton radioButton = (RadioButton) findViewById(checkedId);
-				if (radioButton == null)
+				if (radioButton == null) {
 					return;
-				if ((radioButton.getText()).equals("Arrival")) {
+				}
+				if (radioButton.getText().equals("Arrival")) {
 					setConditions.put("trigger", true);
-				} else if ((radioButton.getText()).equals("Departure")) {
+				} else if (radioButton.getText().equals("Departure")) {
 					setConditions.put("trigger", false);
 				}
 			}
@@ -84,19 +91,19 @@ public class Conditions_Config extends Activity {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				RadioButton radioButton = (RadioButton) findViewById(checkedId);
-				if (radioButton == null)
+				if (radioButton == null) {
 					return;
-				if ((radioButton.getText()).equals("On")) {
+				}
+				if (radioButton.getText().equals("On")) {
 					setConditions.put("bluetooth", true);
-				} else if ((radioButton.getText()).equals("Off")) {
+				} else if (radioButton.getText().equals("Off")) {
 					setConditions.put("bluetooth", false);
 				}
 			}
 
 		});
 		RadioGroup wifi = (RadioGroup) findViewById(R.id.radioGroup2);
-		if (cond_map.containsKey("wifi"))
-		{
+		if (cond_map.containsKey("wifi")) {
 			if (conditions.getBoolean("wifi", false)) {
 				RadioButton rb = (RadioButton) wifi.getChildAt(0);
 				rb.setChecked(true);
@@ -109,11 +116,12 @@ public class Conditions_Config extends Activity {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				RadioButton radioButton = (RadioButton) findViewById(checkedId);
-				if (radioButton == null)
+				if (radioButton == null) {
 					return;
-				if ((radioButton.getText()).equals("On")) {
+				}
+				if (radioButton.getText().equals("On")) {
 					setConditions.put("wifi", true);
-				} else if ((radioButton.getText()).equals("Off")) {
+				} else if (radioButton.getText().equals("Off")) {
 					setConditions.put("wifi", false);
 				}
 			}
@@ -121,8 +129,7 @@ public class Conditions_Config extends Activity {
 		});
 
 		RadioGroup gps = (RadioGroup) findViewById(R.id.radioGroup3);
-		if (cond_map.containsKey("gps"))
-		{
+		if (cond_map.containsKey("gps")) {
 			if (conditions.getBoolean("gps", false)) {
 				RadioButton rb = (RadioButton) gps.getChildAt(0);
 				rb.setChecked(true);
@@ -135,19 +142,19 @@ public class Conditions_Config extends Activity {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				RadioButton radioButton = (RadioButton) findViewById(checkedId);
-				if (radioButton == null)
+				if (radioButton == null) {
 					return;
-				if ((radioButton.getText()).equals("On")) {
+				}
+				if (radioButton.getText().equals("On")) {
 					setConditions.put("gps", true);
-				} else if ((radioButton.getText()).equals("Off")) {
+				} else if (radioButton.getText().equals("Off")) {
 					setConditions.put("gps", false);
 				}
 			}
 
 		});
 		RadioGroup headset = (RadioGroup) findViewById(R.id.radioGroup4);
-		if (cond_map.containsKey("headset"))
-		{
+		if (cond_map.containsKey("headset")) {
 			if (conditions.getBoolean("headset", false)) {
 				RadioButton rb = (RadioButton) headset.getChildAt(0);
 				rb.setChecked(true);
@@ -160,19 +167,19 @@ public class Conditions_Config extends Activity {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				RadioButton radioButton = (RadioButton) findViewById(checkedId);
-				if (radioButton == null)
+				if (radioButton == null) {
 					return;
-				if ((radioButton.getText()).equals("On")) {
+				}
+				if (radioButton.getText().equals("On")) {
 					setConditions.put("headset", true);
-				} else if ((radioButton.getText()).equals("Off")) {
+				} else if (radioButton.getText().equals("Off")) {
 					setConditions.put("headset", false);
 				}
 			}
 
 		});
 		RadioGroup sms = (RadioGroup) findViewById(R.id.radioGroup5);
-		if (cond_map.containsKey("sms"))
-		{
+		if (cond_map.containsKey("sms")) {
 			if (conditions.getBoolean("sms", false)) {
 				RadioButton rb = (RadioButton) sms.getChildAt(0);
 				rb.setChecked(true);
@@ -185,11 +192,12 @@ public class Conditions_Config extends Activity {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				RadioButton radioButton = (RadioButton) findViewById(checkedId);
-				if (radioButton == null)
+				if (radioButton == null) {
 					return;
-				if ((radioButton.getText()).equals("On")) {
+				}
+				if (radioButton.getText().equals("On")) {
 					setConditions.put("sms", true);
-				} else if ((radioButton.getText()).equals("Off")) {
+				} else if (radioButton.getText().equals("Off")) {
 					setConditions.put("sms", false);
 				}
 			}
@@ -198,10 +206,11 @@ public class Conditions_Config extends Activity {
 
 		final Button actions = (Button) findViewById(R.id.button1);
 		actions.setOnClickListener(new View.OnClickListener() {
+			@Override
 			public void onClick(View v) {
 				Intent myIntent = new Intent(Conditions_Config.this,
 						Action_Config.class);
-				myIntent.putExtra("mac", mac );
+				myIntent.putExtra("mac", mac);
 				myIntent.putExtra("name", name);
 				Set<String> keys = setConditions.keySet();
 				for (String i : keys) {
@@ -212,9 +221,10 @@ public class Conditions_Config extends Activity {
 
 			}
 		});
-		
+
 		final Button reset = (Button) findViewById(R.id.button2);
 		reset.setOnClickListener(new View.OnClickListener() {
+			@Override
 			public void onClick(View v) {
 				// clear UI
 				RadioGroup radioGrp = (RadioGroup) findViewById(R.id.radioGroup0);
@@ -250,7 +260,8 @@ public class Conditions_Config extends Activity {
 					radioGrp.clearCheck();
 				}
 
-				setConditions.clear();// buffer to be sent to the next activity is cleared
+				setConditions.clear();// buffer to be sent to the next activity
+										// is cleared
 				setConditions.put("trigger", true);
 
 				// clear existing db for the usr
@@ -258,10 +269,6 @@ public class Conditions_Config extends Activity {
 				editor.commit();
 			}
 		});
-		
-	}
 
-	public void onBackPressed() {
-		finish();
 	}
 }

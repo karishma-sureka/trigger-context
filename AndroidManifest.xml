@@ -11,16 +11,15 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name" 
-        android:theme="@android:style/Theme.Holo">
-        <service android:name=".Network_Service" />
-		<service android:name=".Main_Service" />
+        android:label="@string/app_name" >
+        <service android:name="com.trigger_context.Network_Service" />
+        <service android:name="com.trigger_context.Main_Service" />
+
         <activity
             android:name="com.trigger_context.Main_Activity"
             android:label="@string/app_name" >
@@ -29,6 +28,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.trigger_context.Device_Activity"
+            android:label="@string/title_activity_device_" >
         </activity>
         <activity
             android:name="com.trigger_context.Conditions_Config"
@@ -69,11 +72,17 @@
         <activity
             android:name="com.trigger_context.conf.Action_Post_Tweet"
             android:label="@string/app_name" />
-        
+
         <receiver android:name="com.trigger_context.On_Network_Change" >
-                <intent-filter>
-                    <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-                </intent-filter>
-            </receiver>
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name="com.trigger_context.About"
+            android:label="@string/title_activity_about" >
+        </activity>
     </application>
+
 </manifest>

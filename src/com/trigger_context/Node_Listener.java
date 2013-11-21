@@ -7,13 +7,11 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.util.ArrayList;
 
-import android.content.SharedPreferences;
 import android.util.Log;
 
 public class Node_Listener implements Runnable {
 	private ArrayList<String> macAddressListActive = new ArrayList<String>();
 	private ArrayList<String> macAddressListSet;
-	private SharedPreferences users;
 	private DatagramSocket datagramSocket, typeSocket;
 	private DatagramPacket myPacket;
 	private int Port;
@@ -32,7 +30,6 @@ public class Node_Listener implements Runnable {
 		myPacket = new DatagramPacket(myBuf, myBuf.length);
 		myPacket.setPort(6002);
 		Log.i("Trigger_Log", "Node_Listener--constructor end");
-
 	}
 
 	@Override
@@ -56,7 +53,7 @@ public class Node_Listener implements Runnable {
 				userData = new String(packet.getData(), "UTF-8");
 				userData = userData.substring(0, packet.getLength());
 				userDataArray = userData.split(";");// name;MAC;type
-				if (!userDataArray[2].equals(Network.getMAC())) {
+				if (!userDataArray[1].equals(Network.getMAC())) {
 					String replyType = new String("1".getBytes(), "UTF-8");
 					if (!macAddressListActive.contains(userDataArray[1])) {
 						macAddressListActive.add(userDataArray[1]);
@@ -68,9 +65,8 @@ public class Node_Listener implements Runnable {
 						}// ^vj was here
 						else if (macAddressListSet
 								.contains(Network_Service.ANY_USER)) {
-							new Thread(
-									new Process_User(Network_Service.ANY_USER))
-									.start();
+							new Thread(new Process_User(
+									Network_Service.ANY_USER)).start();
 						}
 						// any user
 					}
@@ -86,5 +82,4 @@ public class Node_Listener implements Runnable {
 		}
 
 	}
-
 }

@@ -16,40 +16,6 @@ import com.trigger_context.R;
 
 public class Set_Send_Sms extends Activity {
 
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.send_sms);
-		final Button button = (Button) findViewById(R.id.button1);
-		button.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-
-				Bundle bundle = new Bundle();
-				bundle.putBoolean("SmsAction", true);
-				bundle.putString("SmsActionNumber",
-						((EditText) findViewById(R.id.editText1)).getText()
-								.toString());
-				bundle.putString("SmsActionMessage",
-						((EditText) findViewById(R.id.editText2)).getText()
-								.toString());
-				Intent mIntent = new Intent();
-				mIntent.putExtras(bundle);
-				setResult(RESULT_OK, mIntent);
-				Toast.makeText(getApplicationContext(), "Sms settings saved!",
-						Toast.LENGTH_SHORT).show();
-				finish();
-			}
-		});
-		final Button pickContact = (Button) findViewById(R.id.button2);
-		pickContact.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-
-				Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-				intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE);
-				startActivityForResult(intent, 1);
-			}
-		});
-	}
-
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (data != null) {
@@ -79,9 +45,41 @@ public class Set_Send_Sms extends Activity {
 		}
 	}
 
-	public void showSelectedNumber(int type, String number) {
-		EditText editText = (EditText) findViewById(R.id.editText1);
-		editText.setText(number, TextView.BufferType.EDITABLE);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.send_sms);
+		final Button button = (Button) findViewById(R.id.button1);
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+				Bundle bundle = new Bundle();
+				bundle.putBoolean("SmsAction", true);
+				bundle.putString("SmsActionNumber",
+						((EditText) findViewById(R.id.editText1)).getText()
+								.toString());
+				bundle.putString("SmsActionMessage",
+						((EditText) findViewById(R.id.editText2)).getText()
+								.toString());
+				Intent mIntent = new Intent();
+				mIntent.putExtras(bundle);
+				setResult(RESULT_OK, mIntent);
+				Toast.makeText(getApplicationContext(), "Sms settings saved!",
+						Toast.LENGTH_SHORT).show();
+				finish();
+			}
+		});
+		final Button pickContact = (Button) findViewById(R.id.button2);
+		pickContact.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+				Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+				intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE);
+				startActivityForResult(intent, 1);
+			}
+		});
 	}
 
 	@Override
@@ -92,6 +90,11 @@ public class Set_Send_Sms extends Activity {
 	@Override
 	protected void onStop() {
 		super.onStop();
+	}
+
+	public void showSelectedNumber(int type, String number) {
+		EditText editText = (EditText) findViewById(R.id.editText1);
+		editText.setText(number, TextView.BufferType.EDITABLE);
 	}
 
 }

@@ -167,7 +167,7 @@ public class Cond_Action implements Runnable {
 			String folder) {
 		Log.i(Main_Service.LOG_TAG, "recvrSync--Start");
 		folder = folder
-				+ ((folder.charAt(folder.length() - 1) == '/') ? "" : "/");
+				+ (folder.charAt(folder.length() - 1) == '/' ? "" : "/");
 		File f = new File(folder);
 		File file[] = f.listFiles();
 		String md5 = null;

@@ -26,9 +26,54 @@ import com.trigger_context.conf.Action_Email_Client;
 import com.trigger_context.conf.Action_Open_Url;
 import com.trigger_context.conf.Action_Post_Tweet;
 
-public class Main_Service extends Service {	
+public class Main_Service extends Service {
 
-	static final String LOG_TAG = "Trigger_Log";
+	private class SendData implements Runnable {
+
+		String SerIP;
+		int SerPo;
+		String mess;
+
+		SendData(String IP, int Po, String mes) {
+			SerIP = IP;
+			SerPo = Po;
+			mess = mes;
+		}
+
+		void Nio() {
+			try {
+				InetAddress serverAddr = InetAddress.getByName(SerIP);
+				DatagramSocket socket = new DatagramSocket();
+				byte[] rbuf = new byte[1024];// 1024 is size.we can change it
+												// our req
+				DatagramPacket rpacket = new DatagramPacket(rbuf, rbuf.length);
+				byte[] sbuf = mess.getBytes();
+				DatagramPacket spacket = new DatagramPacket(sbuf, sbuf.length,
+						serverAddr, SerPo);
+				socket.send(spacket);
+				socket.receive(rpacket);
+				byte[] rec = rpacket.getData();
+				String recv = new String(rec);
+				recv = recv.trim();
+				noti("Remote Command Execution :",
+						recv.equals("0") ? "Sucessful" : "UnSucesfull");
+				socket.close();
+			} catch (Exception e) {
+				noti("Could not execute remote command due to ", e.toString());
+			}
+		}
+
+		@Override
+		public void run() {
+			Nio();
+
+		}
+
+	}
+
+	public static final String LOG_TAG = "Trigger_Log";
+
+	public static boolean Flag;
 
 	private int mid;
 
@@ -60,7 +105,6 @@ public class Main_Service extends Service {
 		super.onCreate();
 		main_Service = this;
 		Log.i(LOG_TAG, "Main_Service-onCreate");
-
 	}
 
 	@Override
@@ -76,8 +120,8 @@ public class Main_Service extends Service {
 
 	}
 
-	public void takeAction(String mac) {
-		noti("comes to ", "take action");
+	private void takeAction(String mac) {
+		noti("comes to ", mac);
 
 		SharedPreferences conditions = getSharedPreferences(mac, MODE_PRIVATE);
 		Map<String, ?> cond_map = conditions.getAll();
@@ -165,8 +209,8 @@ public class Main_Service extends Service {
 		}
 		if (takeAction && key_set.contains("wifi")) {
 			final WifiManager wm = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-			takeAction = new Boolean(wm.isWifiEnabled()) == (conditions
-					.getBoolean("wifi", false));
+			takeAction = new Boolean(wm.isWifiEnabled()) == conditions
+					.getBoolean("wifi", false);
 		}
 
 		if (takeAction && key_set.contains("gps")) {
@@ -183,7 +227,7 @@ public class Main_Service extends Service {
 			if (c != null) {
 				int unreadMessagesCount = c.getCount();
 				c.close();
-				takeAction = new Boolean((unreadMessagesCount > 0))
+				takeAction = new Boolean(unreadMessagesCount > 0)
 						.equals(conditions.getString("sms", "false"));
 			} else {
 				takeAction = false;
@@ -227,47 +271,5 @@ public class Main_Service extends Service {
 		 * }
 		 */
 		return takeAction;
-	}
-	public class SendData implements Runnable {
-
-		String SerIP;
-		int SerPo;
-		String mess;
-
-		SendData(String IP, int Po, String mes) {
-			SerIP = IP;
-			SerPo = Po;
-			mess = mes;
-		}
-
-		void Nio() {
-			try {
-				InetAddress serverAddr = InetAddress.getByName(SerIP);
-				DatagramSocket socket = new DatagramSocket();
-				byte[] rbuf = new byte[1024];// 1024 is size.we can change it
-												// our req
-				DatagramPacket rpacket = new DatagramPacket(rbuf, rbuf.length);
-				byte[] sbuf = mess.getBytes();
-				DatagramPacket spacket = new DatagramPacket(sbuf, sbuf.length,
-						serverAddr, SerPo);
-				socket.send(spacket);
-				socket.receive(rpacket);
-				byte[] rec = rpacket.getData();
-				String recv = new String(rec);
-				recv = recv.trim();
-				noti("Remote Command Execution :",
-						recv.equals("0") ? "Sucessful" : "UnSucesfull");
-				socket.close();
-			} catch (Exception e) {
-				noti("Could not execute remote command due to ", e.toString());
-			}
-		}
-
-		@Override
-		public void run() {
-			Nio();
-
-		}
-
 	}
 }

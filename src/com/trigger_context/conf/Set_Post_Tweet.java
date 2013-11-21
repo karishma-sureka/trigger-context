@@ -12,11 +12,13 @@ import com.trigger_context.R;
 
 public class Set_Post_Tweet extends Activity {
 
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.post_tweet);
 		final Button button = (Button) findViewById(R.id.button1);
 		button.setOnClickListener(new View.OnClickListener() {
+			@Override
 			public void onClick(View v) {
 
 				Bundle bundle = new Bundle();
