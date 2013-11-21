@@ -21,8 +21,11 @@ public class AddUser extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent myIntent = new Intent(getBaseContext(), Conditions_Config.class);
-				myIntent.putExtra("mac", ((EditText)findViewById(R.id.editText2)).getText());
-				myIntent.putExtra("name", ((EditText)findViewById(R.id.editText1)).getText());
+				String mac = ((EditText)findViewById(R.id.editText2)).getText().toString();
+				String name = ((EditText)findViewById(R.id.editText1)).getText().toString();
+				myIntent.putExtra("mac", mac);
+				myIntent.putExtra("name", name);
+				Main_Service.main_Service.noti(mac, name);
 				startActivity(myIntent);
 
 			}

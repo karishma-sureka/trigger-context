@@ -137,6 +137,10 @@ public class ConfiguredUsers extends Activity {
 					ConfiguredUsers.class);
 			startActivity(ConfiguredUsers);
 			return true;
+		case R.id.action_settings3:
+			Intent AddUser = new Intent(getBaseContext(), AddUser.class);
+			startActivity(AddUser);
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
