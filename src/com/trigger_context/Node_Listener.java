@@ -1,7 +1,6 @@
 package com.trigger_context;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
@@ -11,43 +10,37 @@ import android.util.Log;
 
 public class Node_Listener implements Runnable {
 	private ArrayList<String> macAddressListActive = new ArrayList<String>();
-	private ArrayList<String> macAddressListSet;
-	private DatagramSocket datagramSocket, typeSocket;
+	public static DatagramSocket datagramSocket = null, replySocket = null;
 	private DatagramPacket myPacket;
 	private int Port;
+	private String mac, name;
+	private String data;
+	private byte[] byteData;
+	private DatagramPacket pkt;
 
-	public Node_Listener(ArrayList<String> storedList, int port, String name,
-			String mac) {
-		macAddressListSet = storedList;
+	public Node_Listener(int port, String mac) {
 		this.Port = port;
+		this.mac = mac;
 		String myData = name + ";" + mac;
-		byte[] myBuf = null;
 		try {
-			myBuf = myData.getBytes("UTF-8");
-		} catch (UnsupportedEncodingException e) {
+			replySocket = new DatagramSocket();
+			datagramSocket = new DatagramSocket(Port);
+		} catch (SocketException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		myPacket = new DatagramPacket(myBuf, myBuf.length);
-		myPacket.setPort(6002);
 		Log.i("Trigger_Log", "Node_Listener--constructor end");
 	}
 
 	@Override
 	public void run() {
 		Log.i("Trigger_Log", "Node_Listener-run--start");
-
-		try {
-			datagramSocket = new DatagramSocket(Port);
-		} catch (SocketException e) {
-			Log.i("Trigger_Log", "Node_Listener--Error in Create Socket");
-
-		}
 		byte[] buf = new byte[256];
 		String userData;
 		String[] userDataArray;
 		DatagramPacket packet = new DatagramPacket(buf, buf.length);
 
-		while (true) {
+		while (Main_Service.wifi) {
 			try {
 				datagramSocket.receive(packet);
 				userData = new String(packet.getData(), "UTF-8");
@@ -59,27 +52,41 @@ public class Node_Listener implements Runnable {
 						macAddressListActive.add(userDataArray[1]);
 						// processing - trigger on arrival - any user or saved
 						// user
-						if (macAddressListSet.contains(userDataArray[1])) {
-							new Thread(new Process_User(userDataArray[1]))
-									.start();
-						}// ^vj was here
-						else if (macAddressListSet
-								.contains(Network_Service.ANY_USER)) {
-							new Thread(new Process_User(
-									Network_Service.ANY_USER)).start();
+						if (Main_Service.conf_macs.contains(userDataArray[1])) {
+							new Thread(new Process_User(userDataArray[1],
+									packet.getAddress())).start();
+						} else if (Main_Service.conf_macs
+								.contains(Main_Service.ANY_USER)) {
+							new Thread(new Process_User(Main_Service.ANY_USER,
+									packet.getAddress())).start();
 						}
-						// any user
+						// ^any user
 					}
 					if (userDataArray[2].equals(replyType)) {
-						typeSocket = new DatagramSocket();
-						myPacket.setAddress(packet.getAddress());
-						typeSocket.send(myPacket);
+						name = (String) Network_Service.ns.getSharedMap(
+								Main_Service.MY_DATA).get("name");
+						if (name == null) {
+							name = Main_Service.DEFAULT_USER_NAME;
+						}
+						data = name + ";" + mac;
+						byteData = data.getBytes();
+						pkt = new DatagramPacket(byteData, byteData.length,
+								packet.getAddress(), Device_Activity.PORT);
+
+						replySocket.send(pkt);
 					}
 				}
 			} catch (IOException e) {
-				Log.i("Trigger_Log", "Node_Listener-run--Error in receive");
+				if (!datagramSocket.isClosed()) {
+					Log.i("Trigger_Log", "Node_Listener-run--Error in receive");
+				}
 			}
 		}
-
+		if (!datagramSocket.isClosed()) {
+			datagramSocket.close();
+		}
+		datagramSocket = null;
+		replySocket.close();
+		Log.i("Trigger_Log", "Node_Listener-run--ending");
 	}
 }

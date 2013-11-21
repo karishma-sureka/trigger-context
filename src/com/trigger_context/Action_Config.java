@@ -87,7 +87,7 @@ public class Action_Config extends Activity {
 
 			SharedPreferences users;
 			Editor edit;
-			users = getSharedPreferences("users", MODE_PRIVATE);
+			users = getSharedPreferences(Main_Service.USERS, MODE_PRIVATE);
 			edit = users.edit();
 			edit.putString(mac, name);
 			edit.commit();
