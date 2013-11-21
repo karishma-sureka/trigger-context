@@ -3,7 +3,7 @@
 
     <string name="app_name">Trigger</string>
     <string name="title_activity_main">Trigger</string>
-    <string name="action_settings">About</string>
+    <string name="action_settings">ABOUT</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_device_">Device_Activity</string>
     <string name="save">Save</string>
@@ -13,5 +13,15 @@
     <string name="Desc">This App Was Created As Part Of Special Topic of 7th SEM</string>
     <string name="App_Name">Trigger Context</string>
     <string name="Version">1.0</string>
+    <string name="action_settings2">CONFIG</string>
+    <string name="action_settings3">ADD USER</string>
+    <string name="title_activity_configured_users">ConfiguredUsers</string>
+    <string name="add_user">Add User</string>
+    <string name="set_actions">Set Actions</string>
+    <string name="reset">Reset</string>
+    <string name="title_activity_add_user">AddUser</string>
+    <string name="user_name_">"User name: "</string>
+    <string name="mac_address">Mac Address</string>
+    <string name="save_amp_configure">Save &amp; Configure</string>
 
 </resources>
