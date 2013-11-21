@@ -143,23 +143,22 @@ public class Device_Activity extends Activity {
 			SharedPreferences my_data = getSharedPreferences(MY_DATA,
 					MODE_PRIVATE);
 
-			Thread sendbroad = new Thread(new NewSendBroadcast(
-					my_data.getString("name", Main_Service.DEFAULT_USER_NAME),
-					Network.getMAC(), Main_Service.NET_PORT, Network.getBIP()));
+			Thread devicedis = new Thread(new DeviceDiscovery(PORT));
 
-			sendbroad.start();
+			devicedis.start();
 
 			try {
-				sendbroad.join();
+				devicedis.join();
 			} catch (InterruptedException e) {
 				Log.i(Main_Service.LOG_TAG,
 						"Device_Activity-onCreate--Error in join");
 
 			}
+			new Thread(new NewSendBroadcast(my_data.getString("name",
+					Main_Service.DEFAULT_USER_NAME), Network.getMAC(),
+					Main_Service.NET_PORT, Network.getBIP())).start();
 			Toast.makeText(getBaseContext(), "Starting Device Discovery",
 					Toast.LENGTH_LONG).show();
-
-			new Thread(new DeviceDiscovery(PORT)).start();
 
 		}
 		// else - no net. go to some other pg
