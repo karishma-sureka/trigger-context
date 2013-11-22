@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +19,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class ConfiguredUsers extends Activity {
 
@@ -38,11 +38,12 @@ public class ConfiguredUsers extends Activity {
 		for (Map.Entry<String, ?> entry : user_map.entrySet()) {
 			UserList.add(entry.getKey() + " -> " + entry.getValue().toString());
 
-			final ListView lv = (ListView) findViewById(R.id.UserList);
-			arrayAdapter = new ArrayAdapter<String>(this,
-					android.R.layout.simple_list_item_1, UserList);
-			lv.setAdapter(arrayAdapter);
-			lv.setClickable(true);
+		
+		final ListView lv = (ListView) findViewById(R.id.UserList);
+		arrayAdapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1, UserList);
+		lv.setAdapter(arrayAdapter);
+		lv.setClickable(true);
 
 			lv.setOnItemClickListener(new OnItemClickListener() {
 				@Override
@@ -57,8 +58,8 @@ public class ConfiguredUsers extends Activity {
 					Intent x = new Intent(getBaseContext(),
 							Conditions_Config.class);
 					// check this
-					x.putExtra("mac", clicked[1]);
-					x.putExtra("name", clicked[0]);
+					x.putExtra("mac", clicked[0]);
+					x.putExtra("name", clicked[1]);
 					startActivity(x);
 				}
 			});
@@ -88,10 +89,10 @@ public class ConfiguredUsers extends Activity {
 
 								private void removeUserFromList() {
 									Editor edit = users.edit();
-									edit.remove(clicked[1]);
+									edit.remove(clicked[0]);
 									edit.commit();
 									SharedPreferences conditions = getSharedPreferences(
-											clicked[1], MODE_PRIVATE);
+											clicked[0], MODE_PRIVATE);
 									edit = conditions.edit();
 									edit.clear();
 									edit.commit();

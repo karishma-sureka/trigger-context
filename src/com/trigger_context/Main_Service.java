@@ -171,7 +171,7 @@ public class Main_Service extends Service {
 
 		conf_macs = new ArrayList<String>(users_sp.getAll().keySet());
 		Log.i(LOG_TAG, "Main_Service-onCreate");
-		noti("main serv","started");
+		noti("main serv", "started");
 	}
 
 	@Override

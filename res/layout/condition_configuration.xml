@@ -236,7 +236,7 @@
                  android:layout_width="0dp"
                  android:layout_weight="1"
                  style="?android:attr/buttonBarButtonStyle"
-                 android:background="#20B2AA"/>
+                 android:background="#008B8B"/>
 
              <Button
                  android:id="@+id/button2"
@@ -245,7 +245,7 @@
                  android:layout_width="0dp"
                  android:layout_weight="1"
                  style="?android:attr/buttonBarButtonStyle"
-                 android:background="#20B2AA"/>
+                 android:background="#008B8B"/>
             
          </TableRow>
          

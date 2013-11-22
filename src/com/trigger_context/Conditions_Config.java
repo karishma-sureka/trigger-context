@@ -9,8 +9,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -35,7 +33,6 @@ public class Conditions_Config extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		// Main_Service.main_Service.noti("asd","asdasd");
 
 		setContentView(R.layout.condition_configuration);
 
@@ -44,6 +41,8 @@ public class Conditions_Config extends Activity {
 		
 		mac = bundle.getString("mac");
 		name = bundle.getString("name");
+		
+		Main_Service.main_Service.noti(mac, "condition_config: "+name);
 		
 		conditions = getSharedPreferences(mac, MODE_PRIVATE);
 		setConditions.put("trigger", true);
