@@ -19,7 +19,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class ConfiguredUsers extends Activity {
 
@@ -38,12 +37,11 @@ public class ConfiguredUsers extends Activity {
 		for (Map.Entry<String, ?> entry : user_map.entrySet()) {
 			UserList.add(entry.getKey() + " -> " + entry.getValue().toString());
 
-		
-		final ListView lv = (ListView) findViewById(R.id.UserList);
-		arrayAdapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, UserList);
-		lv.setAdapter(arrayAdapter);
-		lv.setClickable(true);
+			final ListView lv = (ListView) findViewById(R.id.UserList);
+			arrayAdapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_list_item_1, UserList);
+			lv.setAdapter(arrayAdapter);
+			lv.setClickable(true);
 
 			lv.setOnItemClickListener(new OnItemClickListener() {
 				@Override

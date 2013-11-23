@@ -37,13 +37,13 @@ public class Conditions_Config extends Activity {
 		setContentView(R.layout.condition_configuration);
 
 		Bundle bundle = getIntent().getExtras();// check if it snull. means no
-				// bundle sent
-		
+		// bundle sent
+
 		mac = bundle.getString("mac");
 		name = bundle.getString("name");
-		
-		Main_Service.main_Service.noti(mac, "condition_config: "+name);
-		
+
+		Main_Service.main_Service.noti(mac, "condition_config: " + name);
+
 		conditions = getSharedPreferences(mac, MODE_PRIVATE);
 		setConditions.put("trigger", true);
 		// Read the previous data and have the toggle button state accordingly
@@ -273,5 +273,5 @@ public class Conditions_Config extends Activity {
 		});
 
 	}
-	
+
 }
