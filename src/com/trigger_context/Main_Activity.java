@@ -39,9 +39,9 @@ public class Main_Activity extends Activity {
 
 		main_activity = this;
 		Start_MainService();
-		
+
 		Start_NetworkService();
-		
+
 		Log.i(Main_Service.LOG_TAG, "Main_Activity-onCreate--End");
 	}
 
@@ -57,7 +57,8 @@ public class Main_Activity extends Activity {
 		// Handle item selection
 		switch (item.getItemId()) {
 		case R.id.action_settings2:
-			Intent ConfiguredUsers = new Intent(getBaseContext(), ConfiguredUsers.class);
+			Intent ConfiguredUsers = new Intent(getBaseContext(),
+					ConfiguredUsers.class);
 			startActivity(ConfiguredUsers);
 			return true;
 		case R.id.action_settings3:
@@ -70,6 +71,9 @@ public class Main_Activity extends Activity {
 	}
 
 	private void Start_MainService() {
+		if (Main_Service.main_Service != null) {
+			return;
+		}
 		Context x = getBaseContext();
 		Intent startServiceIntent = new Intent(x, Main_Service.class);
 		x.startService(startServiceIntent);
@@ -77,6 +81,18 @@ public class Main_Activity extends Activity {
 	}
 
 	private void Start_NetworkService() {
+		if (!Main_Service.wifi) {
+			return;
+		} else if (Main_Service.wifi && Network_Service.ns != null) {
+			// but
+			// Network
+			// Service
+			// is
+			// already
+			// running
+			return;
+		}
+
 		Context x = getBaseContext();
 		Intent startServiceIntent = new Intent(x, Network_Service.class);
 		x.startService(startServiceIntent);

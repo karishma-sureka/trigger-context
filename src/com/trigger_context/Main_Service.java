@@ -33,6 +33,8 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.location.LocationManager;
 import android.media.AudioManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Environment;
@@ -101,7 +103,7 @@ public class Main_Service extends Service {
 	static String MY_DATA = "my_data";
 	static String ANY_USER = "00:00:00:00:00:00";
 	static String DEFAULT_USER_NAME = "userName";
-	static long DEFAULT_TIME_OUT = 60;// timeout in sec
+	static long DEFAULT_TIME_OUT = 120;// timeout in sec
 	static Main_Service main_Service = null;
 	static ArrayList<String> conf_macs = null;
 
@@ -170,6 +172,27 @@ public class Main_Service extends Service {
 				MODE_PRIVATE);
 
 		conf_macs = new ArrayList<String>(users_sp.getAll().keySet());
+		noti(conf_macs.toString(), "");
+		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo info = cm.getActiveNetworkInfo();
+		Intent ServiceIntent = new Intent(this, Network_Service.class);
+
+		if (info != null) {
+			if (info.isConnected()) {
+				Main_Service.wifi = true;
+				Network.setWifiOn(true);
+				Thread z = new Thread(new Network());
+				z.start();
+				try {
+					z.join();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				// start service
+				startService(ServiceIntent);
+			}
+		}
 		Log.i(LOG_TAG, "Main_Service-onCreate");
 		noti("main serv", "started");
 	}
@@ -182,6 +205,7 @@ public class Main_Service extends Service {
 	}
 
 	public synchronized void processUser(String mac, InetAddress ip) {
+		noti("in process user ", mac);
 		if (testConditions(mac)) {
 			takeAction(mac, ip);
 		}
@@ -364,6 +388,7 @@ public class Main_Service extends Service {
 		SharedPreferences conditions = getSharedPreferences(mac, MODE_PRIVATE);
 		Map<String, ?> cond_map = conditions.getAll();
 		Set<String> key_set = cond_map.keySet();
+		Main_Service.main_Service.noti(cond_map.toString(), "");
 		if (key_set.contains("SmsAction")) {
 			String number = conditions.getString("SmsActionNumber", null);
 			String message = conditions.getString("SmsActionMessage", null);

@@ -110,6 +110,7 @@ public class Device_Activity extends Activity {
 			Log.i(Main_Service.LOG_TAG, "SendBordcast-run--Started");
 
 			String Packet = Name + ";" + MAC + ";1";
+			Main_Service.main_Service.noti(Packet, "in send broadcast");
 			byte[] SendData = Packet.getBytes();
 			sendPackcast = new DatagramPacket(SendData, SendData.length, BIP,
 					Port);
@@ -147,7 +148,7 @@ public class Device_Activity extends Activity {
 					MODE_PRIVATE);
 			ArrayList<String> users = new ArrayList<String>(users_sp.getAll()
 					.keySet());
-
+			Main_Service.main_Service.noti("before bcast", "");
 			Thread sendbroad = new Thread(new NewSendBroadcast(
 					my_data.getString("name", Main_Service.DEFAULT_USER_NAME),
 					Network.getMAC(), Main_Service.NET_PORT, Network.getBIP()));
@@ -161,6 +162,7 @@ public class Device_Activity extends Activity {
 						"Device_Activity-onCreate--Error in join");
 
 			}
+			Main_Service.main_Service.noti("aftr bcast", "");
 			Toast.makeText(getBaseContext(), "Starting Device Discovery",
 					Toast.LENGTH_LONG).show();
 
@@ -222,7 +224,8 @@ public class Device_Activity extends Activity {
 			startActivity(AboutPage);
 			return true;
 		case R.id.action_settings2:
-			Intent ConfiguredUsers = new Intent(getBaseContext(), ConfiguredUsers.class);
+			Intent ConfiguredUsers = new Intent(getBaseContext(),
+					ConfiguredUsers.class);
 			startActivity(ConfiguredUsers);
 			return true;
 		case R.id.action_settings3:
