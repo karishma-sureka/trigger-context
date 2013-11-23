@@ -12,8 +12,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -91,6 +89,7 @@ public class Action_Config extends Activity {
 			Editor edit;
 			users = getSharedPreferences(Main_Service.USERS, MODE_PRIVATE);
 			edit = users.edit();
+			Main_Service.main_Service.noti(mac, name + "blah");
 			edit.putString(mac, name);
 			edit.commit();
 		}
@@ -380,5 +379,5 @@ public class Action_Config extends Activity {
 
 		});
 	}
-	
+
 }

@@ -216,7 +216,8 @@ public class Device_Activity extends Activity {
 			startActivity(AboutPage);
 			return true;
 		case R.id.action_settings2:
-			Intent ConfiguredUsers = new Intent(getBaseContext(), ConfiguredUsers.class);
+			Intent ConfiguredUsers = new Intent(getBaseContext(),
+					ConfiguredUsers.class);
 			startActivity(ConfiguredUsers);
 			return true;
 		case R.id.action_settings3:

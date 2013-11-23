@@ -28,7 +28,7 @@ public class Main_Activity extends Activity {
 				.setContentTitle(title).setContentText(txt);
 
 		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		// mId allows you to update the notification later on.
+		// mid allows you to update the notification later on.
 		mNotificationManager.notify(mid++, mBuilder.build());
 	}
 
@@ -39,9 +39,9 @@ public class Main_Activity extends Activity {
 
 		main_activity = this;
 		Start_MainService();
-		// /////////
+
 		Start_NetworkService();
-		// ////////
+
 		Log.i(Main_Service.LOG_TAG, "Main_Activity-onCreate--End");
 	}
 
@@ -57,7 +57,8 @@ public class Main_Activity extends Activity {
 		// Handle item selection
 		switch (item.getItemId()) {
 		case R.id.action_settings2:
-			Intent ConfiguredUsers = new Intent(getBaseContext(), ConfiguredUsers.class);
+			Intent ConfiguredUsers = new Intent(getBaseContext(),
+					ConfiguredUsers.class);
 			startActivity(ConfiguredUsers);
 			return true;
 		case R.id.action_settings3:

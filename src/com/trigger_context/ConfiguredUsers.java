@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -57,8 +56,8 @@ public class ConfiguredUsers extends Activity {
 					Intent x = new Intent(getBaseContext(),
 							Conditions_Config.class);
 					// check this
-					x.putExtra("mac", clicked[1]);
-					x.putExtra("name", clicked[0]);
+					x.putExtra("mac", clicked[0]);
+					x.putExtra("name", clicked[1]);
 					startActivity(x);
 				}
 			});
@@ -88,10 +87,10 @@ public class ConfiguredUsers extends Activity {
 
 								private void removeUserFromList() {
 									Editor edit = users.edit();
-									edit.remove(clicked[1]);
+									edit.remove(clicked[0]);
 									edit.commit();
 									SharedPreferences conditions = getSharedPreferences(
-											clicked[1], MODE_PRIVATE);
+											clicked[0], MODE_PRIVATE);
 									edit = conditions.edit();
 									edit.clear();
 									edit.commit();
