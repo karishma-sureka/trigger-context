@@ -1,7 +1,6 @@
 package com.trigger_context;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Map;
 
 import android.app.Service;
@@ -30,9 +29,6 @@ public class Network_Service extends Service {
 		super.onCreate();
 		SharedPreferences users_sp = getSharedPreferences(Main_Service.USERS,
 				MODE_PRIVATE);// Mac->user
-
-		ArrayList<String> users = new ArrayList<String>(users_sp.getAll()
-				.keySet());
 
 		// //////////////////////// to be removed
 

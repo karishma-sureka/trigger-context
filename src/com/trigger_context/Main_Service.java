@@ -30,6 +30,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
 import android.location.LocationManager;
 import android.media.AudioManager;
@@ -47,7 +48,8 @@ import com.trigger_context.conf.Action_Email_Client;
 import com.trigger_context.conf.Action_Open_Url;
 import com.trigger_context.conf.Action_Post_Tweet;
 
-public class Main_Service extends Service {
+public class Main_Service extends Service implements
+		OnSharedPreferenceChangeListener {
 
 	private class SendData implements Runnable {
 
@@ -193,6 +195,8 @@ public class Main_Service extends Service {
 				startService(ServiceIntent);
 			}
 		}
+		users_sp.registerOnSharedPreferenceChangeListener(this);
+
 		Log.i(LOG_TAG, "Main_Service-onCreate");
 		noti("main serv", "started");
 	}
@@ -202,6 +206,18 @@ public class Main_Service extends Service {
 		super.onDestroy();
 		main_Service = null;
 		Log.i(LOG_TAG, "Main_Service-onDestory");
+	}
+
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+			String key) {
+		// check if key not there before - new user.
+		// if key is not there, removed
+		if (!conf_macs.contains(key)) {
+			conf_macs.add(key);
+		} else if (sharedPreferences.getString(key, null) == null) {
+			conf_macs.remove(key);
+		}
 	}
 
 	public synchronized void processUser(String mac, InetAddress ip) {
@@ -265,7 +281,6 @@ public class Main_Service extends Service {
 		File f = new File(folder);
 		File file[] = f.listFiles();
 		// noti(file.toString(),"");
-		String fname = null;
 		String md5 = null;
 		HashMap<String, File> hm = new HashMap<String, File>();
 

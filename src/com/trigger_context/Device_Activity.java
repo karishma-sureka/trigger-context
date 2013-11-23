@@ -141,32 +141,28 @@ public class Device_Activity extends Activity {
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		setContentView(R.layout.activity_device);
 		if (Main_Service.wifi) {
-
-			SharedPreferences users_sp = getSharedPreferences(USERS,
-					MODE_PRIVATE);
 			SharedPreferences my_data = getSharedPreferences(MY_DATA,
 					MODE_PRIVATE);
-			ArrayList<String> users = new ArrayList<String>(users_sp.getAll()
-					.keySet());
-			Main_Service.main_Service.noti("before bcast", "");
-			Thread sendbroad = new Thread(new NewSendBroadcast(
-					my_data.getString("name", Main_Service.DEFAULT_USER_NAME),
-					Network.getMAC(), Main_Service.NET_PORT, Network.getBIP()));
 
-			sendbroad.start();
+			Main_Service.main_Service.noti("before bcast", "");
+
+			Thread devicedis = new Thread(new DeviceDiscovery(PORT));
+
+			devicedis.start();
 
 			try {
-				sendbroad.join();
+				devicedis.join();
 			} catch (InterruptedException e) {
 				Log.i(Main_Service.LOG_TAG,
 						"Device_Activity-onCreate--Error in join");
 
 			}
 			Main_Service.main_Service.noti("aftr bcast", "");
+			new Thread(new NewSendBroadcast(my_data.getString("name",
+					Main_Service.DEFAULT_USER_NAME), Network.getMAC(),
+					Main_Service.NET_PORT, Network.getBIP())).start();
 			Toast.makeText(getBaseContext(), "Starting Device Discovery",
 					Toast.LENGTH_LONG).show();
-
-			new Thread(new DeviceDiscovery(PORT)).start();
 
 		}
 		// else - no net. go to some other pg
