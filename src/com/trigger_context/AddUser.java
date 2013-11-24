@@ -25,6 +25,7 @@ public class AddUser extends Activity {
 						.getText().toString();
 				String name = ((EditText) findViewById(R.id.editText1))
 						.getText().toString();
+				mac.trim();
 				if (validMAC(mac)) {
 					myIntent.putExtra("mac", mac);
 					myIntent.putExtra("name", name);

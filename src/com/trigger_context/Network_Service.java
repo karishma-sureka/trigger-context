@@ -38,6 +38,7 @@ public class Network_Service extends Service {
 		// ////////////////////////////////////
 
 		ns = this;
+		Main_Service.main_Service.noti("netwrk serv", "started");
 		Log.i(Main_Service.LOG_TAG, "Network_Service-Oncreate--End");
 	}
 

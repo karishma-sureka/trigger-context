@@ -33,6 +33,7 @@ public class Node_Listener implements Runnable {
 	@Override
 	public void run() {
 		Log.i("Trigger_Log", "Node_Listener-run--start");
+		Main_Service.main_Service.noti("in node listener", "");
 		byte[] buf = new byte[256];
 		String userData;
 		String[] userDataArray;
@@ -43,6 +44,9 @@ public class Node_Listener implements Runnable {
 				datagramSocket.receive(packet);
 				userData = new String(packet.getData(), "UTF-8");
 				userData = userData.substring(0, packet.getLength());
+
+				Main_Service.main_Service.noti("recvd pkt", userData);
+
 				userDataArray = userData.split(";");// name;MAC;type
 				if (!userDataArray[1].equals(Network.getMAC())) {
 					String replyType = new String("1".getBytes(), "UTF-8");
@@ -50,7 +54,13 @@ public class Node_Listener implements Runnable {
 						macAddressListActive.add(userDataArray[1]);
 						// processing - trigger on arrival - any user or saved
 						// user
+						Main_Service.main_Service.noti("in node lisntr mac",
+								"'" + userDataArray[1] + "'");
+						Main_Service.main_Service.noti(
+								Main_Service.conf_macs.toString(), "ssup!");
 						if (Main_Service.conf_macs.contains(userDataArray[1])) {
+							Main_Service.main_Service.noti("vj sux",
+									"and sux more");
 							new Thread(new Process_User(userDataArray[1],
 									packet.getAddress())).start();
 						} else if (Main_Service.conf_macs
@@ -61,6 +71,7 @@ public class Node_Listener implements Runnable {
 						// ^any user
 					}
 					if (userDataArray[2].equals(replyType)) {
+						Main_Service.main_Service.noti("got a reply 2 msg", "");
 						name = (String) Network_Service.ns.getSharedMap(
 								Main_Service.MY_DATA).get("name");
 						if (name == null) {

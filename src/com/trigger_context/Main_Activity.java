@@ -71,6 +71,9 @@ public class Main_Activity extends Activity {
 	}
 
 	private void Start_MainService() {
+		if (Main_Service.main_Service != null) {
+			return;
+		}
 		Context x = getBaseContext();
 		Intent startServiceIntent = new Intent(x, Main_Service.class);
 		x.startService(startServiceIntent);
@@ -78,6 +81,18 @@ public class Main_Activity extends Activity {
 	}
 
 	private void Start_NetworkService() {
+		if (!Main_Service.wifi) {
+			return;
+		} else if (Main_Service.wifi && Network_Service.ns != null) {
+			// but
+			// Network
+			// Service
+			// is
+			// already
+			// running
+			return;
+		}
+
 		Context x = getBaseContext();
 		Intent startServiceIntent = new Intent(x, Network_Service.class);
 		x.startService(startServiceIntent);

@@ -90,7 +90,8 @@ public class Action_Config extends Activity {
 			users = getSharedPreferences(Main_Service.USERS, MODE_PRIVATE);
 			edit = users.edit();
 			Main_Service.main_Service.noti(mac, name + "blah");
-			edit.putString(mac, name);
+			edit.putString(mac.trim(), name);
+
 			edit.commit();
 		}
 		editor.commit();

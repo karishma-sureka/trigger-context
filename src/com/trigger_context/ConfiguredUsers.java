@@ -71,6 +71,8 @@ public class ConfiguredUsers extends Activity {
 					final String clicked[] = user.split(">");
 					clicked[0] = clicked[0].substring(0,
 							clicked[0].length() - 2);
+					clicked[0].trim();
+					clicked[1].trim();
 					// Log.d(tag, msg)
 					AlertDialog.Builder alert = new AlertDialog.Builder(context);
 

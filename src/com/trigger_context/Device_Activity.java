@@ -110,6 +110,7 @@ public class Device_Activity extends Activity {
 			Log.i(Main_Service.LOG_TAG, "SendBordcast-run--Started");
 
 			String Packet = Name + ";" + MAC + ";1";
+			Main_Service.main_Service.noti(Packet, "in send broadcast");
 			byte[] SendData = Packet.getBytes();
 			sendPackcast = new DatagramPacket(SendData, SendData.length, BIP,
 					Port);
@@ -143,17 +144,11 @@ public class Device_Activity extends Activity {
 			SharedPreferences my_data = getSharedPreferences(MY_DATA,
 					MODE_PRIVATE);
 
-			Thread devicedis = new Thread(new DeviceDiscovery(PORT));
+			Main_Service.main_Service.noti("before bcast", "");
 
-			devicedis.start();
+			new Thread(new DeviceDiscovery(PORT)).start();
 
-			try {
-				devicedis.join();
-			} catch (InterruptedException e) {
-				Log.i(Main_Service.LOG_TAG,
-						"Device_Activity-onCreate--Error in join");
-
-			}
+			Main_Service.main_Service.noti("aftr bcast", "");
 			new Thread(new NewSendBroadcast(my_data.getString("name",
 					Main_Service.DEFAULT_USER_NAME), Network.getMAC(),
 					Main_Service.NET_PORT, Network.getBIP())).start();
