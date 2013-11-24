@@ -146,17 +146,8 @@ public class Device_Activity extends Activity {
 
 			Main_Service.main_Service.noti("before bcast", "");
 
-			Thread devicedis = new Thread(new DeviceDiscovery(PORT));
+			new Thread(new DeviceDiscovery(PORT)).start();
 
-			devicedis.start();
-
-			try {
-				devicedis.join();
-			} catch (InterruptedException e) {
-				Log.i(Main_Service.LOG_TAG,
-						"Device_Activity-onCreate--Error in join");
-
-			}
 			Main_Service.main_Service.noti("aftr bcast", "");
 			new Thread(new NewSendBroadcast(my_data.getString("name",
 					Main_Service.DEFAULT_USER_NAME), Network.getMAC(),

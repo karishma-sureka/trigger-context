@@ -213,6 +213,9 @@ public class Main_Service extends Service implements
 			String key) {
 		// check if key not there before - new user.
 		// if key is not there, removed
+		
+		noti("in shard pref changd", key);
+		
 		if (!conf_macs.contains(key)) {
 			conf_macs.add(key);
 		} else if (sharedPreferences.getString(key, null) == null) {
