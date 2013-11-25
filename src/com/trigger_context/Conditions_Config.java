@@ -42,7 +42,7 @@ public class Conditions_Config extends Activity {
 		mac = bundle.getString("mac");
 		name = bundle.getString("name");
 
-		Main_Service.main_Service.noti(mac, "condition_config: " + name);
+		Main_Service.main_Service.noti(mac, "condition_config:" + name);
 
 		conditions = getSharedPreferences(mac, MODE_PRIVATE);
 		setConditions.put("trigger", true);
@@ -220,6 +220,7 @@ public class Conditions_Config extends Activity {
 				}
 
 				Conditions_Config.this.startActivity(myIntent);
+				finish();
 
 			}
 		});

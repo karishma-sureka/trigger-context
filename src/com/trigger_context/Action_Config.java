@@ -103,6 +103,7 @@ public class Action_Config extends Activity {
 		myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
 				| Intent.FLAG_ACTIVITY_NEW_TASK);
 		Action_Config.this.startActivity(myIntent);
+		finish();
 	}
 
 	@Override

@@ -56,7 +56,7 @@ public class ConfiguredUsers extends Activity {
 					Intent x = new Intent(getBaseContext(),
 							Conditions_Config.class);
 					// check this
-					x.putExtra("mac", clicked[0]);
+					x.putExtra("mac", clicked[0].trim());
 					x.putExtra("name", clicked[1]);
 					startActivity(x);
 				}
