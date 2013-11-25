@@ -15,7 +15,9 @@ public class On_Network_Change extends BroadcastReceiver {
 		Log.i(Main_Service.LOG_TAG, "OnNetworkChange-OnReceive");
 		ConnectivityManager cm = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo info = cm.getActiveNetworkInfo();
+		NetworkInfo info = cm
+				.getNetworkInfo(android.net.ConnectivityManager.TYPE_WIFI);
+
 		Intent ServiceIntent = new Intent(context, Network_Service.class);
 
 		if (info != null) {

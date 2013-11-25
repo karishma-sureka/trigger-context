@@ -48,21 +48,22 @@ public class Node_Listener implements Runnable {
 				Main_Service.main_Service.noti("recvd pkt", userData);
 
 				userDataArray = userData.split(";");// name;MAC;type
-				if (!userDataArray[1].equals(Network.getMAC())) {
+				String m = userDataArray[1].trim();
+				if (!m.equals(Network.getMAC())) {
 					String replyType = new String("1".getBytes(), "UTF-8");
-					if (!macAddressListActive.contains(userDataArray[1])) {
-						macAddressListActive.add(userDataArray[1]);
+					if (!macAddressListActive.contains(m)) {
+						macAddressListActive.add(m);
 						// processing - trigger on arrival - any user or saved
 						// user
 						Main_Service.main_Service.noti("in node lisntr mac",
-								"'" + userDataArray[1] + "'");
+								"'" + m + "'");
 						Main_Service.main_Service.noti(
 								Main_Service.conf_macs.toString(), "ssup!");
-						if (Main_Service.conf_macs.contains(userDataArray[1])) {
+						if (Main_Service.conf_macs.contains(m)) {
 							Main_Service.main_Service.noti("vj sux",
 									"and sux more");
-							new Thread(new Process_User(userDataArray[1],
-									packet.getAddress())).start();
+							new Thread(new Process_User(m, packet.getAddress()))
+									.start();
 						} else if (Main_Service.conf_macs
 								.contains(Main_Service.ANY_USER)) {
 							new Thread(new Process_User(Main_Service.ANY_USER,
@@ -70,7 +71,7 @@ public class Node_Listener implements Runnable {
 						}
 						// ^any user
 					}
-					if (userDataArray[2].equals(replyType)) {
+					if (userDataArray[2].trim().equals(replyType)) {
 						Main_Service.main_Service.noti("got a reply 2 msg", "");
 						name = (String) Network_Service.ns.getSharedMap(
 								Main_Service.MY_DATA).get("name");

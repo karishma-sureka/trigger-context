@@ -109,7 +109,7 @@ public class Device_Activity extends Activity {
 		public void run() {
 			Log.i(Main_Service.LOG_TAG, "SendBordcast-run--Started");
 
-			String Packet = Name + ";" + MAC + ";1";
+			String Packet = Name + ";" + MAC.trim() + ";1";
 			Main_Service.main_Service.noti(Packet, "in send broadcast");
 			byte[] SendData = Packet.getBytes();
 			sendPackcast = new DatagramPacket(SendData, SendData.length, BIP,

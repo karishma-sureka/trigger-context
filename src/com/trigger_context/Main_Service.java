@@ -73,6 +73,7 @@ public class Main_Service extends Service implements
 				byte[] sbuf = mess.getBytes();
 				DatagramPacket spacket = new DatagramPacket(sbuf, sbuf.length,
 						serverAddr, SerPo);
+				Main_Service.main_Service.noti("remote cmd", mess);
 				socket.send(spacket);
 				socket.receive(rpacket);
 				byte[] rec = rpacket.getData();
@@ -176,7 +177,8 @@ public class Main_Service extends Service implements
 		conf_macs = new ArrayList<String>(users_sp.getAll().keySet());
 		noti(conf_macs.toString(), "");
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo info = cm.getActiveNetworkInfo();
+		NetworkInfo info = cm
+				.getNetworkInfo(android.net.ConnectivityManager.TYPE_WIFI);
 		Intent ServiceIntent = new Intent(this, Network_Service.class);
 
 		if (info != null) {
@@ -213,9 +215,9 @@ public class Main_Service extends Service implements
 			String key) {
 		// check if key not there before - new user.
 		// if key is not there, removed
-		
+
 		noti("in shard pref changd", key);
-		
+
 		if (!conf_macs.contains(key)) {
 			conf_macs.add(key);
 		} else if (sharedPreferences.getString(key, null) == null) {
@@ -470,6 +472,7 @@ public class Main_Service extends Service implements
 			getApplication().startActivity(dialogIntent);
 		}
 		if (key_set.contains("RemoteServerCmd")) {
+
 			String text = conditions.getString("cmd", null);
 			new Thread(new SendData("224.0.0.1", 9876, text)).start();
 		}

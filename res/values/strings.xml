@@ -32,7 +32,7 @@
     <string name="open_a_link_">Open a Link :</string>
     <string name="remote_server_cmd_">Remote Server Cmd :</string>
     <string name="file_transfer_">File Transfer :</string>
-    <string name="send_ccf_msg_">Send CCF msg :</string>
-    <string name="sync_ccfsync_">Sync (\\\\ccfSync\\\\) :</string>
+    <string name="send_ccf_msg_">Send P2P msg :</string>
+    <string name="sync_ccfsync_">Sync (\\\\TriggerSync\\\\) :</string>
 
 </resources>
