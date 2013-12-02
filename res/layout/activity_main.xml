@@ -15,8 +15,8 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="66dp"
-        android:text="@string/list_devices" 
-        android:onClick="goToDeviceActivity"/>
+        android:onClick="goToDeviceActivity"
+        android:text="@string/list_devices" />
 
     <TextView
         android:id="@+id/textView1"

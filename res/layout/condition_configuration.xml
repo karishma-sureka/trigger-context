@@ -11,9 +11,9 @@
             android:id="@+id/tableRow0"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:padding="20dip"  >
-            
-         <TextView
+            android:padding="20dip" >
+
+            <TextView
                 android:id="@+id/textView0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -23,33 +23,31 @@
             <RadioGroup
                 android:id="@+id/radioGroup0"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"              
-                android:layout_marginEnd="100dp">
-                
-                <RadioButton
-                android:id="@+id/radioButton01"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="Arrival" />
+                android:layout_marginEnd="100dp" >
 
-            	<RadioButton
-                android:id="@+id/radioButton02"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Departure" />
-            	
+                <RadioButton
+                    android:id="@+id/radioButton01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="Arrival" />
+
+                <RadioButton
+                    android:id="@+id/radioButton02"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Departure" />
             </RadioGroup>
- 
         </TableRow>
-        
+
         <TableRow
             android:id="@+id/tableRow1"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:padding="20dip"  >
-            
-         <TextView
+            android:padding="20dip" >
+
+            <TextView
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -59,32 +57,30 @@
             <RadioGroup
                 android:id="@+id/radioGroup1"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" 
-                android:orientation="horizontal"
-                android:layout_marginEnd="100dp">
-                
-                <RadioButton
-                android:id="@+id/radioButton1"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="On" />
+                android:layout_marginEnd="100dp"
+                android:orientation="horizontal" >
 
-            	<RadioButton
-                android:id="@+id/radioButton2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Off" />
-            	
+                <RadioButton
+                    android:id="@+id/radioButton1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="On" />
+
+                <RadioButton
+                    android:id="@+id/radioButton2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Off" />
             </RadioGroup>
- 
         </TableRow>
 
         <TableRow
             android:id="@+id/tableRow2"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:padding="20dip"  >
-          
+            android:padding="20dip" >
+
             <TextView
                 android:id="@+id/textView1"
                 android:layout_width="wrap_content"
@@ -95,22 +91,21 @@
             <RadioGroup
                 android:id="@+id/radioGroup2"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" 
-                android:orientation="horizontal"
-                android:layout_marginEnd="100dp">
-                
-                <RadioButton
-                android:id="@+id/radioButton3"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="On" />
+                android:layout_marginEnd="100dp"
+                android:orientation="horizontal" >
 
-            	<RadioButton
-                android:id="@+id/radioButton4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Off" />
-            	
+                <RadioButton
+                    android:id="@+id/radioButton3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="On" />
+
+                <RadioButton
+                    android:id="@+id/radioButton4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Off" />
             </RadioGroup>
         </TableRow>
 
@@ -118,9 +113,9 @@
             android:id="@+id/tableRow3"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:padding="20dip"  >
-            
-         <TextView
+            android:padding="20dip" >
+
+            <TextView
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -130,33 +125,31 @@
             <RadioGroup
                 android:id="@+id/radioGroup3"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" 
-                android:orientation="horizontal"
-                android:layout_marginEnd="100dp">
-                
-                <RadioButton
-                android:id="@+id/radioButton5"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="On" />
+                android:layout_marginEnd="100dp"
+                android:orientation="horizontal" >
 
-            	<RadioButton
-                android:id="@+id/radioButton6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Off" />
-            	
+                <RadioButton
+                    android:id="@+id/radioButton5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="On" />
+
+                <RadioButton
+                    android:id="@+id/radioButton6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Off" />
             </RadioGroup>
- 
         </TableRow>
 
         <TableRow
             android:id="@+id/tableRow4"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:padding="20dip"  >
-            
-         <TextView
+            android:padding="20dip" >
+
+            <TextView
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -166,32 +159,31 @@
             <RadioGroup
                 android:id="@+id/radioGroup4"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" 
-                android:orientation="horizontal"
-                android:layout_marginEnd="100dp">
-                
-                <RadioButton
-                android:id="@+id/radioButton7"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="On" />
+                android:layout_marginEnd="100dp"
+                android:orientation="horizontal" >
 
-            	<RadioButton
-                android:id="@+id/radioButton8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Off" />
-            	
+                <RadioButton
+                    android:id="@+id/radioButton7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="On" />
+
+                <RadioButton
+                    android:id="@+id/radioButton8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Off" />
             </RadioGroup>
- 
         </TableRow>
+
         <TableRow
             android:id="@+id/tableRow5"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:padding="20dip"  >
-            
-         <TextView
+            android:padding="20dip" >
+
+            <TextView
                 android:id="@+id/textView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -201,54 +193,49 @@
             <RadioGroup
                 android:id="@+id/radioGroup5"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" 
-                android:orientation="horizontal"
-                android:layout_marginEnd="100dp">
-                
-                <RadioButton
-                android:id="@+id/radioButton9"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="On" />
+                android:layout_marginEnd="100dp"
+                android:orientation="horizontal" >
 
-            	<RadioButton
-                android:id="@+id/radioButton10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Off" />
-            	
+                <RadioButton
+                    android:id="@+id/radioButton9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="On" />
+
+                <RadioButton
+                    android:id="@+id/radioButton10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Off" />
             </RadioGroup>
- 
         </TableRow>
-        
-        
-         <TableRow
+
+        <TableRow
             android:id="@+id/tableRow6"
+            style="?android:attr/buttonBarStyle"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:padding="20dip"             
-            style="?android:attr/buttonBarStyle">
+            android:padding="20dip" >
 
-             <Button
-                 android:id="@+id/button1"
-                 android:layout_height="wrap_content"
-                 android:text="@string/set_actions" 
-                 android:layout_width="0dp"
-                 android:layout_weight="1"
-                 style="?android:attr/buttonBarButtonStyle"
-                 android:background="#008B8B"/>
+            <Button
+                android:id="@+id/button1"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#008B8B"
+                android:text="@string/set_actions" />
 
-             <Button
-                 android:id="@+id/button2"
-                 android:layout_height="wrap_content"
-                 android:text="@string/reset" 
-                 android:layout_width="0dp"
-                 android:layout_weight="1"
-                 style="?android:attr/buttonBarButtonStyle"
-                 android:background="#008B8B"/>
-            
-         </TableRow>
-         
+            <Button
+                android:id="@+id/button2"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#008B8B"
+                android:text="@string/reset" />
+        </TableRow>
     </TableLayout>
 
 </ScrollView>
