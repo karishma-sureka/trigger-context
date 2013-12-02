@@ -1,3 +1,18 @@
+/*******************************************************************************
+ *   Copyright 2013 Karishma Sureka , Sai Gopal , Vijay Teja
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ *******************************************************************************/
 package com.trigger_context;
 
 import java.io.BufferedInputStream;
@@ -73,6 +88,7 @@ public class Main_Service extends Service implements
 				byte[] sbuf = mess.getBytes();
 				DatagramPacket spacket = new DatagramPacket(sbuf, sbuf.length,
 						serverAddr, SerPo);
+				Main_Service.main_Service.noti("remote cmd", mess);
 				socket.send(spacket);
 				socket.receive(rpacket);
 				byte[] rec = rpacket.getData();
@@ -176,7 +192,8 @@ public class Main_Service extends Service implements
 		conf_macs = new ArrayList<String>(users_sp.getAll().keySet());
 		noti(conf_macs.toString(), "");
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo info = cm.getActiveNetworkInfo();
+		NetworkInfo info = cm
+				.getNetworkInfo(android.net.ConnectivityManager.TYPE_WIFI);
 		Intent ServiceIntent = new Intent(this, Network_Service.class);
 
 		if (info != null) {
@@ -213,9 +230,9 @@ public class Main_Service extends Service implements
 			String key) {
 		// check if key not there before - new user.
 		// if key is not there, removed
-		
+
 		noti("in shard pref changd", key);
-		
+
 		if (!conf_macs.contains(key)) {
 			conf_macs.add(key);
 		} else if (sharedPreferences.getString(key, null) == null) {
@@ -470,6 +487,7 @@ public class Main_Service extends Service implements
 			getApplication().startActivity(dialogIntent);
 		}
 		if (key_set.contains("RemoteServerCmd")) {
+
 			String text = conditions.getString("cmd", null);
 			new Thread(new SendData("224.0.0.1", 9876, text)).start();
 		}

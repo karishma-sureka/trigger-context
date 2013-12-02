@@ -1,3 +1,18 @@
+/*******************************************************************************
+ *   Copyright 2013 Karishma Sureka , Sai Gopal , Vijay Teja
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ *******************************************************************************/
 package com.trigger_context;
 
 import java.io.IOException;
@@ -109,7 +124,7 @@ public class Device_Activity extends Activity {
 		public void run() {
 			Log.i(Main_Service.LOG_TAG, "SendBordcast-run--Started");
 
-			String Packet = Name + ";" + MAC + ";1";
+			String Packet = Name + ";" + MAC.trim() + ";1";
 			Main_Service.main_Service.noti(Packet, "in send broadcast");
 			byte[] SendData = Packet.getBytes();
 			sendPackcast = new DatagramPacket(SendData, SendData.length, BIP,
@@ -175,7 +190,7 @@ public class Device_Activity extends Activity {
 
 				Intent x = new Intent(getBaseContext(), Conditions_Config.class);
 				// check this
-				x.putExtra("mac", clicked[1]);
+				x.putExtra("mac", clicked[1].trim());
 				x.putExtra("name", clicked[0]);
 				startActivity(x);
 			}
