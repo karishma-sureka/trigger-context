@@ -64,25 +64,18 @@ public class Keep_Alive implements Runnable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			//removing expired entries
+			// removing expired entries
 			now = new Date();
 			iter = Main_Service.active_macs.keySet().iterator();
-			try {
-				  Main_Service.active_mac_mutex.acquire();
-				  try {
-						while (iter.hasNext()) {
-						    if ( now.getTime() - Main_Service.active_macs.get(iter.next()) > Main_Service.timeout) {
-						        iter.remove();
-						    }
-						}
-				  } finally {
-					  Main_Service.active_mac_mutex.release();
-				  }
-				} catch(InterruptedException e) {
-					e.printStackTrace();
+			synchronized (Main_Service.active_macs) {
+				while (iter.hasNext()) {
+					if (now.getTime()
+							- Main_Service.active_macs.get(iter.next()) > Main_Service.timeout) {
+						iter.remove();
+					}
 				}
-			
-			
+			}
+
 			try {
 				Thread.sleep(Main_Service.timeout);
 			} catch (InterruptedException e) {

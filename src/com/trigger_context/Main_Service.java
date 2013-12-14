@@ -128,7 +128,6 @@ public class Main_Service extends Service implements
 	static Main_Service main_Service = null;
 	static ArrayList<String> conf_macs = null;
 	static HashMap<String, Long> active_macs = new HashMap<String, Long>();
-	static Semaphore active_mac_mutex = new Semaphore(1, true);
 
 	static volatile boolean wifi = false;
 

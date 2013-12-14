@@ -24,7 +24,7 @@ import java.util.Date;
 import android.util.Log;
 
 public class Node_Listener implements Runnable {
-	//private ArrayList<String> macAddressListActive = new ArrayList<String>();
+	// private ArrayList<String> macAddressListActive = new ArrayList<String>();
 	public static DatagramSocket datagramSocket = null, replySocket = null;
 	private int Port;
 	private String mac, name;
@@ -32,7 +32,7 @@ public class Node_Listener implements Runnable {
 	private byte[] byteData;
 	private DatagramPacket pkt;
 	Date now = null;
-	
+
 	public Node_Listener(int port, String mac) {
 		this.Port = port;
 		this.mac = mac;
@@ -69,7 +69,7 @@ public class Node_Listener implements Runnable {
 				if (!m.equals(Network.getMAC())) {
 					String replyType = new String("1".getBytes(), "UTF-8");
 					if (!Main_Service.active_macs.containsKey(m)) {
-						//macAddressListActive.add(m);add to map
+						// macAddressListActive.add(m);add to map
 						// processing - trigger on arrival - any user or saved
 						// user
 						Main_Service.main_Service.noti("in node lisntr mac",
@@ -97,17 +97,11 @@ public class Node_Listener implements Runnable {
 
 						replySocket.send(pkt);
 					}
-					try {
-						Main_Service.active_mac_mutex.acquire();
-						  try {
-							  Main_Service.active_macs.put(m, now.getTime());
-						  } finally {
-							  Main_Service.active_mac_mutex.release();
-						  }
-						} catch(InterruptedException e) {
-							e.printStackTrace();
-						}
-					
+
+					synchronized (Main_Service.active_macs) {
+						Main_Service.active_macs.put(m, now.getTime());
+					}
+
 				}
 			} catch (IOException e) {
 				if (!datagramSocket.isClosed()) {
