@@ -20,25 +20,25 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.util.Date;
+import java.util.Iterator;
 
 import android.util.Log;
 
 public class Keep_Alive implements Runnable {
 
-	private String MAC, name;
+	private String MAC;
 	static DatagramSocket socket = null;
 	private int Port;
 	private InetAddress BIP;
-	private long TimeOut;
 	private String data = null;
 	private byte[] byteData = null;
 	private DatagramPacket pkt = null;
 
-	public Keep_Alive(String MAC, int Port, InetAddress bcastIp, long TimeOut) {
+	public Keep_Alive(String MAC, int Port, InetAddress bcastIp) {
 		this.MAC = MAC;
 		this.Port = Port;
 		this.BIP = bcastIp;
-		this.TimeOut = TimeOut;
 		try {
 			socket = new DatagramSocket();
 			socket.setBroadcast(true);
@@ -52,14 +52,10 @@ public class Keep_Alive implements Runnable {
 	@Override
 	public void run() {
 		Log.i(Main_Service.LOG_TAG, "Keep_Alive-run--Started");
-
+		Iterator<String> iter = null;
+		Date now = null;
 		while (Main_Service.wifi) {
-			name = (String) Network_Service.ns.getSharedMap(
-					Main_Service.MY_DATA).get("name");
-			if (name == null) {
-				name = Main_Service.DEFAULT_USER_NAME;
-			}
-			data = name + ";" + MAC + ";2";
+			data = Main_Service.username + ";" + MAC + ";2";
 			byteData = data.getBytes();
 			pkt = new DatagramPacket(byteData, byteData.length, BIP, Port);
 			try {
@@ -68,8 +64,27 @@ public class Keep_Alive implements Runnable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			//removing expired entries
+			now = new Date();
+			iter = Main_Service.active_macs.keySet().iterator();
 			try {
-				Thread.sleep(TimeOut * 1000);
+				  Main_Service.active_mac_mutex.acquire();
+				  try {
+						while (iter.hasNext()) {
+						    if ( now.getTime() - Main_Service.active_macs.get(iter.next()) > Main_Service.timeout) {
+						        iter.remove();
+						    }
+						}
+				  } finally {
+					  Main_Service.active_mac_mutex.release();
+				  }
+				} catch(InterruptedException e) {
+					e.printStackTrace();
+				}
+			
+			
+			try {
+				Thread.sleep(Main_Service.timeout);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

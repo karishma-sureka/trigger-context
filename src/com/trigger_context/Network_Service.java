@@ -29,11 +29,6 @@ public class Network_Service extends Service {
 
 	public static Network_Service ns = null;
 
-	public Map<String, ?> getSharedMap(String name) {
-		SharedPreferences conditions = getSharedPreferences(name, MODE_PRIVATE);
-		return conditions.getAll();
-	}
-
 	@Override
 	public IBinder onBind(Intent intent) {
 		return null;
@@ -88,9 +83,7 @@ public class Network_Service extends Service {
 				.start();// Listen At 6001
 
 		new Thread(new Keep_Alive(Network.getMAC(), Main_Service.NET_PORT,
-				Network.getBIP(), getSharedPreferences(Main_Service.MY_DATA,
-						MODE_PRIVATE).getLong("timeout",
-						Main_Service.DEFAULT_TIME_OUT))).start();
+				Network.getBIP())).start();
 		return START_STICKY;
 
 	}
