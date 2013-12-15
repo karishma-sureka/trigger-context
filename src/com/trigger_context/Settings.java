@@ -24,6 +24,7 @@ public class Settings extends Activity {
 			@Override
 			public void onClick(View v) {
 				editor.putString("username", et1.getText().toString());
+				editor.commit();
 				editor.putLong("timeout",
 						Integer.parseInt(et2.getText().toString()) * 1000);
 				editor.commit();

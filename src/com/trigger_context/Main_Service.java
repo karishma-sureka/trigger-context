@@ -112,7 +112,7 @@ public class Main_Service extends Service implements
 
 	public static final String LOG_TAG = "Trigger_Log";
 
-	private int mid = 1500;
+	private int mid = 100;
 
 	public static int COMM_PORT = 6000;
 
@@ -130,6 +130,8 @@ public class Main_Service extends Service implements
 	static HashMap<String, Long> active_macs = new HashMap<String, Long>();
 
 	static volatile boolean wifi = false;
+	
+	OnSharedPreferenceChangeListener data_listener = null;
 
 	public String calculateMD5(File updateFile) {
 		MessageDigest digest;
@@ -222,12 +224,13 @@ public class Main_Service extends Service implements
 		timeout = data_sp.getLong("timeout",
 				DEFAULT_TIMEOUT);
 		users_sp.registerOnSharedPreferenceChangeListener(this);
-		data_sp.registerOnSharedPreferenceChangeListener(new OnSharedPreferenceChangeListener() {
+		data_listener= new OnSharedPreferenceChangeListener() {
 		
 			@Override
 			public void onSharedPreferenceChanged(
 					SharedPreferences sharedPreferences, String key) {
 				// timeout n username can only be added or modified. not removed
+				//noti("data listnr called",key);
 				if (key.equals("username")) {
 					username = sharedPreferences.getString("username",
 							DEFAULT_USERNAME);
@@ -236,7 +239,8 @@ public class Main_Service extends Service implements
 				}
 
 			}
-		});
+		};
+		data_sp.registerOnSharedPreferenceChangeListener(data_listener);
 		Log.i(LOG_TAG, "Main_Service-onCreate");
 		noti("main serv", "started");
 	}
@@ -253,7 +257,7 @@ public class Main_Service extends Service implements
 			String key) {
 		// check if key not there before - new user.
 		// if key is not there, removed
-		noti("in users shard pref changd", key);
+		//noti("in users shard pref changd", key);
 
 		if (!conf_macs.contains(key)) {
 			conf_macs.add(key);
