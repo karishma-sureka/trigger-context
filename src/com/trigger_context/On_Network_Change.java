@@ -52,7 +52,8 @@ public class On_Network_Change extends BroadcastReceiver {
 				Toast.makeText(context, "Starting Network_Service",
 						Toast.LENGTH_LONG).show();
 				// start service
-				context.startService(ServiceIntent);
+				if(Network_Service.ns == null)
+					context.startService(ServiceIntent);
 
 				Log.i(Main_Service.LOG_TAG, "OnNetworkChange--Start Service");
 
