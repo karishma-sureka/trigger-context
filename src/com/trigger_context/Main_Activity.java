@@ -80,6 +80,10 @@ public class Main_Activity extends Activity {
 			Intent AddUser = new Intent(getBaseContext(), AddUser.class);
 			startActivity(AddUser);
 			return true;
+		case R.id.action_settings4:
+			Intent Settings = new Intent(getBaseContext(), Settings.class);
+			startActivity(Settings);
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
