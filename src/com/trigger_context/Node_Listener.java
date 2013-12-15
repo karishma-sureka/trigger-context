@@ -27,7 +27,7 @@ public class Node_Listener implements Runnable {
 	// private ArrayList<String> macAddressListActive = new ArrayList<String>();
 	public static DatagramSocket datagramSocket = null, replySocket = null;
 	private int Port;
-	private String mac, name;
+	private String mac;
 	private String data;
 	private byte[] byteData;
 	private DatagramPacket pkt;

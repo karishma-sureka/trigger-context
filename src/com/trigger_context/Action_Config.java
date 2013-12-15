@@ -104,7 +104,7 @@ public class Action_Config extends Activity {
 			Editor edit;
 			users = getSharedPreferences(Main_Service.USERS, MODE_PRIVATE);
 			edit = users.edit();
-			Main_Service.main_Service.noti(mac, name + "blah");
+			Main_Service.main_Service.noti(mac, name);
 			edit.putString(mac.trim(), name);
 
 			edit.commit();
@@ -145,9 +145,18 @@ public class Action_Config extends Activity {
 						@Override
 						public void onClick(DialogInterface dialog,
 								int whichButton) {
-							commitSettings();
-
+							
+							
 							flag = true;
+							commitSettings();
+							conditions = getSharedPreferences(mac, MODE_PRIVATE);
+							Map<String, ?> cond_map = conditions.getAll();
+							Toast.makeText(getApplicationContext(), "Actions saved!",
+									Toast.LENGTH_SHORT).show();
+							Toast.makeText(getApplicationContext(), cond_map.toString(),
+									Toast.LENGTH_SHORT).show();
+
+							// DBACtivity
 							leaveToDat();
 						}
 					});

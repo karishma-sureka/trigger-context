@@ -34,5 +34,10 @@
     <string name="file_transfer_">File Transfer :</string>
     <string name="send_ccf_msg_">Send P2P msg :</string>
     <string name="sync_ccfsync_">Sync (\\\\TriggerSync\\\\) :</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="device_name">Name of this device :</string>
+    <string name="username">username</string>
+    <string name="timeout">Timeout in seconds</string>
+    <string name="save_settings">Save settings</string>
 
 </resources>

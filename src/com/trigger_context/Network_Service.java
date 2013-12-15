@@ -16,7 +16,6 @@
 package com.trigger_context;
 
 import java.io.IOException;
-import java.util.Map;
 
 import android.app.Service;
 import android.content.Intent;
