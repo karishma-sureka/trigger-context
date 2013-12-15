@@ -42,7 +42,7 @@ public class Network_Service extends Service {
 		// //////////////////////// to be removed
 
 		Editor edit = users_sp.edit();
-		edit.putString(Main_Service.ANY_USER, "default");
+		edit.putString(Main_Service.ANY_USER, "AnyUser");
 		edit.commit();
 		// ////////////////////////////////////
 
