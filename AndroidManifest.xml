@@ -118,10 +118,6 @@
             android:name="com.trigger_context.AddUser"
             android:label="@string/title_activity_add_user" >
         </activity>
-        <activity
-            android:name="com.trigger_context.Settings"
-            android:label="@string/title_activity_settings" >
-        </activity>
     </application>
 
 </manifest>

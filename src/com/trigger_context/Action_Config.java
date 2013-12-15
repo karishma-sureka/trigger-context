@@ -145,16 +145,17 @@ public class Action_Config extends Activity {
 						@Override
 						public void onClick(DialogInterface dialog,
 								int whichButton) {
-							
-							
+
 							flag = true;
 							commitSettings();
 							conditions = getSharedPreferences(mac, MODE_PRIVATE);
 							Map<String, ?> cond_map = conditions.getAll();
-							Toast.makeText(getApplicationContext(), "Actions saved!",
-									Toast.LENGTH_SHORT).show();
-							Toast.makeText(getApplicationContext(), cond_map.toString(),
-									Toast.LENGTH_SHORT).show();
+							Toast.makeText(getApplicationContext(),
+									"Actions saved!", Toast.LENGTH_SHORT)
+									.show();
+							Toast.makeText(getApplicationContext(),
+									cond_map.toString(), Toast.LENGTH_SHORT)
+									.show();
 
 							// DBACtivity
 							leaveToDat();
