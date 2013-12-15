@@ -19,18 +19,19 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
-import java.util.ArrayList;
+import java.util.Date;
 
 import android.util.Log;
 
 public class Node_Listener implements Runnable {
-	private ArrayList<String> macAddressListActive = new ArrayList<String>();
+	// private ArrayList<String> macAddressListActive = new ArrayList<String>();
 	public static DatagramSocket datagramSocket = null, replySocket = null;
 	private int Port;
-	private String mac, name;
+	private String mac;
 	private String data;
 	private byte[] byteData;
 	private DatagramPacket pkt;
+	Date now = null;
 
 	public Node_Listener(int port, String mac) {
 		this.Port = port;
@@ -39,7 +40,8 @@ public class Node_Listener implements Runnable {
 			replySocket = new DatagramSocket();
 			datagramSocket = new DatagramSocket(Port);
 		} catch (SocketException e) {
-			// TODO Auto-generated catch block
+			Main_Service.main_Service.noti(
+					"Node Listener - Socket creation exception", e.toString());
 			e.printStackTrace();
 		}
 		Log.i("Trigger_Log", "Node_Listener--constructor end");
@@ -57,6 +59,7 @@ public class Node_Listener implements Runnable {
 		while (Main_Service.wifi) {
 			try {
 				datagramSocket.receive(packet);
+				now = new Date();
 				userData = new String(packet.getData(), "UTF-8");
 				userData = userData.substring(0, packet.getLength());
 
@@ -66,8 +69,8 @@ public class Node_Listener implements Runnable {
 				String m = userDataArray[1].trim();
 				if (!m.equals(Network.getMAC())) {
 					String replyType = new String("1".getBytes(), "UTF-8");
-					if (!macAddressListActive.contains(m)) {
-						macAddressListActive.add(m);
+					if (!Main_Service.active_macs.containsKey(m)) {
+						// macAddressListActive.add(m);add to map
 						// processing - trigger on arrival - any user or saved
 						// user
 						Main_Service.main_Service.noti("in node lisntr mac",
@@ -88,22 +91,23 @@ public class Node_Listener implements Runnable {
 					}
 					if (userDataArray[2].trim().equals(replyType)) {
 						Main_Service.main_Service.noti("got a reply 2 msg", "");
-						name = (String) Network_Service.ns.getSharedMap(
-								Main_Service.MY_DATA).get("name");
-						if (name == null) {
-							name = Main_Service.DEFAULT_USER_NAME;
-						}
-						data = name + ";" + mac;
+						data = Main_Service.username + ";" + mac;
 						byteData = data.getBytes();
 						pkt = new DatagramPacket(byteData, byteData.length,
 								packet.getAddress(), Device_Activity.PORT);
 
 						replySocket.send(pkt);
 					}
+
+					synchronized (Main_Service.active_macs) {
+						Main_Service.active_macs.put(m, now.getTime());
+					}
+
 				}
 			} catch (IOException e) {
 				if (!datagramSocket.isClosed()) {
 					Log.i("Trigger_Log", "Node_Listener-run--Error in receive");
+					e.printStackTrace();
 				}
 			}
 		}

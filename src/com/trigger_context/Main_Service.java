@@ -121,9 +121,12 @@ public class Main_Service extends Service implements
 	static String MY_DATA = "my_data";
 	static String ANY_USER = "00:00:00:00:00:00";
 	static String DEFAULT_USER_NAME = "userName";
-	static long DEFAULT_TIME_OUT = 120;// timeout in sec
+	static long DEFAULT_TIME_OUT = 300 * 1000;// timeout in milli sec
+	static String username = "userName";
+	static long timeout = 300 * 1000;// timeout in milli sec
 	static Main_Service main_Service = null;
 	static ArrayList<String> conf_macs = null;
+	static HashMap<String, Long> active_macs = new HashMap<String, Long>();
 
 	static volatile boolean wifi = false;
 
@@ -188,7 +191,8 @@ public class Main_Service extends Service implements
 		main_Service = this;
 		SharedPreferences users_sp = getSharedPreferences(Main_Service.USERS,
 				MODE_PRIVATE);
-
+		SharedPreferences data_sp = getSharedPreferences(Main_Service.MY_DATA,
+				MODE_PRIVATE);
 		conf_macs = new ArrayList<String>(users_sp.getAll().keySet());
 		noti(conf_macs.toString(), "");
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -213,7 +217,21 @@ public class Main_Service extends Service implements
 			}
 		}
 		users_sp.registerOnSharedPreferenceChangeListener(this);
+		data_sp.registerOnSharedPreferenceChangeListener(new OnSharedPreferenceChangeListener() {
 
+			@Override
+			public void onSharedPreferenceChanged(
+					SharedPreferences sharedPreferences, String key) {
+				// timeout n username can only be added or modified. not removed
+				if (key.equals("username")) {
+					username = sharedPreferences.getString("username",
+							"defUsername");
+				} else {
+					timeout = sharedPreferences.getLong("timeout", 5 * 60) * 1000;
+				}
+
+			}
+		});
 		Log.i(LOG_TAG, "Main_Service-onCreate");
 		noti("main serv", "started");
 	}
@@ -230,8 +248,7 @@ public class Main_Service extends Service implements
 			String key) {
 		// check if key not there before - new user.
 		// if key is not there, removed
-
-		noti("in shard pref changd", key);
+		noti("in users shard pref changd", key);
 
 		if (!conf_macs.contains(key)) {
 			conf_macs.add(key);
