@@ -57,13 +57,6 @@ public class AddUser extends Activity {
 
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.add_user, menu);
-		return true;
-	}
-
 	boolean validMAC(String Test) {
 		return Test.matches("^([0-9A-F]{2}[:-]){5}([0-9A-F]{2})$");
 	}
