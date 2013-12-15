@@ -52,15 +52,16 @@ public class On_Network_Change extends BroadcastReceiver {
 				Toast.makeText(context, "Starting Network_Service",
 						Toast.LENGTH_LONG).show();
 				// start service
-				context.startService(ServiceIntent);
-
+				if(Network_Service.ns == null)
+					context.startService(ServiceIntent);
 				Log.i(Main_Service.LOG_TAG, "OnNetworkChange--Start Service");
 
 			} else {
 				Main_Service.wifi = false;
 				Network.setWifiOn(false);
 				// stop service
-				context.stopService(ServiceIntent);
+				if(Network_Service.ns != null)
+					context.stopService(ServiceIntent);
 				Toast.makeText(context, "Stoping Network_Service",
 						Toast.LENGTH_LONG).show();
 				Log.i(Main_Service.LOG_TAG, "OnNetworkChange--Stop Service");

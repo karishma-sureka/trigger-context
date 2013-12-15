@@ -76,6 +76,9 @@ public class Network_Service extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		
+		if(ns!=null)//if already running
+			return START_STICKY;
 		new Thread(new Comm_Listener(Main_Service.COMM_PORT)).start();// Listen
 																		// AT
 																		// 6000
