@@ -40,7 +40,8 @@ public class Node_Listener implements Runnable {
 			replySocket = new DatagramSocket();
 			datagramSocket = new DatagramSocket(Port);
 		} catch (SocketException e) {
-			Main_Service.main_Service.noti("Node Listener - Socket creation exception", e.toString());
+			Main_Service.main_Service.noti(
+					"Node Listener - Socket creation exception", e.toString());
 			e.printStackTrace();
 		}
 		Log.i("Trigger_Log", "Node_Listener--constructor end");
