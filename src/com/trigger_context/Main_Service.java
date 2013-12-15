@@ -120,10 +120,8 @@ public class Main_Service extends Service implements
 	static String USERS = "users";
 	static String MY_DATA = "my_data";
 	static String ANY_USER = "00:00:00:00:00:00";
-	static String DEFAULT_USER_NAME = "userName";
-	static long DEFAULT_TIME_OUT = 300*1000;// timeout in milli sec
 	static String username = "userName";
-	static long timeout = 300*1000;// timeout in milli sec
+	static long timeout = 30*1000;// timeout in milli sec
 	static Main_Service main_Service = null;
 	static ArrayList<String> conf_macs = null;
 	static HashMap<String, Long> active_macs = new HashMap<String, Long>();

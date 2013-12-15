@@ -164,8 +164,7 @@ public class Device_Activity extends Activity {
 			new Thread(new DeviceDiscovery(PORT)).start();
 
 			Main_Service.main_Service.noti("aftr bcast", "");
-			new Thread(new NewSendBroadcast(my_data.getString("name",
-					Main_Service.DEFAULT_USER_NAME), Network.getMAC(),
+			new Thread(new NewSendBroadcast(Main_Service.username, Network.getMAC(),
 					Main_Service.NET_PORT, Network.getBIP())).start();
 			Toast.makeText(getBaseContext(), "Starting Device Discovery",
 					Toast.LENGTH_LONG).show();
@@ -193,6 +192,7 @@ public class Device_Activity extends Activity {
 				x.putExtra("mac", clicked[1].trim());
 				x.putExtra("name", clicked[0]);
 				startActivity(x);
+				finish();
 			}
 		});
 
