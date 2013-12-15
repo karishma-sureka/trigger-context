@@ -4,7 +4,6 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="17" />
@@ -106,7 +105,7 @@
             android:name="com.trigger_context.About"
             android:label="@string/title_activity_about" >
         </activity>
-         <activity
+        <activity
             android:name="com.trigger_context.Settings"
             android:label="@string/action_settings4" >
         </activity>
