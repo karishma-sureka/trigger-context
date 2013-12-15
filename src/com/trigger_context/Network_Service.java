@@ -54,13 +54,14 @@ public class Network_Service extends Service {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		//note : possible race condition bw checking for null and closed condition and actually closing inside if
-		if ((Node_Listener.datagramSocket != null)
-				&& (!Node_Listener.datagramSocket.isClosed())) {
+		// note : possible race condition bw checking for null and closed
+		// condition and actually closing inside if
+		if (Node_Listener.datagramSocket != null
+				&& !Node_Listener.datagramSocket.isClosed()) {
 			Node_Listener.datagramSocket.close();
 		}
-		if ((Comm_Listener.serverSocket != null)
-				&& (!Comm_Listener.serverSocket.isClosed())) {
+		if (Comm_Listener.serverSocket != null
+				&& !Comm_Listener.serverSocket.isClosed()) {
 			try {
 				Comm_Listener.serverSocket.close();
 			} catch (IOException e) {
@@ -75,8 +76,7 @@ public class Network_Service extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		
-		
+
 		new Thread(new Comm_Listener(Main_Service.COMM_PORT)).start();// Listen
 																		// AT
 																		// 6000

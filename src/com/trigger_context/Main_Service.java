@@ -120,8 +120,11 @@ public class Main_Service extends Service implements
 	static String USERS = "users";
 	static String MY_DATA = "my_data";
 	static String ANY_USER = "00:00:00:00:00:00";
+
 	static String username = "userName";
+
 	static long timeout = 30*1000;// timeout in milli sec
+
 	static Main_Service main_Service = null;
 	static ArrayList<String> conf_macs = null;
 	static HashMap<String, Long> active_macs = new HashMap<String, Long>();
@@ -216,16 +219,18 @@ public class Main_Service extends Service implements
 		}
 		users_sp.registerOnSharedPreferenceChangeListener(this);
 		data_sp.registerOnSharedPreferenceChangeListener(new OnSharedPreferenceChangeListener() {
-			
+
 			@Override
-			public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
-					String key) {
-				//timeout n username can only be added or modified. not removed
-				if(key.equals("username"))
-					username = sharedPreferences.getString("username", "defUsername");
-				else
+			public void onSharedPreferenceChanged(
+					SharedPreferences sharedPreferences, String key) {
+				// timeout n username can only be added or modified. not removed
+				if (key.equals("username")) {
+					username = sharedPreferences.getString("username",
+							"defUsername");
+				} else {
 					timeout = sharedPreferences.getLong("timeout", 5 * 60) * 1000;
-				
+				}
+
 			}
 		});
 		Log.i(LOG_TAG, "Main_Service-onCreate");

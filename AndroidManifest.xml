@@ -106,16 +106,16 @@
             android:label="@string/title_activity_about" >
         </activity>
         <activity
+            android:name="com.trigger_context.Settings"
+            android:label="@string/action_settings4" >
+        </activity>
+        <activity
             android:name="com.trigger_context.ConfiguredUsers"
             android:label="@string/title_activity_configured_users" >
         </activity>
         <activity
             android:name="com.trigger_context.AddUser"
             android:label="@string/title_activity_add_user" >
-        </activity>
-        <activity
-            android:name="com.trigger_context.Settings"
-            android:label="@string/title_activity_settings" >
         </activity>
     </application>
 
